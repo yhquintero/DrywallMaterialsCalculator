@@ -1,0 +1,6 @@
+- [x] Update navigation menu and titles in `MainActivity.kt`
+- [x] Add "Estado de Resultado" to Data Management in `FinancialReportsScreen.kt`
+- [x] Implement company data validation and alert in `FinancialReportsScreen.kt`
+- [x] Update `AppNavigation.kt` integration
+- [x] Verify build and functionality
+- [x] Create final walkthrough

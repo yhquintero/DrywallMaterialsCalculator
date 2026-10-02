@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#1A237E</color>
+    <color name="keygenPrimary">#2196F3</color>
+    <color name="keygenOnPrimary">#FFFFFF</color>
+    <color name="keygenSecondary">#4CAF50</color>
+    <color name="keygenOnSecondary">#FFFFFF</color>
+    <color name="keygenTertiary">#FF9800</color>
+    <color name="keygenOnTertiary">#FFFFFF</color>
+    <color name="keygenBackground">#FAFAFA</color>
+    <color name="keygenOnBackground">#212121</color>
+    <color name="keygenSurface">#FFFFFF</color>
+    <color name="keygenOnSurface">#212121</color>
+    <color name="keygenSurfaceVariant">#F5F5F5</color>
+    <color name="keygenOnSurfaceVariant">#757575</color>
+    <color name="keygenOutline">#E0E0E0</color>
+    <color name="white">#FFFFFF</color>
+</resources>

@@ -1,0 +1,76 @@
+<resources>
+    <string name="app_name">Calculadora Drywall</string>
+
+    <!-- Navigation / Screen Titles -->
+    <string name="dashboard">Panel de Control</string>
+    <string name="company">Perfil Profesional / Empresa</string>
+    <string name="bank">Cuentas Bancarias</string>
+    <string name="clients">Directorio de Clientes</string>
+    <string name="projects">Gestión de Obras</string>
+    <string name="materiales">Listado de Materiales</string>
+    <string name="calculadora">Calculadora</string>
+    <string name="inventario">Inventario</string>
+    <string name="importar_sketchup">Importar SketchUp</string>
+    <string name="exportar_pdf">Exportar PDF</string>
+
+    <!-- Common Actions -->
+    <string name="guardar">Guardar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="save_changes">Guardar Cambios</string>
+    <string name="confirm_exit">¿Está seguro de salir?</string>
+    <string name="loading">Cargando…</string>
+    <string name="retry">Reintentar</string>
+    <string name="delete">Eliminar</string>
+    <string name="edit">Editar</string>
+    <string name="close">Cerrar</string>
+    <string name="continue_text">Continuar</string>
+
+    <!-- Form Labels -->
+    <string name="precio_compra">Precio compra</string>
+    <string name="precio_venta">Precio venta</string>
+    <string name="ganancia">Ganancia</string>
+    <string name="stock_actual">Stock actual</string>
+    <string name="empresa">Empresa</string>
+    <string name="datos_personales">Datos personales</string>
+    <string name="cuentas_bancarias">Cuentas bancarias</string>
+    <string name="impuesto">Impuesto</string>
+    <string name="precios_mano_obra">Precios mano de obra</string>
+    <string name="medidas_materiales">Medidas de materiales</string>
+    <string name="name">Nombre</string>
+    <string name="phone">Teléfono</string>
+    <string name="email">Correo electrónico</string>
+    <string name="address">Dirección</string>
+    <string name="notes">Notas</string>
+
+    <!-- Error & Status Messages -->
+    <string name="error_generic">Ha ocurrido un error</string>
+    <string name="error_network">Error de conexión. Verifique su acceso a Internet.</string>
+    <string name="no_internet">Sin conexión a Internet</string>
+    <string name="advertencia_stock_bajo">¡Stock bajo! Queda 1 unidad</string>
+    <string name="error_negativo">No se puede asignar stock negativo</string>
+    <string name="error_margen">El margen de beneficio debe estar entre 25%% y 30%%</string>
+    <string name="operation_success">Operación exitosa</string>
+    <string name="data_saved">Datos guardados correctamente</string>
+
+    <!-- PDF Generation -->
+    <string name="generating_pdf">Generando PDF…</string>
+    <string name="pdf_generated">PDF generado exitosamente</string>
+
+    <!-- Backup & Restore -->
+    <string name="backup_created">Respaldo creado exitosamente</string>
+    <string name="backup_restored">Datos restaurados correctamente. Reinicie la aplicación.</string>
+    <string name="backup_error">Error al crear respaldo</string>
+    <string name="restore_error">Error al restaurar datos</string>
+
+    <!-- Security -->
+    <string name="security_title">Seguridad Requerida</string>
+    <string name="security_message">Para acceder a la aplicación, se requiere autenticación mediante el bloqueo de pantalla de su dispositivo.</string>
+    <string name="access_denied">Acceso Bloqueado</string>
+    <string name="access_denied_message">Se requiere autenticación para entrar.</string>
+    <string name="exit">Salir</string>
+    <string name="authenticate">Autenticar</string>
+
+    <!-- Clipboard / Sharing -->
+    <string name="copied">Copiado al portapapeles</string>
+    <string name="share">Compartir</string>
+</resources>

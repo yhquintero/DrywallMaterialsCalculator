@@ -1,0 +1,9 @@
+- [x] Corregir `IncomeStatementScreen.kt`
+    - [x] Importar `PeriodType`
+    - [x] Resolver ambigüedad en `showSnackbar`
+    - [x] Corregir `Modifier.padding`
+- [x] Corregir `IncomeStatementUtils.kt`
+    - [x] Importar `IncomeStatement`
+- [x] Corregir `IncomeStatementViewModel.kt`
+    - [x] Importar `distinctUntilChanged`
+- [x] Verificar compilación

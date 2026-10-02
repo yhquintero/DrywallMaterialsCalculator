@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Professional Trial Reset Icon -->
+    <group
+        android:translateX="18"
+        android:translateY="18">
+
+        <!-- Circular shield base -->
+        <path
+            android:fillColor="#1565C0"
+            android:pathData="M36,4 C48,4 58,9 64,18 C70,27 72,38 72,42 C72,54 66,64 56,70 C50,74 42,76 36,76 C30,76 22,74 16,70 C6,64 0,54 0,42 C0,38 2,27 8,18 C14,9 24,4 36,4 Z" />
+
+        <!-- Refresh arrow (circular) -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M36,16 C44.8,16 52,21.2 54.8,28.4 L48,28.4 C46,24.4 41.4,21.6 36,21.6 C28.6,21.6 22.4,27.2 21.2,34.4 L15.2,30 C18,22.2 26.2,16 36,16 Z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M36,56 C27.2,56 20,50.8 17.2,43.6 L24,43.6 C26,47.6 30.6,50.4 36,50.4 C43.4,50.4 49.6,44.8 50.8,37.6 L56.8,42 C54,49.8 45.8,56 36,56 Z" />
+
+        <!-- Clock hands in center -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="1.5"
+            android:pathData="M36,28 L36,36 L42,40" />
+
+        <!-- 7 badge -->
+        <path
+            android:fillColor="#FF9800"
+            android:pathData="M52,52 C52,48 56,46 60,46 L60,52 C56,52 54,54 54,58 L52,58 C52,56 52,54 52,52 Z" />
+    </group>
+</vector>

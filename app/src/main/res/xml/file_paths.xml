@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <files-path name="internal_cache" path="error_logs/" />
+    <files-path name="internal_client_images" path="clientes/" />
+    <files-path name="internal_company_images" path="empresa/" />
+    <cache-path name="cache_root" path="" />
+    <external-files-path name="external_docs" path="Documents/" />
+</paths>

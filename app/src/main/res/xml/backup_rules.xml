@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Excluir todas las SharedPreferences; el backup/restore manual las maneja -->
+    <exclude domain="sharedpref" path="."/>
+    <exclude domain="file" path="__androidx_security_crypto_encrypted_prefs_keyset__"/>
+    <exclude domain="database" path="drywall_db"/>
+    <exclude domain="database" path="keygen_db"/>
+</full-backup-content>

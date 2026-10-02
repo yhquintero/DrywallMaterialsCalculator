@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Professional Drywall Calculator Icon - Pladur Theme -->
+    <group
+        android:translateX="14"
+        android:translateY="14">
+
+        <!-- Drywall Panel (clean white board) -->
+        <path
+            android:fillColor="#F5F5F5"
+            android:pathData="M4,8 L72,8 L72,72 L4,72 Z" />
+        <!-- Panel edge highlight -->
+        <path
+            android:fillColor="#E0E0E0"
+            android:pathData="M4,8 L72,8 L72,12 L4,12 Z" />
+        <!-- Panel corner joints (drywall seam) -->
+        <path
+            android:fillColor="#BDBDBD"
+            android:pathData="M4,38 L72,38" android:strokeWidth="0.5" android:strokeColor="#BDBDBD"/>
+
+        <!-- Calculator body (clean, centered) -->
+        <path
+            android:fillColor="#1565C0"
+            android:pathData="M18,18 L54,18 C56.2,18 58,19.8 58,22 L58,64 C58,66.2 56.2,68 54,68 L18,68 C15.8,68 14,66.2 14,64 L14,22 C14,19.8 15.8,18 18,18 Z" />
+
+        <!-- Calculator screen -->
+        <path
+            android:fillColor="#BBDEFB"
+            android:pathData="M20,24 L52,24 L52,34 L20,34 Z" />
+
+        <!-- Screen content (formula display) -->
+        <path
+            android:fillColor="#1565C0"
+            android:pathData="M22,27 L38,27 L38,29 L22,29 Z" />
+        <path
+            android:fillColor="#1565C0"
+            android:pathData="M40,27 L50,27 L50,29 L40,29 Z" />
+
+        <!-- Calculator buttons row 1 -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M18,38 L26,38 L26,44 L18,44 Z M28,38 L36,38 L36,44 L28,44 Z M38,38 L46,38 L46,44 L38,44 Z M48,38 L56,38 L56,44 L48,44 Z" />
+
+        <!-- Calculator buttons row 2 -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M18,47 L26,47 L26,53 L18,53 Z M28,47 L36,47 L36,53 L28,53 Z M38,47 L46,47 L46,53 L38,53 Z" />
+
+        <!-- Calculator buttons row 3 (equals - accent color) -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M18,56 L26,56 L26,62 L18,62 Z M28,56 L36,56 L36,62 L28,62 Z" />
+        <path
+            android:fillColor="#FF9800"
+            android:pathData="M38,56 L56,56 L56,62 L38,62 Z" />
+
+        <!-- Measuring tape (top right, not overlapping calculator) -->
+        <group
+            android:translateX="58"
+            android:translateY="10">
+            <path
+                android:fillColor="#FF9800"
+                android:pathData="M0,0 L8,0 L8,40 L0,40 Z" />
+            <!-- Tape markings -->
+            <path
+                android:fillColor="#FFFFFF"
+                android:pathData="M1,4 L7,4 M1,10 L5,10 M1,16 L7,16 M1,22 L5,22 M1,28 L7,28 M1,34 L5,34" android:strokeWidth="0.8" android:strokeColor="#FFFFFF"/>
+            <!-- Tape end hook -->
+            <path
+                android:fillColor="#757575"
+                android:pathData="M-1,0 L9,0 L9,3 L-1,3 Z" />
+        </group>
+    </group>
+</vector>

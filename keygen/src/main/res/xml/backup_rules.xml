@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <exclude domain="sharedpref" path="."/>
+    <exclude domain="file" path="__androidx_security_crypto_encrypted_prefs_keyset__"/>
+    <exclude domain="database" path="keygen_db"/>
+</full-backup-content>

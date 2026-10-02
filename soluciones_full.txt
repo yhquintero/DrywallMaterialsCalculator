@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Precio del dólar en Cuba hoy, euro, MLC y gasolina, actualizados | SolucionesCuba</title>
+
+<meta name="description" content="Hoy el dólar en Cuba se referencia en 675.00 CUP. Revisa también euro, MLC, gasolina, diésel, mercado formal e informal, noticias del dólar en Cuba, bolsa de divisas, integración para desarrolladores y precio del USD.">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+<meta name="theme-color" content="#0b63a5">
+<meta name="author" content="SolucionesCuba">
+
+<link rel="canonical" href="https://solucionescuba.com/">
+<link rel="alternate" hreflang="es" href="https://solucionescuba.com/">
+<link rel="alternate" hreflang="es-cu" href="https://solucionescuba.com/">
+<link rel="alternate" hreflang="x-default" href="https://solucionescuba.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SolucionesCuba">
+<meta property="og:locale" content="es_CU">
+<meta property="og:title" content="Precio del dólar en Cuba hoy, euro, MLC y gasolina | SolucionesCuba">
+<meta property="og:description" content="Hoy el dólar en Cuba se referencia en 675.00 CUP. Revisa también euro, MLC, gasolina, diésel, mercado formal e informal, noticias del dólar en Cuba, bolsa de divisas, integración para desarrolladores y precio del USD.">
+<meta property="og:url" content="https://solucionescuba.com/">
+<meta property="og:image" content="https://solucionescuba.com/img/dolar-cuba-hoy.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Precio del dólar en Cuba hoy, euro, MLC y gasolina | SolucionesCuba">
+<meta name="twitter:description" content="Hoy el dólar en Cuba se referencia en 675.00 CUP. Revisa también euro, MLC, gasolina, diésel, mercado formal e informal, noticias del dólar en Cuba, bolsa de divisas, integración para desarrolladores y precio del USD.">
+<meta name="twitter:image" content="https://solucionescuba.com/img/dolar-cuba-hoy.jpg">
+
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://flagcdn.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --primary:#0b63a5;
+    --primary-dark:#094e7c;
+    --bg:#f5f7fa;
+    --card-bg:#ffffff;
+    --text:#222;
+    --muted:#666;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Inter',sans-serif;
+    margin:0;
+    padding:0;
+    background:var(--bg);
+    color:var(--text);
+  }
+  header{
+    background:linear-gradient(180deg,var(--primary),var(--primary-dark));
+    color:#fff;
+    padding:26px 18px 18px;
+    text-align:center;
+    box-shadow:0 3px 10px rgba(0,0,0,0.2);
+  }
+  header h1{
+    margin:0;
+    font-size:28px;
+    letter-spacing:0.3px;
+  }
+  header p{
+    margin:10px 0 0;
+    font-size:14px;
+    opacity:0.95;
+  }
+
+  nav{
+    display:flex;
+    justify-content:center;
+    background:var(--primary);
+    padding:10px 10px;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  nav a{
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
+    padding:8px 14px;
+    border-radius:999px;
+    font-size:13px;
+    transition:0.25s;
+    border:1px solid rgba(255,255,255,0.10);
+  }
+  nav a:hover{ background:rgba(255,255,255,0.18); }
+
+  main{
+    padding:22px 14px 46px;
+    max-width:1200px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+
+  .intro{ max-width:920px; margin:0 auto; }
+  .badge-resumen{
+    display:inline-block;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:#4b5563;
+    background:#e4edf7;
+    padding:4px 10px;
+    border-radius:999px;
+    margin-bottom:8px;
+  }
+  .intro h2{
+    font-size:20px;
+    color:var(--primary);
+    margin:0 0 8px;
+  }
+  .intro p{
+    font-size:14px;
+    line-height:1.75;
+    margin:0;
+    color:#2b2b2b;
+  }
+  .quick-facts{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:12px;
+  }
+  .quick-facts span{
+    font-size:12px;
+    background:#e9eef5;
+    padding:7px 10px;
+    border-radius:999px;
+  }
+
+  .top-summary{
+    max-width:920px;
+    margin:0 auto;
+    background:#fff;
+    border-radius:16px;
+    padding:16px 18px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    border:1px solid rgba(11,99,165,0.10);
+  }
+  .top-summary h2{
+    margin:0 0 6px;
+    font-size:16px;
+    color:var(--primary);
+    letter-spacing:0.2px;
+  }
+  .top-summary .line{
+    margin:0;
+    font-size:15px;
+    line-height:1.65;
+    color:#111;
+  }
+  .top-summary .line strong{ color:var(--primary); }
+  .top-summary .meta{
+    margin:8px 0 0;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .top-summary .actions{
+    margin-top:12px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .top-summary .actions a{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12px;
+    padding:8px 12px;
+    border-radius:999px;
+    text-decoration:none;
+    font-weight:800;
+    border:1px solid rgba(11,99,165,0.18);
+    background:#eef2f7;
+    color:#1b1b1b;
+  }
+  .top-summary .actions a:hover{ background:#dbe1e9; }
+
+  .mercado-grafica{
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px;
+    justify-content:center;
+    width:100%;
+  }
+  .toque-block, .grafica-block{
+    background:var(--card-bg);
+    border-radius:16px;
+    padding:18px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  }
+  .toque-block{ flex:1 1 340px; min-width:290px; }
+  .grafica-block{ max-width:520px; width:100%; }
+
+  .toque-header{ text-align:center; margin-bottom:12px; }
+  .toque-header h2{ font-size:20px; margin:0; color:var(--primary); }
+  .toque-header p{ font-size:12px; margin:6px 0 0; color:#666; }
+
+  .rates{ display:flex; flex-direction:column; gap:10px; }
+  .rate-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#eef2f7;
+    border-radius:12px;
+    padding:12px;
+    font-weight:800;
+    transition:0.18s;
+  }
+  .rate-row:hover{ background:#dbe1e9; }
+  .left{ display:flex; align-items:center; gap:10px; }
+  .flag{
+    width:24px;
+    height:16px;
+    border-radius:3px;
+    object-fit:cover;
+  }
+  .right{ font-weight:800; }
+  .up{color:#1f9d55;font-weight:900;}
+  .down{color:#d64545;font-weight:900;}
+  .equal{color:#777;font-weight:900;}
+
+  .timestamp{
+    font-size:12px;
+    text-align:center;
+    color:#555;
+    margin-top:12px;
+  }
+
+  .grafica-block h2{
+    text-align:center;
+    font-size:18px;
+    color:var(--primary);
+    margin:0 0 8px;
+  }
+  .grafica-block p{
+    font-size:12px;
+    text-align:center;
+    color:#555;
+    margin:0 0 10px;
+  }
+
+  .info-box{
+    background:#ffffff;
+    border-left:5px solid var(--primary);
+    padding:15px;
+    width:100%;
+    max-width:920px;
+    margin:0 auto;
+    border-radius:12px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.08);
+    font-size:14px;
+    line-height:1.75;
+    color:#2b2b2b;
+  }
+
+  .grid-2{
+    max-width:920px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    width:100%;
+  }
+  .card{
+    background:#fff;
+    border-radius:14px;
+    padding:14px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.08);
+    border:1px solid rgba(0,0,0,0.04);
+  }
+  .card h3{ margin:0 0 8px; color:var(--primary); font-size:15px; }
+  .card p{ margin:0; font-size:13px; line-height:1.7; color:#333; }
+
+  .converter{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    margin-top:10px;
+  }
+  .converter label{
+    display:block;
+    font-size:12px;
+    color:#555;
+    margin-bottom:6px;
+    font-weight:700;
+  }
+  .converter input, .converter select{
+    padding:10px 12px;
+    border-radius:12px;
+    border:1px solid rgba(0,0,0,0.12);
+    background:#fff;
+    outline:none;
+    min-width:160px;
+    font-weight:700;
+  }
+  .converter .result{
+    padding:10px 12px;
+    border-radius:12px;
+    border:1px solid rgba(11,99,165,0.20);
+    background:#eef6ff;
+    font-weight:900;
+  }
+
+
+
+  .latest-news-box{
+    background:#ffffff;
+    padding:16px;
+    border-radius:14px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.08);
+    max-width:920px;
+    width:100%;
+    margin:0 auto;
+    border:1px solid rgba(11,99,165,0.10);
+  }
+  .latest-news-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .latest-news-head h2{
+    margin:0;
+    color:var(--primary);
+    font-size:18px;
+    line-height:1.3;
+  }
+  .latest-news-head p{
+    margin:6px 0 0;
+    font-size:13px;
+    color:#333;
+    line-height:1.65;
+  }
+  .latest-news-all{
+    flex:0 0 auto;
+    text-decoration:none;
+    background:#e9eef5;
+    color:#1f2937;
+    padding:8px 11px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:900;
+  }
+  .latest-news-all:hover{ background:#dbe1e9; }
+  .latest-news-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+  }
+  .latest-news-card{
+    background:#f9fbfd;
+    border:1px solid rgba(0,0,0,0.06);
+    border-radius:13px;
+    padding:13px;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    min-height:100%;
+  }
+  .latest-news-card h3{
+    margin:0;
+    font-size:15px;
+    line-height:1.35;
+  }
+  .latest-news-card h3 a{
+    color:#111827;
+    text-decoration:none;
+  }
+  .latest-news-card h3 a:hover{ color:var(--primary); text-decoration:underline; }
+  .latest-news-date{
+    color:#667085;
+    font-size:11px;
+    font-weight:800;
+  }
+  .latest-news-card p{
+    margin:0;
+    color:#333;
+    font-size:13px;
+    line-height:1.65;
+  }
+  .latest-news-read{
+    margin-top:auto;
+    color:var(--primary);
+    text-decoration:none;
+    font-size:13px;
+    font-weight:900;
+  }
+  .latest-news-read:hover{ text-decoration:underline; }
+
+  .faq-box{
+    background:#ffffff;
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.08);
+    max-width:920px;
+    width:100%;
+    margin:0 auto;
+    font-size:14px;
+    line-height:1.75;
+  }
+  .faq-box h2{ margin:0 0 12px; color:var(--primary); font-size:18px; }
+  .faq-box h3{ font-size:15px; margin:12px 0 6px; }
+  .faq-box p{ margin:0; color:#2b2b2b; }
+
+  .related-box{
+    background:#ffffff;
+    padding:14px;
+    border-radius:12px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.08);
+    max-width:920px;
+    width:100%;
+    margin:0 auto;
+  }
+  .related-box h2{ margin:0 0 8px; color:var(--primary); font-size:16px; }
+  .related-box p{ margin:0 0 10px; font-size:13px; color:#333; line-height:1.7; }
+  .related-links{ display:flex; flex-wrap:wrap; gap:10px; }
+  .related-links a{
+    font-size:12px;
+    background:#e9eef5;
+    padding:7px 10px;
+    border-radius:999px;
+    text-decoration:none;
+    color:#1f2937;
+    font-weight:800;
+  }
+  .related-links a:hover{ background:#dbe1e9; }
+
+  #onlineBox{
+    position:fixed;
+    bottom:15px;
+    right:15px;
+    background:var(--primary);
+    color:white;
+    padding:10px 14px;
+    border-radius:50px;
+    font-weight:900;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.3);
+    z-index:999;
+  }
+
+
+  /* Popup ligero de suscripción: oculto por defecto para no afectar SEO ni contenido SSR */
+  .sc-popup{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:rgba(5,20,35,0.58);
+    backdrop-filter:blur(4px);
+    z-index:10050;
+  }
+  .sc-popup.show{display:flex;}
+  body.sc-popup-open{overflow:hidden;}
+  .sc-popup-card{
+    width:min(440px,100%);
+    background:#fff;
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 22px 60px rgba(0,0,0,0.30);
+    border:1px solid rgba(255,255,255,0.60);
+    animation:scPopupIn .22s ease-out;
+  }
+  @keyframes scPopupIn{
+    from{transform:translateY(14px) scale(.98);opacity:0;}
+    to{transform:translateY(0) scale(1);opacity:1;}
+  }
+  .sc-popup-head{
+    background:linear-gradient(180deg,var(--primary),var(--primary-dark));
+    color:#fff;
+    padding:18px 18px 15px;
+    position:relative;
+  }
+  .sc-popup-head strong{
+    display:block;
+    font-size:18px;
+    line-height:1.25;
+    padding-right:32px;
+  }
+  .sc-popup-head span{
+    display:block;
+    margin-top:7px;
+    font-size:13px;
+    line-height:1.45;
+    opacity:.95;
+  }
+  .sc-popup-close{
+    position:absolute;
+    top:10px;
+    right:10px;
+    width:32px;
+    height:32px;
+    border:0;
+    border-radius:50%;
+    background:rgba(255,255,255,0.16);
+    color:#fff;
+    font-size:22px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .sc-popup-body{padding:17px 18px 18px;}
+  .sc-popup-body p{
+    margin:0 0 13px;
+    font-size:14px;
+    line-height:1.65;
+    color:#2b2b2b;
+  }
+  .sc-popup-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:12px;
+  }
+  .sc-btn-primary,.sc-btn-secondary{
+    border:0;
+    border-radius:999px;
+    padding:11px 15px;
+    font-weight:900;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:13px;
+  }
+  .sc-btn-primary{
+    background:var(--primary);
+    color:#fff;
+    box-shadow:0 6px 16px rgba(11,99,165,0.25);
+  }
+  .sc-btn-secondary{
+    background:#edf2f7;
+    color:#1f2937;
+  }
+  .sc-rate-form{
+    display:none;
+    margin-top:8px;
+  }
+  .sc-rate-form.show{display:block;}
+  .sc-rate-form label{
+    display:block;
+    font-size:12px;
+    font-weight:900;
+    color:#374151;
+    margin:10px 0 6px;
+  }
+  .sc-rate-form input{
+    width:100%;
+    border:1px solid rgba(0,0,0,0.14);
+    border-radius:13px;
+    padding:11px 12px;
+    font:inherit;
+    outline:none;
+    background:#fff;
+  }
+  .sc-rate-form input:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px rgba(11,99,165,0.12);
+  }
+  .sc-popup-note{
+    display:block;
+    color:#667085;
+    font-size:11px;
+    line-height:1.45;
+    margin-top:10px;
+  }
+  .sc-popup-msg{
+    margin-top:10px;
+    font-size:13px;
+    font-weight:800;
+  }
+  .sc-popup-msg.ok{color:#138a43;}
+  .sc-popup-msg.err{color:#c0392b;}
+  .sc-honeypot{
+    position:absolute!important;
+    left:-9999px!important;
+    width:1px!important;
+    height:1px!important;
+    opacity:0!important;
+  }
+
+  @media (max-width:900px){
+    header h1{font-size:22px;}
+    .grid-2{ grid-template-columns:1fr; }
+    .latest-news-grid{ grid-template-columns:1fr; }
+    .latest-news-head{ flex-direction:column; }
+    .grafica-block{ max-width:100%; }
+  }
+</style>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","@id":"https://solucionescuba.com/#website","name":"SolucionesCuba","url":"https://solucionescuba.com/","inLanguage":"es","potentialAction":{"@type":"SearchAction","target":"https://solucionescuba.com/?s={search_term_string}","query-input":"required name=search_term_string"}}</script>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","@id":"https://solucionescuba.com/#organization","name":"SolucionesCuba","url":"https://solucionescuba.com/","logo":"https://solucionescuba.com/favicon.png","sameAs":["https://whatsapp.com/channel/0029Vb7CPsrGZNCypysZxg3d"]}</script>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","@id":"https://solucionescuba.com/#webpage","url":"https://solucionescuba.com/","name":"Precio del dólar en Cuba hoy, euro, MLC y gasolina | SolucionesCuba","isPartOf":{"@id":"https://solucionescuba.com/#website"},"description":"Hoy el dólar en Cuba se referencia en 675.00 CUP. Revisa también euro, MLC, gasolina, diésel, mercado formal e informal, noticias del dólar en Cuba, bolsa de divisas, integración para desarrolladores y precio del USD.","about":[{"@type":"Thing","name":"Precio del dólar en Cuba hoy"},{"@type":"Thing","name":"Precio del euro en Cuba hoy"},{"@type":"Thing","name":"Precio del MLC en Cuba hoy"},{"@type":"Thing","name":"Mercado informal de divisas en Cuba"},{"@type":"Thing","name":"Mercado formal de divisas en Cuba"},{"@type":"Thing","name":"Precio de la gasolina en Cuba hoy"},{"@type":"Thing","name":"Precio del diésel en Cuba"}],"dateModified":"2026-07-09T21:34:27+00:00","inLanguage":"es"}</script>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://solucionescuba.com/"}]}</script>
+
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ItemList","@id":"https://solucionescuba.com/#ultimas-noticias-dolar-cuba","name":"Últimas noticias del dólar en Cuba","itemListElement":[{"@type":"ListItem","position":1,"url":"https://solucionescuba.com/noticias-dolar-en-cuba.php?slug=dolar-cuba-hoy-precio-baja-mlc-caida","name":"Dólar en Cuba Hoy: Precio Baja Ligeramente, Euro Estable y MLC Sufre Caída Significativa en el Mercado Informal"},{"@type":"ListItem","position":2,"url":"https://solucionescuba.com/noticias-dolar-en-cuba.php?slug=dolar-cuba-hoy-9-julio-2026","name":"Dólar en Cuba Hoy: Precio del Dólar y Euro Caen en el Mercado Informal Cubano el 9 de Julio de 2026"},{"@type":"ListItem","position":3,"url":"https://solucionescuba.com/noticias-dolar-en-cuba.php?slug=dolar-cuba-hoy-09-julio-2026","name":"Dólar en Cuba Hoy: El Precio del Dólar Baja Ligeramente, Euro Estable y MLC Cede Terreno - 09 Julio 2026"}]}</script>
+
+</head>
+<body>
+
+<header>
+  <h1>Precio del dólar en Cuba hoy, euro, MLC y gasolina actualizados en tiempo real</h1>
+  <p>Consulta tasas de cambio, mercado informal, mercado formal y precios de combustible en Cuba.</p>
+</header>
+
+<nav>
+  <a href="https://solucionescuba.com/dolarencubahoy.php">Dólar hoy</a>
+  <a href="https://solucionescuba.com/eurohoy.php">Euro hoy</a>
+  <a href="https://solucionescuba.com/mlchoy.php">MLC hoy</a>
+  <a href="#combustible-cuba">Gasolina hoy</a>
+  <a href="https://solucionescuba.com/noticias-dolar-en-cuba.php">Noticias dólar</a>
+  <a href="https://solucionescuba.com/metodologia-tasas.html">Metodología</a>
+  <a href="https://solucionescuba.com/politica-de-privacidad.html">Política de privacidad</a>
+  <a href="https://solucionescuba.com/tasas.html">Tasas</a>
+  <a href="https://solucionescuba.com/fundador.html">Fundador</a>
+  <a href="https://solucionescuba.com/bolsa-divisas.php">Bolsa de divisas</a>
+  <a href="https://solucionescuba.com/Compra-Venta-Divisas.php">Compra/Venta divisas</a>
+  <a href="https://solucionescuba.com/cuanto-dinero-necesito-para-ir-a-cuba.php">Dinero para Cuba</a>
+  <a href="https://solucionescuba.com/precio-comida-cuba.php">Comida en Cuba</a>
+  <a href="https://solucionescuba.com/desarrollador.html">Quiénes somos</a>
+  <a href="https://whatsapp.com/channel/0029Vb7CPsrGZNCypysZxg3d" target="_blank" rel="noopener"
+     style="background:#25D366;font-weight:900;display:flex;align-items:center;gap:8px;
+            padding:8px 14px;border-radius:999px;box-shadow:0 2px 6px rgba(0,0,0,0.2);">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="20" alt="WhatsApp" loading="lazy">
+    Canal WhatsApp  </a>
+</nav>
+
+<main>
+
+  <section class="top-summary" aria-label="Resumen del dólar, euro y MLC hoy en Cuba">
+    <h2>Resumen del mercado hoy</h2>
+    <p class="line">
+      Hoy <strong>9 de julio de 2026</strong> el <strong>dólar (USD)</strong> se muestra en
+      <strong>675.00 CUP</strong>,
+      el <strong>euro (EUR)</strong> en
+      <strong>760.00 CUP</strong>
+      y el <strong>MLC</strong> en
+      <strong>450.00 CUP</strong>.
+    </p>
+    <p class="meta">
+      Última actualización: 2026-07-09 17:34:26 · Referencia informativa basada en datos disponibles y señales del mercado.
+    </p>
+    <div class="actions">
+      <a href="https://solucionescuba.com/dolarencubahoy.php">Ver dólar hoy</a>
+      <a href="https://solucionescuba.com/eurohoy.php">Ver euro hoy</a>
+      <a href="https://solucionescuba.com/mlchoy.php">Ver MLC hoy</a>
+      <a href="#combustible-cuba">Ver gasolina hoy</a>
+      <a href="https://solucionescuba.com/metodologia-tasas.html">Cómo se calcula</a>
+      <a href="https://solucionescuba.com/Compra-Venta-Divisas.php">Comprar/Vender divisas</a>
+      <a href="https://solucionescuba.com/cuanto-son-50-y-100-usd-en-cuba.php">50 y 100 USD en CUP</a>
+    </div>
+  </section>
+
+  <section class="top-summary" aria-label="Herramientas útiles para Cuba">
+    <h2>Herramientas útiles para viajar, comprar y vender divisas</h2>
+    <p class="line">Además de las tasas del día, ahora puedes calcular cuánto dinero necesitas para ir a Cuba, revisar precios orientativos de comida, convertir 50 o 100 USD a CUP y publicar ofertas de compra/venta de divisas.</p>
+    <div class="actions">
+      <a href="https://solucionescuba.com/Compra-Venta-Divisas.php">Compra/Venta divisas</a>
+      <a href="https://solucionescuba.com/cuanto-dinero-necesito-para-ir-a-cuba.php">Cuánto dinero necesito</a>
+      <a href="https://solucionescuba.com/precio-comida-cuba.php">Precio de la comida</a>
+      <a href="https://solucionescuba.com/cuanto-son-50-y-100-usd-en-cuba.php">50 y 100 USD</a>
+    </div>
+  </section>
+
+  <section class="intro">
+    <span class="badge-resumen">Mercado informal</span>
+    <h2>¿A cómo está el dólar en Cuba hoy?</h2>
+    <p id="qaDolar">
+      Hoy <strong>9 de julio de 2026</strong> el <strong>dólar (USD)</strong> en Cuba tiene un valor de <strong>675.00 CUP</strong> como referencia informativa del mercado informal. La tabla se actualiza automáticamente y muestra la hora de la última actualización.    </p>
+
+    <div class="quick-facts">
+      <span>Actualización automática</span>
+      <span>USD, EUR y MLC</span>
+      <span>Gráfico comparativo</span>
+      <span>Mercado formal e informal</span>
+    </div>
+  </section>
+
+  <section class="intro" id="gasolina-cuba-hoy">
+    <span class="badge-resumen">Combustible</span>
+    <h2>Precio de la gasolina en Cuba hoy</h2>
+    <p id="qaGasolina">
+      También puedes consultar el <strong>precio de la gasolina en Cuba hoy</strong> y el valor de otros combustibles. Actualmente se muestran como referencia la <strong>gasolina especial</strong> en <strong>4500.00 CUP</strong>, la <strong>gasolina regular</strong> en <strong>4000.00 CUP</strong>, la <strong>gasolina motor</strong> en <strong>3800.00 CUP</strong> y el <strong>diésel/petróleo</strong> en <strong>1800.00 CUP</strong>. Estos valores son informativos y pueden variar según zona, disponibilidad y nivel de demanda.    </p>
+
+    <div class="quick-facts">
+      <span>Gasolina Regular</span>
+      <span>Gasolina Especial</span>
+      <span>Gasolina Motor</span>
+      <span>Diésel / Petróleo</span>
+    </div>
+  </section>
+
+  <div class="toque-block" id="combustible-cuba" aria-label="Precio del combustible en Cuba por litro">
+    <div class="toque-header">
+      <h2>Precio del combustible en Cuba</h2>
+      <p>Consulta rápida del valor referencial por litro para los principales tipos de combustible.</p>
+    </div>
+
+    <div class="rates">
+      <div class="rate-row" data-fuel-token="Reg">
+        <div class="left">
+          <span aria-hidden="true">⛽</span>
+          Gasolina Regular 1/L
+        </div>
+        <div class="right">
+          4000.00 CUP <span class="down">🔻 -5.00</span>        </div>
+      </div>
+
+      <div class="rate-row" data-fuel-token="ES">
+        <div class="left">
+          <span aria-hidden="true">⛽</span>
+          Gasolina Especial 1/L
+        </div>
+        <div class="right">
+          4500.00 CUP <span class="up">🔺 +2.00</span>        </div>
+      </div>
+
+      <div class="rate-row" data-fuel-token="Mot">
+        <div class="left">
+          <span aria-hidden="true">⛽</span>
+          Gasolina Motor 1/L
+        </div>
+        <div class="right">
+          3800.00 CUP <span class="up">🔺 +10.00</span>        </div>
+      </div>
+
+      <div class="rate-row" data-fuel-token="Pet">
+        <div class="left">
+          <span aria-hidden="true">🛢️</span>
+          Diésel (Petróleo) 1/L
+        </div>
+        <div class="right">
+          1800.00 CUP <span class="down">🔻 -9.98</span>        </div>
+      </div>
+    </div>
+
+    <div class="timestamp" id="fuelUpdate">Se actualiza automáticamente según los datos disponibles.</div>
+  </div>
+
+  <div class="mercado-grafica">
+
+    <div class="toque-block" id="mercado-informal">
+      <div class="toque-header">
+        <h2>Tasas de cambio en Cuba (CUP por 1 unidad)</h2>
+        <p>Referencia informativa del mercado informal para USD, EUR, MLC y otras divisas.</p>
+      </div>
+
+      <div class="rates">
+        <div class="rate-row" data-code="USD">
+          <div class="left">
+            <img class="flag" src="https://flagcdn.com/w20/us.png" alt="" aria-hidden="true" loading="lazy">
+            1 USD
+          </div>
+          <div class="right">
+            675.00 CUP <span class="equal">● 0.00</span>          </div>
+        </div>
+
+        <div class="rate-row" data-code="EUR">
+          <div class="left">
+            <img class="flag" src="https://flagcdn.com/w20/eu.png" alt="" aria-hidden="true" loading="lazy">
+            1 EUR
+          </div>
+          <div class="right">
+            760.00 CUP <span class="equal">● 0.00</span>          </div>
+        </div>
+
+        <div class="rate-row" data-code="MLC">
+          <div class="left">
+            <img class="flag" src="https://flagcdn.com/w20/cu.png" alt="" aria-hidden="true" loading="lazy">
+            1 MLC
+          </div>
+          <div class="right">
+            450.00 CUP <span class="equal">● 0.00</span>          </div>
+        </div>
+
+        <div class="rate-row" data-code-eltoque="CAD">
+          <div class="left">
+            <img class="flag" src="https://flagcdn.com/w20/ca.png" alt="" aria-hidden="true" loading="lazy">
+            1 CAD
+          </div>
+          <div class="right">Cargando...</div>
+        </div>
+
+        <div class="rate-row" data-code-eltoque="MXN">
+          <div class="left">
+            <img class="flag" src="https://flagcdn.com/w20/mx.png" alt="" aria-hidden="true" loading="lazy">
+            1 MXN
+          </div>
+          <div class="right">Cargando...</div>
+        </div>
+
+        <div class="rate-row" data-code-eltoque="ZELLE">
+          <div class="left">
+            <img class="flag" src="https://flagcdn.com/w20/us.png" alt="" aria-hidden="true" loading="lazy">
+            1 USD (Zelle)
+          </div>
+          <div class="right">Cargando...</div>
+        </div>
+      </div>
+
+      <div class="timestamp" id="lastUpdate">Última actualización: 2026-07-09 17:34:26</div>
+    </div>
+
+    <div class="grafica-block">
+      <h2>Gráfico comparativo</h2>
+      <p>Comparación visual de USD, EUR y MLC frente al CUP.</p>
+      <canvas id="graficaMercado"></canvas>
+    </div>
+
+  </div>
+
+  <div class="toque-block" id="mercado-formal" aria-label="Mercado formal de divisas en Cuba">
+    <div class="toque-header">
+      <h2>Mercado formal de divisas (bancos y CADECA)</h2>
+      <p>Tasas publicadas por instituciones. Se muestra el valor de venta y su variación.</p>
+    </div>
+
+    <div class="rates">
+      <div class="rate-row" data-formal="USD">
+        <div class="left">
+          <img class="flag" src="https://flagcdn.com/w20/us.png" alt="" aria-hidden="true" loading="lazy">
+          1 USD
+        </div>
+        <div class="right">Cargando...</div>
+      </div>
+
+      <div class="rate-row" data-formal="EUR">
+        <div class="left">
+          <img class="flag" src="https://flagcdn.com/w20/eu.png" alt="" aria-hidden="true" loading="lazy">
+          1 EUR
+        </div>
+        <div class="right">Cargando...</div>
+      </div>
+
+      <div class="rate-row" data-formal="CAD">
+        <div class="left">
+          <img class="flag" src="https://flagcdn.com/w20/ca.png" alt="" aria-hidden="true" loading="lazy">
+          1 CAD
+        </div>
+        <div class="right">Cargando...</div>
+      </div>
+
+      <div class="rate-row" data-formal="MXN">
+        <div class="left">
+          <img class="flag" src="https://flagcdn.com/w20/mx.png" alt="" aria-hidden="true" loading="lazy">
+          1 MXN
+        </div>
+        <div class="right">Cargando...</div>
+      </div>
+
+      <div class="rate-row" data-formal="GBP">
+        <div class="left">
+          <img class="flag" src="https://flagcdn.com/w20/gb.png" alt="" aria-hidden="true" loading="lazy">
+          1 GBP
+        </div>
+        <div class="right">Cargando...</div>
+      </div>
+    </div>
+
+    <div class="timestamp" id="formalUpdate">Cargando tasas del mercado formal...</div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Convertidor rápido (USD/EUR/MLC a CUP)</h3>
+      <p>Calcula un valor aproximado usando la tasa mostrada actualmente en la tabla principal.</p>
+
+      <div class="converter" aria-label="Convertidor">
+        <div>
+          <label for="amount">Monto</label>
+          <input id="amount" type="number" min="0" step="0.01" value="1">
+        </div>
+
+        <div>
+          <label for="cur">Moneda</label>
+          <select id="cur">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="MLC">MLC</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Resultado</label>
+          <div class="result" id="convResult">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Transparencia y contexto</h3>
+      <p>
+        Esta página ofrece una <strong>referencia informativa</strong> del comportamiento del mercado.
+        No representa una tasa oficial del Estado. Si quieres entender mejor la procedencia y el cálculo de los valores,
+        consulta la <a href="https://solucionescuba.com/metodologia-tasas.html" style="color:var(--primary);font-weight:900;text-decoration:none;">metodología</a>.
+      </p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <b>📌 ¿Qué puedes consultar aquí?</b><br><br>
+    En esta página puedes ver el <strong>precio del dólar en Cuba hoy</strong>, el <strong>precio del euro en Cuba hoy</strong>,
+    el <strong>precio del MLC hoy</strong>, además del <strong>precio de la gasolina en Cuba hoy</strong> y el valor referencial del
+    <strong>diésel/petróleo</strong>. También puedes comparar mercado informal y mercado formal, revisar variaciones y usar el convertidor rápido.
+    <br><br>
+    Si quieres una página más específica, entra en:
+    <a href="https://solucionescuba.com/dolarencubahoy.php"><b>dólar hoy</b></a>,
+    <a href="https://solucionescuba.com/eurohoy.php"><b>euro hoy</b></a> y
+    <a href="https://solucionescuba.com/mlchoy.php"><b>MLC hoy</b></a>.
+    <br><br>
+    <b>Importante:</b> los precios pueden variar por provincia, liquidez, disponibilidad, canal y monto.
+  </div>
+
+  <section class="related-box" aria-label="Consultas relacionadas">
+    <h2>Búsquedas relacionadas</h2>
+    <p>
+      Algunas de las consultas más comunes son: <strong>dólar en Cuba hoy</strong>, <strong>precio del dólar hoy</strong>,
+      <strong>euro en Cuba hoy</strong>, <strong>MLC hoy</strong>, <strong>precio de la gasolina en Cuba hoy</strong> y
+      <strong>mercado informal de divisas en Cuba</strong>.
+    </p>
+    <div class="related-links">
+      <a href="https://solucionescuba.com/dolarencubahoy.php">Dólar en Cuba hoy</a>
+      <a href="https://solucionescuba.com/eurohoy.php">Euro en Cuba hoy</a>
+      <a href="https://solucionescuba.com/mlchoy.php">MLC en Cuba hoy</a>
+      <a href="#combustible-cuba">Gasolina en Cuba hoy</a>
+      <a href="https://solucionescuba.com/metodologia-tasas.html">Metodología</a>
+      <a href="#mercado-informal">Tabla principal</a>
+    </div>
+  </section>
+
+
+    <section class="latest-news-box" id="ultimas-noticias-dolar-cuba" aria-label="Últimas noticias del dólar en Cuba">
+    <div class="latest-news-head">
+      <div>
+        <h2>Últimas noticias del dólar en Cuba</h2>
+        <p>
+          Reportes recientes sobre el <strong>precio del dólar en Cuba hoy</strong>, el euro, la MLC y los cambios del mercado informal.
+          Mostramos solo un avance para mantener el index rápido y enlazar cada noticia completa.
+        </p>
+      </div>
+      <a class="latest-news-all" href="https://solucionescuba.com/noticias-dolar-en-cuba.php">Ver todas</a>
+    </div>
+
+    <div class="latest-news-grid">
+                      <article class="latest-news-card" itemscope itemtype="https://schema.org/NewsArticle">
+          <meta itemprop="mainEntityOfPage" content="https://solucionescuba.com/noticias-dolar-en-cuba.php?slug=dolar-cuba-hoy-precio-baja-mlc-caida">
+          <meta itemprop="datePublished" content="2026-07-09T13:53:38-04:00">
+          <meta itemprop="dateModified" content="2026-07-09T13:53:38-04:00">
+          <meta itemprop="author" content="Redacción SolucionesCuba">
+          <div class="latest-news-date">Publicado: 09/07/2026 13:53</div>
+          <h3 itemprop="headline"><a itemprop="url" href="https://solucionescuba.com/noticias-dolar-en-cuba.php?slug=dolar-cuba-hoy-precio-baja-mlc-caida">Dólar en Cuba Hoy: Precio Baja Ligeramente, Euro Estable y MLC Sufre Caída Significativa en el Mercado Informal</a></h3>
+          <p itemprop="description">El mercado informal de divisas en Cuba presenta movimientos mixtos este 09 de julio de 2026. El precio del dólar estadounidense ha descendido ligeramente, el euro se mantiene sin cambios, y el MLC experimenta…</p>
+          <a class="latest-news-read" href="https://solucionescuba.com/noticias-dolar-en-cuba.php?slug=dolar-cuba-hoy-precio-baja-mlc-caida" aria-label="Leer más sobre Dólar en Cuba Hoy: Precio Baja Ligeramente, Euro Estable y MLC Sufre Caída Significativa en el Mercado Informal">Leer más</a>
+        </article>
+                      <article class="latest-news-card" itemscope itemtype="https://schema.org/NewsArticle">
+          <meta itemprop="mainEntityOfPage" content="https://solucionescuba.com/noticias-dolar-en-cuba.php?slug=dolar-cuba-hoy-9-julio-2026">
+          <meta itemprop="datePublished" content="2026-07-09T13:45:15-04:00">
+          <meta itemprop="dateModified" content="2026-07-09T13:45:15-04:00">
+          <meta itemprop="author" content="Redacción SolucionesCuba">
+          <div class="latest-news-date">Publicado: 09/07/2026 13:45</div>
+          <h3 itemprop="headline"><a itemprop="url" href="https://solucionescuba.com/noticias-dolar-en-cuba.php?slug=dolar-cuba-hoy-9-julio-2026">Dólar en Cuba Hoy: Precio del Dólar y Euro Caen en el Mercado Informal Cubano el 9 de Julio de 2026</a></h3>
+          <p itemprop="description">El mercado informal cubano registra movimientos significativos este 9 de julio de 2026, con una notable caída en el precio del dólar estadounidense y el MLC. El euro se mantiene estable, ofreciendo un panorama…</p>
+          <a class="latest-news-read" href="https://solucionescuba.com/noticias-dolar-en-cuba.php?slug=dolar-cuba-hoy-9-julio-2026" aria-label="Leer más sobre Dólar en Cuba Hoy: Precio del Dólar y Euro Caen en el Mercado Informal Cubano el 9 de Julio de 2026">Leer más</a>
+        </article>
+                      <article class="latest-news-card" itemscope itemtype="https://schema.org/NewsArticle">
+          <meta itemprop="mainEntityOfPage" content="https://solucionescuba.com/noticias-dolar-en-cuba.php?slug=dolar-cuba-hoy-09-julio-2026">
+          <meta itemprop="datePublished" content="2026-07-09T13:29:14-04:00">
+          <meta itemprop="dateModified" content="2026-07-09T13:29:14-04:00">
+          <meta itemprop="author" content="Redacción SolucionesCuba">
+          <div class="latest-news-date">Publicado: 09/07/2026 13:29</div>
+          <h3 itemprop="headline"><a itemprop="url" href="https://solucionescuba.com/noticias-dolar-en-cuba.php?slug=dolar-cuba-hoy-09-julio-2026">Dólar en Cuba Hoy: El Precio del Dólar Baja Ligeramente, Euro Estable y MLC Cede Terreno - 09 Julio 2026</a></h3>
+          <p itemprop="description">El mercado informal cubano reporta hoy, 09 de julio de 2026, una ligera bajada en el precio del dólar estadounidense, situándose en 675 CUP. El euro se mantiene sin variaciones, mientras que el MLC también reg…</p>
+          <a class="latest-news-read" href="https://solucionescuba.com/noticias-dolar-en-cuba.php?slug=dolar-cuba-hoy-09-julio-2026" aria-label="Leer más sobre Dólar en Cuba Hoy: El Precio del Dólar Baja Ligeramente, Euro Estable y MLC Cede Terreno - 09 Julio 2026">Leer más</a>
+        </article>
+          </div>
+  </section>
+  
+  <div class="faq-box">
+    <h2>Preguntas frecuentes</h2>
+
+    <h3>¿A cómo está el dólar en Cuba hoy?</h3>
+    <p>
+      En la parte superior de la página verás el valor actual del <strong>dólar (USD)</strong> en <strong>CUP</strong>,
+      junto con euro y MLC. La tabla se actualiza automáticamente y muestra la hora de la última actualización.
+    </p>
+
+    <h3>¿A cómo está la gasolina en Cuba hoy?</h3>
+    <p>
+      En el bloque <strong>Precio del combustible en Cuba</strong> puedes consultar el precio de la
+      <strong>gasolina regular</strong>, <strong>gasolina especial</strong>, <strong>gasolina motor</strong>
+      y el <strong>diésel/petróleo</strong> como referencia informativa.
+    </p>
+
+    <h3>¿La tasa mostrada es oficial?</h3>
+    <p>
+      No. Se trata de una referencia informativa para comparar precios y tendencias del mercado.
+      La tasa oficial puede ser diferente.
+    </p>
+
+    <h3>¿Cada cuánto se actualiza?</h3>
+    <p>
+      Los datos se refrescan automáticamente de forma periódica para mantener la información lo más actualizada posible.
+    </p>
+
+    <h3>¿Por qué sube o baja el precio del dólar?</h3>
+    <p>
+      Puede variar por oferta y demanda, liquidez, urgencia de compra o venta, contexto económico y condiciones locales.
+    </p>
+
+    <h3>¿Dónde puedo ver cada divisa por separado?</h3>
+	  
+	  <h3>¿Tambien puedes ver las tasas del mercado informal y formal de divisas desde la app SolucionesCuba disponible en Google Play?</h3>
+    <p>
+      Puedes entrar en las páginas dedicadas:
+      <a href="https://solucionescuba.com/dolarencubahoy.php">dólar hoy</a>,
+      <a href="https://solucionescuba.com/eurohoy.php">euro hoy</a> y
+      <a href="https://solucionescuba.com/mlchoy.php">MLC hoy</a>.
+    </p>
+  </div>
+
+
+  <section class="related-box" aria-label="Sobre SolucionesCuba">
+    <h2>SolucionesCuba: referencia diaria para el mercado de divisas en Cuba</h2>
+    <p>
+      Somos la única web del mundo destinada al seguimiento del <strong>precio de las divisas en Cuba</strong>
+      con transparencia absoluta de nuestros resultados, explicando el proceso desde nuestra
+      <a href="https://solucionescuba.com/metodologia-tasas.html" style="color:var(--primary);font-weight:900;text-decoration:none;">metodología</a>.
+      Nuestro objetivo es que cada usuario pueda consultar el dólar, el euro, el MLC, el mercado formal,
+      el mercado informal y otros indicadores con información clara, gratuita y fácil de entender.
+    </p>
+    <p>
+      Además, publicamos noticias en
+      <a href="https://solucionescuba.com/noticias-dolar-en-cuba.php" style="color:var(--primary);font-weight:900;text-decoration:none;">noticias del dólar en Cuba</a>
+      cada vez que ocurre un cambio relevante en el mercado de divisas en Cuba, para que los cubanos dentro y fuera de la isla
+      puedan conocer el contexto, las variaciones y el comportamiento del mercado.
+    </p>
+    <p>
+      SolucionesCuba es hoy una referencia para muchos cubanos que buscan consultar tasas de cambio con rapidez,
+      comparar valores, revisar tendencias y tomar decisiones informadas. También contamos con una sección destinada a
+      <a href="https://solucionescuba.com/bolsa-divisas.php" style="color:var(--primary);font-weight:900;text-decoration:none;">bolsa de divisas</a>,
+      herramientas de consulta, convertidor rápido, tablas actualizadas, noticias del mercado y enlaces útiles para seguir el movimiento económico diario.
+    </p>
+    <p>
+      Nuestra web es <strong>100% gratis, sin anuncios</strong> y pensada para ofrecer beneficios reales:
+      acceso rápido desde el móvil, datos actualizados, navegación sencilla, transparencia metodológica,
+      consulta de divisas principales, seguimiento de combustible y contenido informativo para entender mejor el mercado cubano.
+    </p>
+  </section>
+
+</main>
+
+<div id="onlineBox" aria-label="Usuarios conectados">
+  <span>👁️</span>
+  <span>2 online · 1552 visitas 24h</span>
+</div>
+
+
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","@id":"https://solucionescuba.com/#faq","mainEntity":[{"@type":"Question","name":"¿A cómo está el dólar en Cuba hoy?","acceptedAnswer":{"@type":"Answer","text":"En la parte superior se muestra el valor del dólar en CUP junto con euro y MLC. La tabla se actualiza automáticamente y muestra la hora de la última actualización."}},{"@type":"Question","name":"¿A cómo está la gasolina en Cuba hoy?","acceptedAnswer":{"@type":"Answer","text":"En el bloque Precio del combustible en Cuba se muestra el valor referencial de la gasolina regular, gasolina especial, gasolina motor y diésel/petróleo."}},{"@type":"Question","name":"¿La tasa es oficial?","acceptedAnswer":{"@type":"Answer","text":"No. Es una referencia informativa para comparar precios y tendencias del mercado."}},{"@type":"Question","name":"¿Cada cuánto se actualiza?","acceptedAnswer":{"@type":"Answer","text":"La web refresca los datos de forma periódica y muestra la última actualización disponible."}}]}</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const MAP = {
+  "USD": "USD",
+  "ECU": "EUR",
+  "EUR": "EUR",
+  "MLC": "MLC"
+};
+
+let chart = null;
+let latestRates = { USD: null, EUR: null, MLC: null };
+
+function actualizarFraseDolarDesdeTasas(data){
+  try{
+    const usd = data?.data?.tasas?.USD;
+    if(usd === undefined) return;
+
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth()+1).padStart(2,'0');
+    const dd = String(now.getDate()).padStart(2,'0');
+    const fechaIso = `${yyyy}-${mm}-${dd}`;
+
+    const n = Number(usd);
+    const el = document.getElementById("qaDolar");
+    if(!el) return;
+
+    el.innerHTML =
+      `Hoy <strong>${fechaIso}</strong> el <strong>dólar (USD)</strong> en Cuba tiene un valor de ` +
+      `<strong>${n.toFixed(2)} CUP</strong> como referencia informativa del mercado informal. ` +
+      `La tabla se actualiza automáticamente y muestra la hora de la última actualización.`;
+  }catch(e){}
+}
+
+async function cargarTasas(){
+  try {
+    const r = await fetch("tasas.php", { cache: "no-store" });
+    const data = await r.json();
+
+    if (!data || !data.data || !data.data.tasas) {
+      console.error("Respuesta de tasas.php no tiene el formato esperado", data);
+      return;
+    }
+
+    actualizarFraseDolarDesdeTasas(data);
+
+    const tasas = data.data.tasas;
+    const old = JSON.parse(localStorage.getItem("tasas_old") || "{}");
+    const filas = document.querySelectorAll("#mercado-informal .rate-row[data-code]");
+    const nuevosValores = [];
+
+    filas.forEach(fila => {
+      const code = fila.dataset.code;
+      const apiKey = Object.keys(MAP).find(k => MAP[k] === code);
+
+      if (apiKey && tasas[apiKey] !== undefined) {
+        const nuevo = parseFloat(tasas[apiKey]);
+        const anterior = (old[apiKey] ?? nuevo);
+        const diff = nuevo - anterior;
+
+        let clase = "equal", simbolo = "●", difftxt = "0.00";
+        if (diff > 0){
+          clase="up"; simbolo="🔺"; difftxt = "+" + diff.toFixed(2);
+        }
+        if (diff < 0){
+          clase="down"; simbolo="🔻"; difftxt = diff.toFixed(2);
+        }
+
+        fila.querySelector(".right").innerHTML =
+          `${nuevo.toFixed(2)} CUP <span class="${clase}">${simbolo} ${difftxt}</span>`;
+
+        nuevosValores.push({ label: code, valor: nuevo });
+        latestRates[code] = nuevo;
+      }
+    });
+
+    localStorage.setItem("tasas_old", JSON.stringify(tasas));
+
+    if (data.data.date && data.data.hour !== undefined) {
+      const hh = String(data.data.hour).padStart(2,'0');
+      const mm = String(data.data.minutes).padStart(2,'0');
+      const ss = String(data.data.seconds).padStart(2,'0');
+      document.getElementById("lastUpdate").innerText =
+        `Última actualización: ${data.data.date} ${hh}:${mm}:${ss}`;
+    } else {
+      document.getElementById("lastUpdate").innerText =
+        `Última actualización: datos recibidos correctamente`;
+    }
+
+    actualizarGrafica(nuevosValores);
+    actualizarConvertidor();
+
+  } catch(e){
+    console.error("Error cargando tasas", e);
+  }
+}
+
+function actualizarGrafica(values){
+  const labels = values.map(v => v.label);
+  const datos = values.map(v => v.valor);
+
+  const ctx = document.getElementById("graficaMercado").getContext("2d");
+  if(chart) chart.destroy();
+
+  chart = new Chart(ctx,{
+    type:"bar",
+    data:{
+      labels,
+      datasets:[{
+        label:"Tasa en CUP",
+        data:datos,
+        backgroundColor:"#0b63a5"
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{ legend:{ display:false } }
+    }
+  });
+}
+
+async function cargarDivisasExtra() {
+  try {
+    const resp = await fetch('divisas_extra.json?' + Date.now(), { cache: "no-store" });
+    if (!resp.ok) return;
+    const extra = await resp.json();
+
+    const filasFuel = document.querySelectorAll('#combustible-cuba .rate-row[data-fuel-token]');
+    filasFuel.forEach(fila => {
+      const token = fila.getAttribute('data-fuel-token');
+      const info = extra[token];
+      if (!info) return;
+
+      const valor   = parseFloat(info.valor);
+      const tend    = info.tendencia || 'equal';
+      const cambio  = parseFloat(info.cambio || 0);
+
+      if (!isFinite(valor)) return;
+
+      let clase = 'equal';
+      let simbolo = '●';
+      let diffText = cambio.toFixed(2);
+
+      if (tend === 'up') {
+        clase = 'up';
+        simbolo = '🔺';
+        diffText = (cambio >= 0 ? '+' : '') + cambio.toFixed(2);
+      } else if (tend === 'down') {
+        clase = 'down';
+        simbolo = '🔻';
+        diffText = (cambio <= 0 ? '' : '-') + Math.abs(cambio).toFixed(2);
+      }
+
+      fila.querySelector('.right').innerHTML =
+        `${valor.toFixed(2)} CUP <span class="${clase}">${simbolo} ${diffText}</span>`;
+    });
+
+    const fu = document.getElementById('fuelUpdate');
+    if (fu) {
+      fu.innerText = extra.updated
+        ? `Última actualización (combustible): ${extra.updated}`
+        : `Última actualización (combustible): datos recibidos`;
+    }
+
+  } catch(e) {
+    console.error('Error cargando divisas_extra.json', e);
+  }
+}
+
+async function cargarTasasElToque() {
+  try {
+    const resp = await fetch('?ajax_eltoque=1&t=' + Date.now(), { cache: "no-store" });
+    if (!resp.ok) return;
+    const data = await resp.json();
+
+    const map = {
+      "CAD": data.CAD,
+      "MXN": data.MXN,
+      "ZELLE": data.ZELLE
+    };
+
+    const filas = document.querySelectorAll('#mercado-informal .rate-row[data-code-eltoque]');
+    filas.forEach(fila => {
+      const code = fila.getAttribute('data-code-eltoque');
+      const val = parseFloat(map[code]);
+      if (!isFinite(val)) return;
+
+      const oldRates = JSON.parse(localStorage.getItem('tasas_eltoque_old') || '{}');
+      const anterior = oldRates[code] ?? val;
+      const diff = val - anterior;
+
+      let clase = 'equal';
+      let simbolo = '●';
+      let diffText = '0.00';
+
+      if (diff > 0) { 
+        clase = 'up'; 
+        simbolo = '🔺'; 
+        diffText = '+' + diff.toFixed(2); 
+      } else if (diff < 0) { 
+        clase = 'down'; 
+        simbolo = '🔻'; 
+        diffText = diff.toFixed(2); 
+      }
+
+      fila.querySelector('.right').innerHTML =
+        `${val.toFixed(2)} CUP <span class="${clase}">${simbolo} ${diffText}</span>`;
+
+      oldRates[code] = val;
+      localStorage.setItem('tasas_eltoque_old', JSON.stringify(oldRates));
+    });
+  } catch(e) {
+    console.error('Error cargando tasas El Toque', e);
+  }
+}
+
+function actualizarConvertidor(){
+  const amountEl = document.getElementById("amount");
+  const curEl = document.getElementById("cur");
+  const outEl = document.getElementById("convResult");
+
+  if(!amountEl || !curEl || !outEl) return;
+
+  const amount = parseFloat(amountEl.value || "0");
+  const cur = curEl.value;
+
+  const rate = latestRates[cur];
+  if(!rate || !isFinite(rate) || amount <= 0){
+    outEl.textContent = "—";
+    return;
+  }
+  const res = amount * rate;
+  outEl.textContent = res.toFixed(2) + " CUP";
+}
+
+document.addEventListener("input", (e) => {
+  if(e.target && (e.target.id === "amount" || e.target.id === "cur")){
+    actualizarConvertidor();
+  }
+});
+
+setInterval(cargarTasas, 15000);
+cargarTasas();
+
+cargarDivisasExtra();
+setInterval(cargarDivisasExtra, 60000);
+
+cargarTasasElToque();
+setInterval(cargarTasasElToque, 60000);
+
+async function cargarMercadoFormal(){
+  try{
+    const r = await fetch("https://api.cambiocuba.money/api/formal_rates/banks-x-rates", { cache:"no-store" });
+    const data = await r.json();
+
+    if(!Array.isArray(data) || data.length === 0){
+      return;
+    }
+
+    const banco = data.find(x => (x?.name || '') === "BANDEC") || data[0];
+    const rates = banco?.rates || null;
+    if(!rates) return;
+
+    const filas = document.querySelectorAll("#mercado-formal .rate-row[data-formal]");
+    filas.forEach(fila => {
+      const code = fila.getAttribute("data-formal");
+      const info = rates[code];
+      if(!info) return;
+
+      const v = (info.sell !== undefined && info.sell !== null) ? parseFloat(info.sell) : parseFloat(info.buy);
+      if(!isFinite(v)) return;
+
+      const diff = parseFloat(info.diff || 0);
+
+      let clase="equal", simbolo="●", difftxt="0.00";
+      if(diff > 0){
+        clase="up"; simbolo="🔺"; difftxt = "+" + diff.toFixed(2);
+      } else if(diff < 0){
+        clase="down"; simbolo="🔻"; difftxt = diff.toFixed(2);
+      }
+
+      fila.querySelector(".right").innerHTML =
+        `${v.toFixed(2)} CUP <span class="${clase}">${simbolo} ${difftxt}</span>`;
+    });
+
+    const fecha = banco?.effective_date ? banco.effective_date : "";
+    const nombre = banco?.name ? banco.name : "Bancos";
+    const sub = banco?.subtitle ? (" · " + banco.subtitle) : "";
+    const el = document.getElementById("formalUpdate");
+    if(el){
+      el.innerText = fecha
+        ? `Última actualización (formal): ${fecha} · Fuente: ${nombre}${sub}`
+        : `Última actualización (formal): datos recibidos · Fuente: ${nombre}${sub}`;
+    }
+
+  } catch(e){
+    console.error("Error cargando mercado formal", e);
+  }
+}
+cargarMercadoFormal();
+setInterval(cargarMercadoFormal, 60000);
+</script>
+
+<script>
+(function(){
+  try {
+    const payload = {
+      event_id: "951894c99ab6e1e9189a7e1a",
+      visitor_id: "0c7175f840c5af1793b4552fc31b2147",
+      session_id: "12777f32c54edd52b529bcaccd51cf26",
+      collected_at_client_iso: new Date().toISOString(),
+
+      page: {
+        url: location.href,
+        origin: location.origin,
+        path: location.pathname,
+        query: location.search,
+        hash: location.hash,
+        title: document.title,
+        referrer: document.referrer
+      },
+
+      navigator: {
+        userAgent: navigator.userAgent || null,
+        platform: navigator.platform || null,
+        vendor: navigator.vendor || null,
+        language: navigator.language || null,
+        languages: navigator.languages || null,
+        cookieEnabled: navigator.cookieEnabled,
+        doNotTrack: navigator.doNotTrack || window.doNotTrack || null,
+        webdriver: navigator.webdriver || false,
+        hardwareConcurrency: navigator.hardwareConcurrency || null,
+        deviceMemory: navigator.deviceMemory || null,
+        maxTouchPoints: navigator.maxTouchPoints || 0,
+        pdfViewerEnabled: navigator.pdfViewerEnabled ?? null
+      },
+
+      screen: {
+        width: screen.width,
+        height: screen.height,
+        availWidth: screen.availWidth,
+        availHeight: screen.availHeight,
+        colorDepth: screen.colorDepth,
+        pixelDepth: screen.pixelDepth,
+        orientationType: screen.orientation ? screen.orientation.type : null,
+        orientationAngle: screen.orientation ? screen.orientation.angle : null,
+        devicePixelRatio: window.devicePixelRatio || 1
+      },
+
+      viewport: {
+        innerWidth: window.innerWidth,
+        innerHeight: window.innerHeight,
+        outerWidth: window.outerWidth,
+        outerHeight: window.outerHeight,
+        scrollX: window.scrollX,
+        scrollY: window.scrollY
+      },
+
+      timezone: {
+        name: (Intl.DateTimeFormat().resolvedOptions().timeZone || null),
+        offset_minutes: new Date().getTimezoneOffset()
+      },
+
+      connection: (navigator.connection || navigator.mozConnection || navigator.webkitConnection) ? {
+        effectiveType: (navigator.connection || navigator.mozConnection || navigator.webkitConnection).effectiveType || null,
+        downlink: (navigator.connection || navigator.mozConnection || navigator.webkitConnection).downlink || null,
+        rtt: (navigator.connection || navigator.mozConnection || navigator.webkitConnection).rtt || null,
+        saveData: (navigator.connection || navigator.mozConnection || navigator.webkitConnection).saveData || false
+      } : null,
+
+      performance: null,
+      storage: null
+    };
+
+    try {
+      const nav = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+      if (nav) {
+        payload.performance = {
+          type: nav.type,
+          startTime: Math.round(nav.startTime),
+          duration: Math.round(nav.duration),
+          domContentLoaded: Math.round(nav.domContentLoadedEventEnd),
+          loadEventEnd: Math.round(nav.loadEventEnd),
+          transferSize: nav.transferSize || null,
+          encodedBodySize: nav.encodedBodySize || null,
+          decodedBodySize: nav.decodedBodySize || null
+        };
+      } else if (performance.timing) {
+        payload.performance = {
+          legacy: true,
+          load_ms: performance.timing.loadEventEnd - performance.timing.navigationStart,
+          dom_ready_ms: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart
+        };
+      }
+    } catch(e){}
+
+    const sendPayload = () => {
+      try {
+        const body = JSON.stringify(payload);
+        const url = location.pathname + "?sc_analytics=1";
+
+        if (navigator.sendBeacon) {
+          const blob = new Blob([body], { type: "application/json" });
+          if (navigator.sendBeacon(url, blob)) return;
+        }
+
+        fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body,
+          keepalive: true,
+          credentials: "same-origin",
+          cache: "no-store"
+        }).catch(function(){});
+      } catch(e){}
+    };
+
+    if (navigator.storage && navigator.storage.estimate) {
+      navigator.storage.estimate()
+        .then(function(estimate){
+          payload.storage = {
+            quota: estimate.quota || null,
+            usage: estimate.usage || null
+          };
+          sendPayload();
+        })
+        .catch(sendPayload);
+    } else {
+      sendPayload();
+    }
+  } catch(e){}
+})();
+</script>
+
+<!-- SolucionesCuba Ads Loader controlado desde admin.php -->
+<script>
+(function(){
+  var page = (location.pathname.split('/').pop() || 'index.php');
+  fetch('/sc_public_config.php?page=' + encodeURIComponent(page) + '&t=' + Date.now(), {cache:'no-store'})
+    .then(function(r){ return r.json(); })
+    .then(function(cfg){
+      if(!cfg || !cfg.ads_enabled) return;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(cfg.ads_client || 'ca-pub-2731712509185945');
+      s.crossOrigin = 'anonymous';
+      document.head.appendChild(s);
+    })
+    .catch(function(){});
+})();
+</script>
+
+<script>
+(function(){
+  const popup = document.getElementById('scRatePopup');
+  if (!popup) return;
+
+  const intro = document.getElementById('scRateIntro');
+  const form = document.getElementById('scRateForm');
+  const msg = document.getElementById('scRateMsg');
+  const yesBtn = document.getElementById('scRateYes');
+  const noMoreBtn = document.getElementById('scRateNoMore');
+  const closeBtn = document.getElementById('scRatePopupClose');
+  const backBtn = document.getElementById('scRateBack');
+  const submitBtn = document.getElementById('scRateSubmit');
+
+  const STORAGE_KEY = 'sc_rates_popup_done';
+
+  function getCookie(name){
+    return document.cookie.split('; ').find(row => row.startsWith(name + '='))?.split('=').slice(1).join('=') || '';
+  }
+
+  function setCookie(name, value, days){
+    const maxAge = days * 24 * 60 * 60;
+    document.cookie = name + '=' + encodeURIComponent(value) + '; path=/; max-age=' + maxAge + '; samesite=lax';
+  }
+
+  function popupAlreadyHandled(){
+    try {
+      if (localStorage.getItem(STORAGE_KEY)) return true;
+    } catch(e) {}
+    return getCookie('sc_rates_popup_done') === '1';
+  }
+
+  function markHandled(value){
+    try {
+      localStorage.setItem(STORAGE_KEY, value || '1');
+    } catch(e) {}
+    setCookie('sc_rates_popup_done', '1', 365);
+  }
+
+  function showPopup(){
+    if (popupAlreadyHandled()) return;
+    popup.classList.add('show');
+    popup.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('sc-popup-open');
+  }
+
+  function hidePopup(){
+    popup.classList.remove('show');
+    popup.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('sc-popup-open');
+  }
+
+  function dismissForever(){
+    markHandled('dismissed');
+    hidePopup();
+  }
+
+  window.addEventListener('load', function(){
+    setTimeout(showPopup, 1400);
+  });
+
+  if (yesBtn) {
+    yesBtn.addEventListener('click', function(){
+      if (intro) intro.style.display = 'none';
+      if (form) form.classList.add('show');
+      const nameInput = document.getElementById('scRateName');
+      if (nameInput) setTimeout(() => nameInput.focus(), 80);
+    });
+  }
+
+  [noMoreBtn, closeBtn, backBtn].forEach(function(btn){
+    if (!btn) return;
+    btn.addEventListener('click', dismissForever);
+  });
+
+  popup.addEventListener('click', function(e){
+    if (e.target === popup) dismissForever();
+  });
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && popup.classList.contains('show')) {
+      dismissForever();
+    }
+  });
+
+  if (form) {
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      if (!msg) return;
+
+      msg.className = 'sc-popup-msg';
+      msg.textContent = 'Guardando...';
+      if (submitBtn) submitBtn.disabled = true;
+
+      const payload = {
+        name: (document.getElementById('scRateName')?.value || '').trim(),
+        email: (document.getElementById('scRateEmail')?.value || '').trim(),
+        phone: (document.getElementById('scRatePhone')?.value || '').trim(),
+        website: (document.getElementById('scRateWebsite')?.value || '').trim()
+      };
+
+      try {
+        const resp = await fetch(location.pathname + '?sc_register_user=1', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(payload),
+          credentials: 'same-origin',
+          cache: 'no-store'
+        });
+
+        const data = await resp.json().catch(() => ({}));
+
+        if (!resp.ok || !data.ok) {
+          throw new Error(data.message || 'No se pudo guardar. Inténtalo otra vez.');
+        }
+
+        markHandled('registered');
+        msg.className = 'sc-popup-msg ok';
+        msg.textContent = data.message || 'Cuenta creada correctamente.';
+        setTimeout(hidePopup, 1300);
+      } catch(err) {
+        msg.className = 'sc-popup-msg err';
+        msg.textContent = err.message || 'Error guardando los datos.';
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

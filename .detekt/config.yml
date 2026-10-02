@@ -1,0 +1,108 @@
+# Detekt configuration for static analysis
+build:
+  maxIssues: 0
+
+processors:
+  active: true
+  exclude:
+    - "FunctionCountProcessor"
+    - "PropertyCountProcessor"
+    - "ClassCountProcessor"
+    - "PackageCountProcessor"
+    - "KtFileCountProcessor"
+
+console-reports:
+  active: true
+  exclude:
+    - "ProjectStatisticsReport"
+    - "ComplexityReport"
+    - "NotificationReport"
+    - "FindingsReport"
+    - "FileBasedFindingsReport"
+  #  customReports: ""
+
+output-reports:
+  active: true
+  exclude:
+    - "HtmlOutputReport"
+    - "XmlOutputReport"
+    - "TxtOutputReport"
+
+comments:
+  active: true
+  UndocumentedPublicClass:
+    active: false
+  UndocumentedPublicFunction:
+    active: false
+  CommentOverPrivateFunction:
+    active: false
+  CommentOverPrivateProperty:
+    active: false
+
+complexity:
+  active: true
+  ComplexCondition:
+    threshold: 4
+  ComplexInterface:
+    threshold: 10
+  LargeClass:
+    threshold: 600
+  LongMethod:
+    threshold: 60
+  LongParameterList:
+    threshold: 6
+  MethodOverloading:
+    threshold: 6
+  TooManyFunctions:
+    thresholdInFiles: 11
+    thresholdInClasses: 11
+    thresholdInInterfaces: 11
+    thresholdInObjects: 11
+    thresholdInEnums: 11
+
+exceptions:
+  active: true
+  TooGenericExceptionCaught:
+    active: false
+  TooGenericExceptionThrown:
+    active: false
+
+naming:
+  active: true
+  FunctionNaming:
+    active: false
+  TopLevelPropertyNaming:
+    active: false
+  VariableNaming:
+    active: false
+
+performance:
+  active: true
+  SpreadOperator:
+    active: false
+
+potential-bugs:
+  active: true
+  UnsafeCast:
+    active: false
+  UnsafeCallOnNullableType:
+    active: false
+
+style:
+  active: true
+  MagicNumber:
+    active: false
+  MaxLineLength:
+    active: false
+  MayBeConst:
+    active: false
+  NewLineAtEndOfFile:
+    active: false
+  UnusedImports:
+    active: true
+  WildcardImport:
+    active: false
+  ForbiddenComment:
+    values:
+      - "FIXME:"
+      - "STOPSHIP:"

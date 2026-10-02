@@ -1,0 +1,25 @@
+<resources>
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/appPrimary</item>
+        <item name="colorOnPrimary">@color/appOnPrimary</item>
+        <item name="colorSecondary">@color/appSecondary</item>
+        <item name="colorOnSecondary">@color/appOnSecondary</item>
+        <item name="colorTertiary">@color/appTertiary</item>
+        <item name="colorOnTertiary">@color/appOnTertiary</item>
+        <item name="android:colorBackground">@color/appBackground</item>
+        <item name="colorOnBackground">@color/appOnBackground</item>
+        <item name="colorSurface">@color/appSurface</item>
+        <item name="colorOnSurface">@color/appOnSurface</item>
+        <item name="colorSurfaceVariant">@color/appSurfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/appOnSurfaceVariant</item>
+        <item name="colorOutline">@color/appOutline</item>
+        <item name="android:statusBarColor">?attr/android:colorBackground</item>
+        <item name="android:navigationBarColor">?attr/android:colorBackground</item>
+    </style>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenBackground">@android:color/white</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+    </style>
+</resources>

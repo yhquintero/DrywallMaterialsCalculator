@@ -1,0 +1,5 @@
+- [x] Corregir omisión de restauración de preferencias en `DatabaseBackupUtils.kt`
+- [x] Mejorar limpieza de archivos auxiliares en `DatabaseBackupUtils.kt`
+- [x] Optimizar flujo de reinicio y manejo de errores en `RestoreViewModel.kt`
+- [x] Mejorar feedback visual en `AppSettingsScreen.kt`
+- [x] Verificación de integridad de rutas de imágenes post-restauración

@@ -1,0 +1,116 @@
+# Detekt static analysis configuration
+# See: https://detekt.dev/docs/getting-started/configurations
+
+build:
+  maxIssues: 100
+
+processors:
+  active: true
+  exclude:
+    - 'FunctionCountProcessor'
+    - 'PropertyCountProcessor'
+    - 'ClassCountProcessor'
+    - 'PackageCountProcessor'
+    - 'KtFileCountProcessor'
+
+console-reports:
+  active: true
+  exclude:
+    - 'ProjectStatisticsReport'
+    - 'ComplexityReport'
+    - 'NotificationReport'
+    - 'FindingsReport'
+    - 'FileBasedFindingsReport'
+
+output-reports:
+  active: true
+  exclude:
+    - 'HtmlOutputReport'
+    - 'XmlOutputReport'
+    - 'SarifOutputReport'
+
+comments:
+  active: true
+  UndocumentedPublicClass:
+    active: false
+  UndocumentedPublicFunction:
+    active: false
+  CommentOverPrivateFunction:
+    active: false
+  CommentOverPrivateProperty:
+    active: false
+
+complexity:
+  active: true
+  ComplexCondition:
+    threshold: 4
+  LargeClass:
+    threshold: 600
+    excludes: ['**/test/**', '**/androidTest/**']
+  LongMethod:
+    threshold: 60
+    excludes: ['**/test/**']
+  TooManyFunctions:
+    thresholdInFiles: 20
+    thresholdInClasses: 15
+
+empty-blocks:
+  active: true
+  EmptyCatchBlock:
+    active: true
+  EmptyClassBlock:
+    active: false
+  EmptyFunctionBlock:
+    active: false
+
+exceptions:
+  active: true
+  TooGenericExceptionCaught:
+    active: true
+    excludes: ['**/test/**']
+  NotImplementedDeclaration:
+    active: false
+
+naming:
+  active: true
+  ClassNaming:
+    pattern: '[A-Z][a-zA-Z0-9]*'
+  FunctionNaming:
+    pattern: '[a-z][a-zA-Z0-9]*'
+  TopLevelPropertyNaming:
+    pattern: '[A-Za-z][_A-Za-z0-9]*'
+
+performance:
+  active: true
+  CouldBeSequence:
+    active: false
+  UnnecessaryTemporaryInstantiation:
+    active: true
+
+potential-bugs:
+  active: true
+  CastNullableToNonNullableType:
+    active: true
+  UnreachableCatchBlock:
+    active: true
+  UnsafeCast:
+    active: true
+
+style:
+  active: true
+  MagicNumber:
+    active: true
+    excludes: ['**/test/**']
+    ignoreNumbers: ['0', '1', '2', '100', '1000']
+  MayBeConst:
+    active: true
+  UnusedPrivateMember:
+    active: true
+  UnusedImports:
+    active: true
+  WildcardImport:
+    active: false
+  MaxLineLength:
+    active: true
+    maxLineLength: 160
+    excludes: ['**/test/**']

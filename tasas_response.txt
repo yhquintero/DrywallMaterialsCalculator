@@ -1,0 +1,17 @@
+{
+    "http": 200,
+    "data": {
+        "tasas": {
+            "USD": 675,
+            "MLC": 450,
+            "TRX": 28,
+            "USDT_TRC20": 690,
+            "BTC": 689,
+            "ECU": 760
+        },
+        "date": "2026-07-09",
+        "hour": 17,
+        "minutes": 34,
+        "seconds": 3
+    }
+}

@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v3
+      - name: Check Kotlin formatting
+        run: ./gradlew spotlessCheck --no-daemon || echo "Spotless not configured — skipping"
+      - name: Lint Debug
+        run: ./gradlew lintDebug --no-daemon
+
+  compile:
+    name: Compile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v3
+      - name: Compile app
+        run: ./gradlew :app:compileDebugKotlin --no-daemon
+      - name: Compile keygen
+        run: ./gradlew :keygen:compileDebugKotlin --no-daemon
+      - name: Compile common
+        run: ./gradlew :common:compileDebugKotlin --no-daemon
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v3
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest --no-daemon
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: '**/build/reports/tests/'
+
+  # Uncomment when Play Console access is configured
+  # instrumentation-test:
+  #   name: Instrumentation Tests
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-java@v4
+  #       with:
+  #         java-version: 17
+  #         distribution: temurin
+  #     - uses: gradle/actions/setup-gradle@v3
+  #     - uses: reactivecircus/android-emulator-runner@v2
+  #       with:
+  #         api-level: 29
+  #         script: ./gradlew connectedDebugAndroidTest --no-daemon
+
+  build:
+    name: Build APKs
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v3
+      - name: Build App Debug
+        run: ./gradlew :app:assembleDebug --no-daemon
+      - name: Build Keygen Debug
+        run: ./gradlew :keygen:assembleDebug --no-daemon
+      - name: Upload App APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/*.apk
+      - name: Upload Keygen APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: keygen-debug
+          path: keygen/build/outputs/apk/debug/*.apk

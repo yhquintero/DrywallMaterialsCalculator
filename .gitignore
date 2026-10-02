@@ -1,0 +1,56 @@
+# Android
+*.iml
+.gradle/
+build/
+local.properties
+.idea/
+*.apk
+*.aab
+*.keystore
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Gradle configuration cache
+.gradle/
+configuration-cache/
+
+# Android Studio
+*.hprof
+.idea/
+*.jks
+*.pem
+*.key
+secrets.properties
+
+# KSP generated sources
+**/ksp*/
+**/generated/
+
+# OpenCode logs / temp
+.opencode/*.log
+/opencode.log
+
+# Node / npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+test-results/
+allure-results/

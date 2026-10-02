@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">KeyGen Drywall</string>
+
+    <!-- Common Actions -->
+    <string name="guardar">Guardar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="loading">Cargando…</string>
+    <string name="retry">Reintentar</string>
+    <string name="close">Cerrar</string>
+
+    <!-- Generator -->
+    <string name="generate_license">Generar Licencia</string>
+    <string name="license_generated">Licencia generada exitosamente</string>
+    <string name="copied">Copiado al portapapeles</string>
+    <string name="export_pdf">Exportar PDF</string>
+
+    <!-- Security -->
+    <string name="root_detected">ADVERTENCIA: Dispositivo con acceso root detectado. El generador de licencias no se ejecutará por seguridad.</string>
+    <string name="security_title">Autenticación Requerida</string>
+    <string name="access_denied">Acceso Bloqueado</string>
+    <string name="exit">Salir</string>
+
+    <!-- Sync -->
+    <string name="sync_time">Sincronizar Hora</string>
+    <string name="sync_success">Sincronización Exitosa</string>
+    <string name="sync_error">Error de sincronización</string>
+
+    <!-- Error -->
+    <string name="error_generic">Ha ocurrido un error</string>
+    <string name="error_network">Error de conexión</string>
+</resources>

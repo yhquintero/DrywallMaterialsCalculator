@@ -1,0 +1,6 @@
+- [x] Corregir patrón de fecha inválido en `IncomeStatementUtils.kt`
+- [x] Implementar exportación a PDF en `IncomeStatementViewModel.kt`
+- [x] Ajustar interfaz de usuario en `IncomeStatementScreen.kt` (botones inferiores)
+- [x] Corregir sistema de licencias (persistencia y bloqueo)
+- [x] Resolver errores de compilación en `PdfViewModel.kt` y `LicenseViewModel.kt`
+- [x] Crear resumen de cambios (walkthrough)

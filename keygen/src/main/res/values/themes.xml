@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.KeyGen" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/keygenPrimary</item>
+        <item name="colorOnPrimary">@color/keygenOnPrimary</item>
+        <item name="colorSecondary">@color/keygenSecondary</item>
+        <item name="colorOnSecondary">@color/keygenOnSecondary</item>
+        <item name="colorTertiary">@color/keygenTertiary</item>
+        <item name="colorOnTertiary">@color/keygenOnTertiary</item>
+        <item name="android:colorBackground">@color/keygenBackground</item>
+        <item name="colorOnBackground">@color/keygenOnBackground</item>
+        <item name="colorSurface">@color/keygenSurface</item>
+        <item name="colorOnSurface">@color/keygenOnSurface</item>
+        <item name="colorSurfaceVariant">@color/keygenSurfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/keygenOnSurfaceVariant</item>
+        <item name="colorOutline">@color/keygenOutline</item>
+        <item name="android:statusBarColor">?attr/android:colorBackground</item>
+        <item name="android:navigationBarColor">?attr/android:colorBackground</item>
+    </style>
+</resources>

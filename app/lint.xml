@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="ApplySharedPref" severity="ignore" />
+    <issue id="DefaultLocale" severity="ignore" />
+    <issue id="ExifInterface" severity="ignore" />
+    <issue id="SelectedPhotoAccess" severity="ignore" />
+    <issue id="DiscouragedApi" severity="ignore" />
+    <issue id="HardwareIds" severity="ignore" />
+    <issue id="ObsoleteSdkInt" severity="ignore" />
+    <issue id="UnusedResources" severity="ignore" />
+    <issue id="IconLauncherShape" severity="ignore" />
+    <issue id="IconLocation" severity="ignore" />
+    <issue id="IconDuplicates" severity="ignore" />
+    <issue id="UseKtx" severity="ignore" />
+    <issue id="AndroidGradlePluginVersion" severity="ignore" />
+</lint>

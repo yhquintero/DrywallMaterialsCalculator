@@ -1,0 +1,8 @@
+- [x] Update `:app` ic_launcher_foreground.xml (Professional Drywall design)
+- [x] Update `:keygen` ic_launcher_foreground.xml (Premium Golden Key design)
+- [x] Create `:cleaner` icon resource structure
+    - [x] Create `ic_launcher_background.xml` in `:cleaner`
+    - [x] Create `ic_launcher_foreground.xml` in `:cleaner`
+    - [x] Create `mipmap-anydpi-v26/ic_launcher.xml` in `:cleaner`
+    - [x] Create `mipmap-anydpi-v26/ic_launcher_round.xml` in `:cleaner`
+- [x] Verify build for all modules
