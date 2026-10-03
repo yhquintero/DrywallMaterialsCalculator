@@ -1,7 +1,6 @@
 /// <reference types="vitest/config" />
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import basicSsl from '@vitejs/plugin-basic-ssl';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -33,6 +32,41 @@ const API_TARGET = process.env.API_TARGET || 'http://127.0.0.1:8443';
  */
 const PERMISSIONS_POLICY =
   'camera=(self), microphone=(self), xr-spatial-tracking=(self), fullscreen=(self), geolocation=(), payment=()';
+
+/**
+ * `@vitejs/plugin-basic-ssl` es solo el RESPALDO para servir HTTPS cuando no hay
+ * certificado local (web/certs/dev.crt+dev.key), que es lo que genera
+ * `npm run certs` / `npm run dev:https`.
+ *
+ * Se carga de forma diferida y con un especificador no literal a propósito: si se
+ * importa de manera estática, Vite lo resuelve al empaquetar `vite.config.ts` y un
+ * `node_modules` desactualizado (instalado antes de añadir la dependencia) hace
+ * que TODA la configuración falle con `ERR_MODULE_NOT_FOUND: Cannot find package
+ * '@vitejs/plugin-basic-ssl'`, incluso para `npm run dev` o `npm run build`, que
+ * no lo usan. Así el fallo queda acotado al caso que de verdad lo necesita y el
+ * mensaje dice cómo arreglarlo.
+ */
+const BASIC_SSL_PKG = ['@vitejs', 'plugin-basic-ssl'].join('/');
+
+async function loadBasicSslPlugin() {
+  try {
+    const modulo = await import(/* @vite-ignore */ BASIC_SSL_PKG);
+    const factory = (modulo as { default?: unknown }).default ?? modulo;
+    return (factory as () => import('vite').Plugin)();
+  } catch (err) {
+    const detalle = err instanceof Error ? err.message : String(err);
+    throw new Error(
+      [
+        `No se pudo cargar ${BASIC_SSL_PKG}, necesario para HTTPS sin certificado local.`,
+        `  Detalle: ${detalle}`,
+        '  Solución A: instala las dependencias de la web y reintenta:',
+        '              npm --prefix web install   (o `npm run install:all` en la raíz)',
+        '  Solución B: genera los certificados del repo (`npm run certs`) para usar',
+        '              web/certs/dev.crt + dev.key en lugar de ese plugin.',
+      ].join('\n')
+    );
+  }
+}
 
 /** Certificado local firmado por la CA del repo (scripts/gen-certs.sh). */
 function localHttpsOptions() {
@@ -81,7 +115,7 @@ function securityHeadersPlugin(enableHsts: boolean) {
   };
 }
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(async ({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const wantHttps =
     process.env.VITE_HTTPS === 'true' ||
@@ -95,11 +129,13 @@ export default defineConfig(({ mode }) => {
     env.API_TARGET ||
     (wantHttps ? 'https://127.0.0.1:8443' : API_TARGET);
 
+  // Solo hace falta si se pide HTTPS y no hay certificado local propio.
+  const basicSslPlugin = wantHttps && !httpsOptions ? await loadBasicSslPlugin() : null;
+
   return {
     plugins: [
       react(),
-      // Solo si no hay certificado local propio.
-      ...(wantHttps && !httpsOptions ? [basicSsl()] : []),
+      ...(basicSslPlugin ? [basicSslPlugin] : []),
       securityHeadersPlugin(wantHttps),
     ],
     server: {
