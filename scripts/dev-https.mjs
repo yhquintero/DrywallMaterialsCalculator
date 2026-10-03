@@ -21,7 +21,6 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const WEB = path.join(ROOT, 'web');
 const SERVER = path.join(ROOT, 'server');
 const VITE_BIN = path.join(WEB, 'node_modules', 'vite', 'bin', 'vite.js');
-const SERVER_EXPRESS = path.join(SERVER, 'node_modules', 'express', 'package.json');
 
 const API_PORT = Number(process.env.PORT || 8443);
 const WEB_PORT = Number(process.env.VITE_PORT || 3000);
@@ -50,7 +49,7 @@ process.on('SIGTERM', () => shutdown(0));
  * Evita en Windows los fallos con rutas que contienen espacios (`C:\Program Files\nodejs\node.exe`),
  * el aviso `DEP0190` de Node 22/24 y los procesos huérfanos de `cmd.exe`.
  */
-function runNode(scriptArgs, cwd, env = {}, label = '') {
+function runNode(scriptArgs, cwd, env = {}, label = '', onFatal = null) {
   const child = spawn(process.execPath, scriptArgs, {
     cwd,
     env: { ...process.env, ...env },
@@ -59,47 +58,188 @@ function runNode(scriptArgs, cwd, env = {}, label = '') {
     windowsHide: true,
   });
   const prefix = label ? `[${label}] ` : '';
+  const stderrChunks = [];
   child.stdout?.on('data', (d) => process.stdout.write(`${prefix}${d}`));
-  child.stderr?.on('data', (d) => process.stderr.write(`${prefix}${d}`));
+  child.stderr?.on('data', (d) => {
+    stderrChunks.push(d);
+    if (stderrChunks.length > 40) stderrChunks.shift();
+    process.stderr.write(`${prefix}${d}`);
+  });
   child.on('error', (err) => {
     console.error(`${prefix}✗ Error al iniciar el proceso:`, err?.message || err);
     shutdown(1);
   });
   child.on('exit', (code) => {
-    if (!shuttingDown) {
-      console.log(`${prefix}proceso finalizado (código ${code ?? 0})`);
-      shutdown(code ?? 0);
+    if (shuttingDown) return;
+    const exitCode = code ?? 0;
+    console.log(`${prefix}proceso finalizado (código ${exitCode})`);
+    if (exitCode !== 0 && typeof onFatal === 'function') {
+      const stderr = Buffer.concat(stderrChunks).toString('utf8');
+      if (onFatal(stderr) === true) return; // el callback se encarga de relanzar
     }
+    shutdown(exitCode);
   });
   return child;
 }
 
-function ensureDependenciesInstalled() {
-  const missingWeb = !fs.existsSync(VITE_BIN);
-  const missingServer = !fs.existsSync(SERVER_EXPRESS);
-  if (!missingWeb && !missingServer) return;
-
-  const npmExec = process.env.npm_execpath;
-  console.log('→ Instalando dependencias faltantes (una sola vez)…');
-
-  for (const [missing, dir, name] of [
-    [missingWeb, WEB, 'web'],
-    [missingServer, SERVER, 'server'],
-  ]) {
-    if (!missing) continue;
-    console.log(`  • npm install en ${name}/…`);
-    const res = npmExec
-      ? spawnSync(process.execPath, [npmExec, 'install'], { cwd: dir, stdio: 'inherit', shell: false })
-      : spawnSync(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['install'], {
-          cwd: dir,
-          stdio: 'inherit',
-          shell: process.platform === 'win32',
-        });
-    if (res.status !== 0) {
-      console.error(`✗ Falló la instalación de dependencias en ${name}/. Ejecuta: npm run install:all`);
-      process.exit(1);
-    }
+/**
+ * Localiza la carpeta de un paquete dentro de los `node_modules` propios o de
+ * cualquier carpeta padre (árboles «hoisted»), igual que hace Node.
+ */
+function findPackageDir(pkgName, fromDir) {
+  let dir = path.resolve(fromDir);
+  for (;;) {
+    const candidate = path.join(dir, 'node_modules', pkgName);
+    if (fs.existsSync(path.join(candidate, 'package.json'))) return candidate;
+    const parent = path.dirname(dir);
+    if (parent === dir) return null;
+    dir = parent;
   }
+}
+
+/** Punto de entrada declarado por un `package.json` (best effort). */
+function declaredEntry(manifest) {
+  const exports = manifest.exports;
+  const fromExports = (value) => {
+    if (typeof value === 'string') return value;
+    if (value && typeof value === 'object') {
+      for (const key of ['default', 'import', 'require', 'node']) {
+        const found = fromExports(value[key]);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+  const entry =
+    manifest.main ||
+    manifest.module ||
+    fromExports(typeof exports === 'string' ? exports : exports?.['.']) ||
+    null;
+  if (!entry) return null;
+  return String(entry).replace(/^\.\//, '');
+}
+
+/**
+ * Comprueba que el paquete está instalado DE VERDAD: no basta con que exista la
+ * carpeta, también debe estar su punto de entrada (un `npm install` interrumpido
+ * o un `node_modules` copiado a medias dejan carpetas con `package.json` y sin
+ * `dist/`, y eso revienta a Vite al cargar `vite.config.ts`).
+ */
+function checkDependency(pkgName, dir) {
+  const pkgDir = findPackageDir(pkgName, dir);
+  if (!pkgDir) return 'faltante';
+
+  let manifest = {};
+  try {
+    manifest = JSON.parse(fs.readFileSync(path.join(pkgDir, 'package.json'), 'utf8'));
+  } catch {
+    return 'ilegible';
+  }
+
+  const entry = declaredEntry(manifest);
+  if (entry) {
+    return fs.existsSync(path.join(pkgDir, entry)) ? null : 'incompleto';
+  }
+  // Sin entrada declarada: Node resolvería index.{js,cjs,mjs}; si no hay ninguno
+  // y la carpeta solo contiene el manifiesto, el paquete está roto.
+  const hasIndex = ['index.js', 'index.cjs', 'index.mjs'].some((f) =>
+    fs.existsSync(path.join(pkgDir, f))
+  );
+  if (hasIndex) return null;
+  const contenido = fs.readdirSync(pkgDir).filter((f) => f !== 'package.json');
+  return contenido.length === 0 ? 'incompleto' : null;
+}
+
+/**
+ * Dependencias declaradas en `<dir>/package.json` que no están correctamente
+ * instaladas.
+ *
+ * Antes solo se miraba si existían `vite` y `express`, así que un
+ * `node_modules` antiguo (instalado antes de añadir, por ejemplo,
+ * `@vitejs/plugin-basic-ssl`) pasaba la comprobación y el arranque moría con
+ * `ERR_MODULE_NOT_FOUND: Cannot find package '@vitejs/plugin-basic-ssl'`.
+ */
+function brokenDependencies(dir) {
+  let manifest;
+  try {
+    manifest = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8'));
+  } catch {
+    return [];
+  }
+  const declared = Object.keys({
+    ...(manifest.dependencies || {}),
+    ...(manifest.devDependencies || {}),
+  });
+  const problemas = [];
+  for (const name of declared) {
+    const problema = checkDependency(name, dir);
+    if (problema) problemas.push(`${name} (${problema})`);
+  }
+  return problemas;
+}
+
+function runNpm(dir, args, label) {
+  const npmExec = process.env.npm_execpath;
+  const isWin = process.platform === 'win32';
+  console.log(`  • npm ${args.join(' ')} en ${label}/…`);
+  const res = npmExec
+    ? spawnSync(process.execPath, [npmExec, ...args], { cwd: dir, stdio: 'inherit', shell: false })
+    : spawnSync(isWin ? 'npm.cmd' : 'npm', args, { cwd: dir, stdio: 'inherit', shell: isWin });
+  return res.status === 0;
+}
+
+/**
+ * Repara las dependencias de un paquete: `npm install` y, si el árbol sigue
+ * roto (caché/lock desincronizados), `npm ci` cuando hay lockfile.
+ * Devuelve `true` si al final todo está en su sitio.
+ */
+function repairDependencies(dir, label) {
+  let problemas = brokenDependencies(dir);
+  if (label === 'web' && !fs.existsSync(VITE_BIN)) problemas.push('vite (binario ausente)');
+  if (!problemas.length) return true;
+
+  const listar = (items) =>
+    `${items.slice(0, 6).join(', ')}${items.length > 6 ? ` … (+${items.length - 6})` : ''}`;
+  console.log(`  • ${label}/: ${problemas.length} dependencia(s) sin instalar → ${listar(problemas)}`);
+
+  if (!runNpm(dir, ['install'], label)) {
+    console.error(`✗ Falló 'npm install' en ${label}/.`);
+    return false;
+  }
+
+  problemas = brokenDependencies(dir);
+  if (!problemas.length) return true;
+
+  if (fs.existsSync(path.join(dir, 'package-lock.json'))) {
+    console.log(`  • ${label}/: siguen faltando (${listar(problemas)}) → reinstalación limpia con 'npm ci'…`);
+    if (!runNpm(dir, ['ci'], label)) {
+      console.error(`✗ Falló 'npm ci' en ${label}/.`);
+      return false;
+    }
+    problemas = brokenDependencies(dir);
+    if (!problemas.length) return true;
+  }
+
+  console.error(
+    `✗ ${label}/ sigue sin dependencias: ${listar(problemas)}\n` +
+      `  Prueba manualmente:  npm --prefix ${label} ci   (o borra ${label}/node_modules y ejecuta npm run install:all)`
+  );
+  return false;
+}
+
+function ensureDependenciesInstalled() {
+  const targets = [
+    [WEB, 'web'],
+    [SERVER, 'server'],
+  ];
+  if (targets.every(([dir]) => !brokenDependencies(dir).length) && fs.existsSync(VITE_BIN)) return;
+
+  console.log('→ Revisando/instalando dependencias (una sola vez)…');
+  const ok = targets.map(([dir, label]) => repairDependencies(dir, label));
+  if (ok.every(Boolean)) return;
+
+  console.error('✗ No se pudieron preparar las dependencias. Ejecuta: npm run install:all');
+  process.exit(1);
 }
 
 console.log('──────────────────────────────────────────────────────────────');
@@ -134,19 +274,7 @@ function start() {
   );
   children.push(api);
 
-  // Nota: Vite 6 eliminó el flag CLI `--https`; el TLS local se activa en
-  // `web/vite.config.ts` mediante `VITE_HTTPS=true` usando `web/certs/dev.{crt,key}`.
-  const web = runNode(
-    [VITE_BIN, '--host', '0.0.0.0', '--port', String(WEB_PORT)],
-    WEB,
-    {
-      VITE_HTTPS: 'true',
-      VITE_PORT: String(WEB_PORT),
-      API_TARGET: `https://127.0.0.1:${API_PORT}`,
-    },
-    'web'
-  );
-  children.push(web);
+  startWeb();
 
   const caCertRel = path.join('server', 'certs', 'ca.crt');
   console.log('');
@@ -157,4 +285,38 @@ function start() {
   console.log(`  Si el navegador avisa del certificado, importa ${caCertRel}`);
   console.log('  como autoridad de confianza (ejecuta `npm run certs` para ver los comandos).');
   console.log('──────────────────────────────────────────────────────────────');
+}
+
+/** Solo se reintenta una vez: si vuelve a fallar, se informa y se sale. */
+let webRestarted = false;
+
+function startWeb() {
+  // Nota: Vite 6 eliminó el flag CLI `--https`; el TLS local se activa en
+  // `web/vite.config.ts` mediante `VITE_HTTPS=true` usando `web/certs/dev.{crt,key}`.
+  const args = [VITE_BIN, '--host', '0.0.0.0', '--port', String(WEB_PORT)];
+  const env = {
+    VITE_HTTPS: 'true',
+    VITE_PORT: String(WEB_PORT),
+    API_TARGET: `https://127.0.0.1:${API_PORT}`,
+  };
+
+  const web = runNode(args, WEB, env, 'web', (stderr) => {
+    // Auto-reparación: un `node_modules` incompleto/desactualizado hace que Vite
+    // no pueda cargar `vite.config.ts` (ERR_MODULE_NOT_FOUND, "Cannot find module",
+    // "failed to load config"). Se reinstala y se relanza la web una sola vez.
+    const faltaPaquete =
+      /ERR_MODULE_NOT_FOUND|Cannot find (?:package|module)|failed to load config|Could not resolve/i.test(stderr);
+    if (!faltaPaquete || webRestarted) return false;
+    webRestarted = true;
+    console.error('');
+    console.error('✗ [web] Vite no pudo cargar su configuración: faltan dependencias en web/node_modules.');
+    console.error('  → Reinstalando y reintentando una vez…');
+    console.error('');
+    if (!repairDependencies(WEB, 'web')) return false; // ya se imprimió la guía
+    const retry = runNode(args, WEB, env, 'web');
+    children.push(retry);
+    return true;
+  });
+  children.push(web);
+  return web;
 }
