@@ -53,7 +53,7 @@ jobs:
         run: ./gradlew testDebugUnitTest --no-daemon
       - name: Upload test reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-reports
           path: '**/build/reports/tests/'
@@ -90,12 +90,12 @@ jobs:
       - name: Build Keygen Debug
         run: ./gradlew :keygen:assembleDebug --no-daemon
       - name: Upload App APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: app-debug
           path: app/build/outputs/apk/debug/*.apk
       - name: Upload Keygen APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: keygen-debug
           path: keygen/build/outputs/apk/debug/*.apk
