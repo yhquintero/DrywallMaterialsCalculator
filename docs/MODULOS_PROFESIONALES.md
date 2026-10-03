@@ -269,6 +269,35 @@ server/src/routes/pricing.js          proxy con lista blanca de hosts
 
 ---
 
+## Ejemplos generados
+
+En [`docs/ejemplos/`](ejemplos/) hay láminas reales generadas por el módulo
+(proyecto de demostración, formato A3 a escala 1:50):
+
+| Archivo | Contenido |
+| --- | --- |
+| `indice.png` | Portada: memoria, índice de láminas, leyenda de capas y notas técnicas. |
+| `lamina-01.png` | Planta de cielo raso y alzado de tabique acústico con cotas de modulación. |
+| `lamina-02.png` | Lámina de baño (placa RH) con su cajetín. |
+| `computo.png` | Cuadro de cómputo de materiales con resumen económico. |
+| `plano-ejemplo-R2000.dxf` | **DXF R2000 listo para abrir en AutoCAD** (5 láminas en espacio modelo). |
+
+### Corrección de precios por embalaje comercial
+
+Al generar el cuadro de cómputo se detectó que el precio de los materiales con
+embalaje múltiple se tomaba por unidad base y no por paquete: una caja de 1.000
+tornillos se cotizaba a 0,015 $ (el precio de un tornillo) en lugar de 15 $.
+Ahora `unitPrice` es siempre **por unidad comercial** (plancha, tira, caja,
+rollo, balde):
+
+```
+precio por defecto = precio de referencia × contenido del embalaje × tasa de cambio
+precio manual      = tal cual (ya se introduce por unidad comercial)
+```
+
+Afecta a tornillos (×1.000), perfiles (×3 m), masilla (×28 kg) y cintas
+(×150 m). Las placas, cuyo embalaje es una unidad, no cambian.
+
 ## Puesta en marcha rápida
 
 ```bash

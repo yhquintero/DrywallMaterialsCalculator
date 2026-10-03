@@ -289,14 +289,19 @@ function drawWallElevation(
       if (openings.some((op) => a < op.x1 && b > op.x0 && track < op.y1 && H - track > op.y0)) continue;
       cavities.push([a, b]);
     }
+    // Símbolo normalizado de lana mineral: zigzag vertical a lo largo de la
+    // cavidad, que es como se representa el aislante en los alzados de obra.
+    const yTop = Math.max(track, H - track);
     // Limita la densidad para no disparar el tamaño del DXF.
     const maxCavities = 80;
     cavities.slice(0, maxCavities).forEach(([a, b]) => {
-      const steps = 6;
-      const pitch = (b - a) / steps;
+      const pitch = b - a;
+      if (pitch < 0.05 || yTop - track < 0.2) return;
+      const steps = Math.max(6, Math.min(28, Math.round((yTop - track) / 0.12)));
       const points: CadPoint[] = [];
       for (let s = 0; s <= steps; s += 1) {
-        points.push({ x: a + pitch * s, y: track + (s % 2 === 0 ? 0.015 : 0.055) });
+        const y = track + ((yTop - track) * s) / steps;
+        points.push({ x: s % 2 === 0 ? a + pitch * 0.08 : a + pitch * 0.42, y });
       }
       out.push({ kind: 'polyline', layer: L.DW_AISLAMIENTO.name, points, closed: false });
     });
@@ -326,11 +331,12 @@ function drawWallElevation(
     });
   }
 
-  // Ejes de replanteo
+  // Ejes de replanteo (por encima del rótulo de modulación)
   if (o.includeAxis) {
-    line(out, L.DW_EJE.name, -ctx.mm(12), H + ctx.mm(8), W + ctx.mm(12), H + ctx.mm(8));
-    out.push({ kind: 'circle', layer: L.DW_EJE.name, center: { x: 0, y: H + ctx.mm(8) }, radius: ctx.mm(3.5) });
-    out.push({ kind: 'circle', layer: L.DW_EJE.name, center: { x: W, y: H + ctx.mm(8) }, radius: ctx.mm(3.5) });
+    const axisY = H + ctx.mm(12);
+    line(out, L.DW_EJE.name, -ctx.mm(12), axisY, W + ctx.mm(12), axisY);
+    out.push({ kind: 'circle', layer: L.DW_EJE.name, center: { x: 0, y: axisY }, radius: ctx.mm(3.5) });
+    out.push({ kind: 'circle', layer: L.DW_EJE.name, center: { x: W, y: axisY }, radius: ctx.mm(3.5) });
   }
 
   // Acotación
@@ -358,8 +364,8 @@ function drawWallElevation(
       out,
       L.DW_TEXTO.name,
       0,
-      H + ctx.mm(5),
-      ctx.mm(2.6),
+      H + ctx.mm(3),
+      ctx.mm(2.4),
       `MODULACION DE PARANTES @ ${formatLength(realSpacing, ctx.unitSystem)}${ctx.unitSystem === 'imperial' ? '' : ' m'}`,
       'left'
     );
@@ -477,8 +483,8 @@ function drawCeilingPlan(
         out,
         L.DW_TEXTO.name,
         0,
-        H + ctx.mm(22),
-        ctx.mm(2.6),
+        H + ctx.mm(13),
+        ctx.mm(2.4),
         `OMEGAS @ ${formatLength(spacing, ctx.unitSystem)} / PRIMARIOS @ ${formatLength(o.primarySpacing, ctx.unitSystem)}`,
         'left'
       );
@@ -605,19 +611,21 @@ function buildRoomDrawing(room: Room, ctx: DrawCtx): RoomDrawing {
     maxHeight = Math.max(maxHeight, d.height);
   });
 
-  // Rótulo de la estancia
-  text(entities, L.DW_TEXTO.name, 0, maxHeight + ctx.mm(12), ctx.mm(4.2), room.name.toUpperCase(), 'left');
+  // Rótulo de la estancia. Se sitúa por encima de la anotación propia del
+  // paño (cotas y notas técnicas llegan hasta maxHeight + 22 mm) para que no
+  // haya solapes de texto.
+  text(entities, L.DW_TEXTO.name, 0, maxHeight + ctx.mm(34), ctx.mm(4.2), room.name.toUpperCase(), 'left');
   text(
     entities,
     L.DW_TEXTO.name,
     0,
-    maxHeight + ctx.mm(5),
+    maxHeight + ctx.mm(27),
     ctx.mm(2.6),
     `${typeDef.name} - ${mode === 'ceiling' ? 'PLANTA DE CIELO RASO' : mode === 'grid-ceiling' ? 'PLANTA DE PLAFON REGISTRABLE' : 'ALZADO DE TABIQUE'} (${room.segments.length} pano${room.segments.length === 1 ? '' : 's'})`,
     'left'
   );
   if (room.notes) {
-    text(entities, L.DW_TEXTO.name, 0, maxHeight + ctx.mm(1), ctx.mm(2.2), `NOTA: ${room.notes}`, 'left');
+    text(entities, L.DW_TEXTO.name, 0, maxHeight + ctx.mm(20), ctx.mm(2.2), `NOTA: ${room.notes}`, 'left');
   }
 
   return {
@@ -1099,8 +1107,20 @@ export function buildCadScene(
     let cursorX = frame.area.x;
     let cursorY = frame.area.y + frame.area.h;
     let rowHeight = 0;
+    /**
+     * Cierra la lámina en curso. Antes de guardarla, el contenido se recentra
+     * verticalmente en el área útil: sin esto quedaba un hueco grande entre
+     * los dibujos y el cajetín cuando sólo ocupaban la franja superior.
+     */
     const flush = (): void => {
       if (!current.length) return;
+      const used = entitiesBounds(current);
+      const usedHeight = used.maxY - used.minY;
+      const free = frame.area.h - usedHeight;
+      const offset = frame.area.y + free / 2 - used.minY;
+      if (Number.isFinite(offset) && Math.abs(offset) > 1e-6) {
+        current = current.map((entity) => translateEntity(entity, 0, offset));
+      }
       sheets.push({
         name: `LAMINA-${String(sheets.length + 1).padStart(2, '0')}`,
         title: 'PLANTA GENERAL DE SISTEMAS DRYWALL',

@@ -142,15 +142,24 @@ export function calculateProjectMaterials(
     // Commercial units (e.g. integer sheets, strips, boxes, buckets)
     const commercialUnits = Math.ceil(finalQty / item.unitSize);
 
-    // Price determination
-    // 1. Custom price if specified
-    // 2. Default price in USD scaled to current currency
-    const basePrice = customPrices[item.name] !== undefined
-      ? customPrices[item.name]
-      : item.defaultPriceUSD * currencyRate;
+    // Determinación del precio unitario POR UNIDAD COMERCIAL (plancha, tira,
+    // caja, rollo, balde), que es lo que multiplica `commercialUnits`.
+    //
+    //   1. Si el usuario fijó un precio a mano, éste ya es por unidad
+    //      comercial (así lo pide la tabla: «Precio Unit.» junto a «Unid.
+    //      Comercial»), incluidos los precios que llegan del módulo de
+    //      distribuidores, que también se normalizan al embalaje.
+    //   2. En caso contrario se parte del precio de referencia, que se
+    //      expresa en la unidad base del material (1,35 $/m lineal, 0,015 $/
+    //      tornillo, 0,85 $/kg), y se multiplica por el contenido del
+    //      embalaje (3 m por tira, 1.000 tornillos por caja, 28 kg por balde).
+    //      Sin esta conversión una caja de 1.000 tornillos costaba 0,015 $.
+    const packageContent = item.unitSize > 0 ? item.unitSize : 1;
+    const unitPrice =
+      customPrices[item.name] !== undefined
+        ? customPrices[item.name]
+        : item.defaultPriceUSD * currencyRate * packageContent;
 
-    // Unit price is per commercial unit
-    const unitPrice = basePrice;
     const totalPrice = commercialUnits * unitPrice;
 
     // Stock check
