@@ -1,0 +1,36 @@
+name: Web CI & Deployment
+
+on:
+  push:
+    branches: [ main, develop, 'arena/**' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  web-test-and-build:
+    name: Web Test & Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'web/package-lock.json'
+
+      - name: Install dependencies
+        run: npm --prefix web ci || npm --prefix web install
+
+      - name: Run Unit Tests
+        run: npm --prefix web run test
+
+      - name: Build Web Application
+        run: npm --prefix web run build
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: drywall-web-dist
+          path: web/dist/
