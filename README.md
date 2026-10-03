@@ -51,13 +51,47 @@ Permite calcular de forma milimétrica los materiales necesarios según normas i
 * **Exportación CSV / Excel:** Descarga inmediata de tablas compatibles con Microsoft Excel, Google Sheets y ERPs.
 * **Respaldo JSON:** Guarda y restaura proyectos completos en archivos JSON locales.
 
-### 6. 🌐 Sistema Dual de Medidas (Métrico & Imperial)
+### 6. 📐 Planos Vectoriales para AutoCAD (DXF / DWG)
+* **Exportación DXF R12 / R2000 / R2007:** capas normalizadas (`ARQ-MURO`, `DW-PERFIL`, `DW-PLACA`, `DW-COTA`…), tipos de línea CENTER/DASHED, estilos de texto SHX y cajetín profesional con datos de empresa, cliente, escala, fecha y revisión.
+* **Láminas generadas automáticamente:** portada con índice y notas técnicas, alzados de tabique, plantas de cielo raso y plafón reticulado, y cuadro de cómputo de materiales con totales económicos.
+* **Cotas reales de obra:** cadenas de cotas de modulación, ejes de replanteo, refuerzos de dintel y jambas, cruces de San Andrés en steel framing y replanteo de placas con junta alternada.
+* **Conversión a DWG y cola de impresión:** si el servidor tiene ODA File Converter, se genera el `.dwg` nativo; además se puede encolar el plano en la carpeta del plotter/reprografía.
+* **Exportación SVG vectorial** para presentaciones, memorias y rotulación.
+
+### 7. 📱 Escáner de Estancias con Cámara y Realidad Aumentada (WebXR)
+* **Medición AR real:** sesión `immersive-ar` con hit-test, retículo 3D, captura de esquinas tocando la pantalla y HUD en vivo con tramo, perímetro y área.
+* **Modo cámara (WebRTC / getUserMedia):** para cualquier móvil. Se marca un rectángulo de medida conocida (baldosa 60, folio A3, ancho de puerta…) y la homografía corrige la perspectiva antes de medir.
+* **Geometría profesional:** ajuste de plano por componentes principales (Jacobi), rectificación de ángulos a 90°, rectángulo envolvente orientado, índice de confianza y avisos de cierre.
+* **Volcado directo al cómputo:** genera techo, muros (un paño por lado) o ambos, con los tipos constructivos que elijas.
+* **Asistencia remota P2P** (`/asistencia`): comparte la cámara con la oficina técnica mediante WebRTC con señalización por SSE; el vídeo nunca pasa por el servidor.
+
+### 8. 🏬 Catálogo de Precios en Tiempo Real de Distribuidores
+* **Conexión con proveedores:** REST/JSON (con plantillas y mapeo de campos), listas CSV/TSV, ERP corporativo y lista importada manualmente.
+* **Emparejamiento inteligente:** normalización de sinónimos del sector (pladur/drywall/gypsum → placa), similitud por tokens y subsecuencia, y umbral dinámico por longitud del nombre.
+* **Conversión automática:** precio por m² → precio por plancha, por metro → tira de 3 m, por unidad → caja de 1.000; ajuste negociado por volumen y conversión de divisa.
+* **Caché con TTL y tolerancia a fallos:** reintentos con espera exponencial y uso de los últimos precios conocidos cuando el proveedor no responde.
+* **Seguridad por diseño:** los secretos viven sólo en el servidor, el proxy bloquea rangos privados y redirecciones (anti-SSRF), y hay lista blanca de hosts.
+* **Comparativa exportable a CSV** con proveedor, confianza de la coincidencia, stock y ahorro potencial.
+
+### 9. 🌐 Sistema Dual de Medidas (Métrico & Imperial)
 * Alterna entre metros (m, cm, m²) y pies/pulgadas (ft, in, sq ft) con un solo clic.
 
-### 7. 📚 Asesoría Técnica & Normativa USG / Knauf
+### 10. 📚 Asesoría Técnica & Normativa USG / Knauf
 * Tabla de alturas máximas de tabiques según deflexión admisible (L/240 y L/360).
 * Guía visual de **Niveles de Acabado de Juntas (Nivel 0 al Nivel 5)**.
 * Solución a problemas frecuentes en obra: prevención de fisuras, distanciamiento de fijaciones y fijación sobre soleras.
+
+---
+
+## 📚 Documentación técnica
+
+| Documento | Contenido |
+| --- | --- |
+| [`docs/MODULOS_PROFESIONALES.md`](docs/MODULOS_PROFESIONALES.md) | Arquitectura, formatos y configuración de los módulos CAD, AR y precios. |
+| [`docs/MEJORAS_ROADMAP.md`](docs/MEJORAS_ROADMAP.md) | Hoja de ruta con 55 mejoras priorizadas para implementar una a una. |
+| [`docs/HTTPS_Y_DESPLIEGUE.md`](docs/HTTPS_Y_DESPLIEGUE.md) | TLS, reverse proxy y despliegue de la consola. |
+| [`docs/INFORME_SEGURIDAD.md`](docs/INFORME_SEGURIDAD.md) | Análisis de seguridad y contramedidas. |
+| [`AUDITORIA_SEGURIDAD_ANDROID.md`](AUDITORIA_SEGURIDAD_ANDROID.md) | Auditoría de la app Android. |
 
 ---
 
