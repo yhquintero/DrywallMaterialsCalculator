@@ -182,10 +182,37 @@ export function generateLicenseKey(appId) {
 }
 
 /** Contraseña temporal segura para resets/altas de usuario. */
+/**
+ * Contraseña temporal criptográficamente aleatoria que SIEMPRE satisface
+ * `assertStrongPassword` (mayúscula, minúscula, número, símbolo y ≥10 chars).
+ *
+ * Antes se muestreaban `length` caracteres al azar de un único alfabeto, de modo
+ * que existía una probabilidad real (~0,3 % con 18 chars) de generar una
+ * contraseña sin dígitos o sin símbolos: el propio validador la rechazaba y el
+ * arranque del servidor fallaba de forma intermitente. Ahora se garantiza al
+ * menos un carácter de cada clase y se baraja con Fisher-Yates.
+ */
 export function generateTemporaryPassword(length = 16) {
-  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
-  const bytes = crypto.randomBytes(length);
-  let out = '';
-  for (let i = 0; i < length; i += 1) out += alphabet[bytes[i] % alphabet.length];
-  return out;
+  const UPPER = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  const LOWER = 'abcdefghijkmnopqrstuvwxyz';
+  const DIGIT = '23456789';
+  const SYMBOL = '!@#$%^&*-_=+';
+  const ALL = UPPER + LOWER + DIGIT + SYMBOL;
+  const size = Math.max(12, length);
+
+  const pick = (alphabet) => alphabet[crypto.randomBytes(1)[0] % alphabet.length];
+
+  // Un representante obligatorio de cada clase.
+  const chars = [pick(UPPER), pick(LOWER), pick(DIGIT), pick(SYMBOL)];
+  // El resto, del alfabeto completo (se descarta el byte de sesgo módulo).
+  while (chars.length < size) chars.push(pick(ALL));
+
+  // Barajado Fisher-Yates con una sola fuente de entropía.
+  const entropy = crypto.randomBytes(size * 2);
+  let cursor = 0;
+  for (let i = chars.length - 1; i > 0; i -= 1) {
+    const rand = ((entropy[cursor++] << 8) | entropy[cursor++]) % (i + 1);
+    [chars[i], chars[rand]] = [chars[rand], chars[i]];
+  }
+  return chars.join('');
 }

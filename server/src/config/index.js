@@ -22,11 +22,17 @@ function loadDotEnv() {
       if (eq === -1) continue;
       const key = line.slice(0, eq).trim();
       let value = line.slice(eq + 1).trim();
-      if (
-        (value.startsWith('"') && value.endsWith('"')) ||
-        (value.startsWith("'") && value.endsWith("'"))
-      ) {
+      const quoted =
+        (value.startsWith('"') && value.endsWith('"') && value.length > 1) ||
+        (value.startsWith("'") && value.endsWith("'") && value.length > 1);
+      if (quoted) {
         value = value.slice(1, -1);
+      } else {
+        // Comentario en línea: `HOST=127.0.0.1  # solo bucle local`.
+        // Sin esto el `#…` formaba parte del valor y rompía getaddrinfo.
+        // Los valores entrecomillados conservan el `#` literal.
+        const hash = value.indexOf(' #');
+        if (hash !== -1) value = value.slice(0, hash).trimEnd();
       }
       if (!(key in process.env)) process.env[key] = value;
     }

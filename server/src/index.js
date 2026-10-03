@@ -13,13 +13,14 @@ import config from './config/index.js';
 import { createApp } from './app.js';
 import { getDb, closeDb } from './db/index.js';
 import { Database } from './db/driver.js';
-import { ensureBootstrapAdmin } from '../tools/bootstrap.js';
+import { ensureBootstrapAdmin, ensureSigningKeys } from '../tools/bootstrap.js';
 
 const app = createApp();
 
 // Inicializa BD + semillas + admin bootstrap.
 getDb();
 const bootstrapInfo = ensureBootstrapAdmin({ quiet: true });
+const newKeys = ensureSigningKeys({ quiet: true });
 
 function readTls() {
   const { certFile, keyFile } = config.server;
@@ -67,11 +68,17 @@ if (tls) {
 }
 
 console.log(`[server] entorno=${config.env} driver=${Database.driver} db=${config.db.file}`);
-if (bootstrapInfo.created) {
-  console.log(`[server] ✅ Usuario administrador creado: ${bootstrapInfo.username} / ${bootstrapInfo.password}`);
-  console.log(`[server]    ⚠ Cambia esa contraseña en cuanto entres a la consola.`);
+if (bootstrapInfo.created && bootstrapInfo.password) {
+  console.log(`[server] ✅ Usuario administrador creado: ${bootstrapInfo.username}`);
+  console.log(`[server]    contraseña temporal: ${bootstrapInfo.password}`);
+  console.log(`[server]    ⚠ Guárdala: no se vuelve a mostrar. Cámbiala al entrar en la consola.`);
+} else if (bootstrapInfo.created) {
+  console.log(`[server] ✅ Usuario administrador creado: ${bootstrapInfo.username} (contraseña de BOOTSTRAP_ADMIN_PASSWORD)`);
 } else if (bootstrapInfo.exists) {
   console.log(`[server] ℹ  Admin de bootstrap ya existe (${bootstrapInfo.username}).`);
+}
+for (const k of newKeys) {
+  console.log(`[server] 🔑 Clave RSA-${config.crypto.rsaKeySize} creada para ${k.appId}: ${k.kid}`);
 }
 
 function shutdown(signal) {

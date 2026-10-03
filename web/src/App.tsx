@@ -36,9 +36,15 @@ import { ProjectSettingsModal } from './components/ProjectSettingsModal';
 import { SavedProjectsModal } from './components/SavedProjectsModal';
 import { MaterialCatalogModal } from './components/MaterialCatalogModal';
 import { SecurityCenterModal } from './components/SecurityCenterModal';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, KeyRound, Lock, Unlock } from 'lucide-react';
 
 export function App() {
+  // La plataforma se sirve SIEMPRE sobre HTTPS en producción; en local el
+  // indicador recuerda activar TLS (`npm run dev:https`).
+  const isSecureContext =
+    typeof window !== 'undefined' &&
+    (window.location.protocol === 'https:' || window.isSecureContext);
+
   // Initialize project state from LocalStorage or defaults
   const [projectId, setProjectId] = useState<string>(() => {
     return getActiveProjectId() || `proj_${Date.now()}`;
@@ -217,6 +223,33 @@ export function App() {
               <Globe className="w-3.5 h-3.5 text-brand-400" />
               <span>{config.unitSystem === 'metric' ? 'Métrico (m²)' : 'Imperial (sq ft)'}</span>
             </button>
+
+            {/* Acceso a la Consola de Licencias (Roles, Usuarios, Permisos, Keygen) */}
+            <a
+              href="/admin"
+              className="px-2.5 py-1.5 bg-brand-500/10 hover:bg-brand-500/20 text-brand-300 border border-brand-500/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shadow-sm"
+              title="Consola profesional de licencias: Roles, Usuarios, Permisos y control del Keygen de ambas apps"
+            >
+              <KeyRound className="w-3.5 h-3.5" />
+              <span className="hidden lg:inline">Consola</span>
+            </a>
+
+            {/* Indicador de conexión cifrada */}
+            <span
+              className={
+                isSecureContext
+                  ? 'px-2 py-1.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-lg text-[10px] font-mono font-bold flex items-center gap-1'
+                  : 'px-2 py-1.5 bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded-lg text-[10px] font-mono font-bold flex items-center gap-1'
+              }
+              title={
+                isSecureContext
+                  ? 'Conexión HTTPS cifrada (TLS)'
+                  : 'Conexión HTTP sin cifrar — activa TLS con `npm run dev:https`'
+              }
+            >
+              {isSecureContext ? <Lock className="w-3 h-3" /> : <Unlock className="w-3 h-3" />}
+              {isSecureContext ? 'HTTPS' : 'HTTP'}
+            </span>
 
             {/* Security Center Shield Button */}
             <button

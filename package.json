@@ -1,13 +1,22 @@
 {
   "name": "drywall-materials-calculator",
-  "version": "2.0.0",
-  "description": "The Ultimate Top 1 Drywall & Gypsum Materials Calculator Web & Mobile Platform",
+  "version": "3.0.0",
+  "description": "The Ultimate Top 1 Drywall & Gypsum Materials Calculator Web & Mobile Platform + Professional License/Keygen Console",
+  "private": true,
   "scripts": {
+    "install:all": "npm --prefix web install && npm --prefix server install",
     "dev": "npm --prefix web run dev",
+    "dev:https": "node scripts/dev-https.mjs",
+    "dev:api": "npm --prefix server run dev",
+    "dev:web": "npm --prefix web run dev",
+    "certs": "bash scripts/gen-certs.sh",
     "build": "npm --prefix web run build",
     "preview": "npm --prefix web run preview",
+    "start": "npm --prefix server start",
+    "bootstrap": "npm --prefix server run bootstrap",
+    "test": "npm run test:web && npm run test:server",
     "test:web": "npm --prefix web run test",
-    "install:web": "npm --prefix web install"
+    "test:server": "npm --prefix server run test"
   },
   "keywords": [
     "drywall",
@@ -17,8 +26,15 @@
     "materials-estimation",
     "budgeting",
     "contractor-tools",
-    "takeoff"
+    "takeoff",
+    "licensing",
+    "keygen",
+    "rbac",
+    "https"
   ],
   "author": "yhquintero & Community",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.5.0"
+  }
 }

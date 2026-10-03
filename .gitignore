@@ -57,3 +57,22 @@ yarn-error.log*
 # Testing
 test-results/
 allure-results/
+
+# ── Consola de Licencias (server/) ───────────────────────────────────────────
+# Base de datos SQLite y sus backups (datos reales de clientes y licencias).
+server/data/
+server/**/*.db
+server/**/*.db-*
+server/backups/
+
+# Certificados y llaves locales de desarrollo (scripts/gen-certs.sh).
+server/certs/
+web/certs/
+deploy/certs/
+*.crt
+*.csr
+*.srl
+
+# Secretos de despliegue.
+deploy/.env
+server/.env

@@ -1,10 +1,68 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  Netlify — build estático de la web + consola.
+#  La API (server/) necesita un proceso Node persistente con disco (SQLite),
+#  así que se despliega aparte (ver deploy/docker-compose.yml) y Netlify hace
+#  proxy inverso de /api y /.well-known hacia ella ⇒ mismo origen, cero CORS
+#  y cero contenido mixto (todo HTTPS).
+#
+#  Define la variable de entorno API_ORIGIN en el panel de Netlify, p. ej.
+#    API_ORIGIN=https://api-consola.tudominio.com
+# ─────────────────────────────────────────────────────────────────────────────
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Fuerza HTTPS: Netlify redirige todo el tráfico en claro.
+[[redirects]]
+  from = "http:///*"
+  to = "https://:splat"
+  status = 301
+  force = true
+
+# API de la Consola de Licencias (proxy al backend).
+[[redirects]]
+  from = "/api/*"
+  to = "API_ORIGIN/api/:splat"
+  status = 200
+  force = true
+  [redirects.headers]
+    X-From = "netlify"
+
+# Endpoints públicos que consumen las apps Android.
+[[redirects]]
+  from = "/.well-known/*"
+  to = "API_ORIGIN/.well-known/:splat"
+  status = 200
+  force = true
+
+# SPA fallback (debe ir SIEMPRE al final).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 [[headers]]
   for = "/*"
   [headers.values]
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
+    X-XSS-Protection = "0"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self' https: data:; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self' https: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache, must-revalidate"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

@@ -11,6 +11,12 @@ android {
     namespace = "com.drywall.keygen"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localProperties.load(localPropertiesFile.inputStream())
+    }
+
     defaultConfig {
         applicationId = "com.drywall.keygen"
         minSdk = libs.versions.minSdk.get().toInt()
@@ -22,13 +28,20 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        // Consola web de licencias (HTTPS). Ver app/build.gradle.kts.
+        val consoleUrl = System.getenv("LICENSE_CONSOLE_URL")
+            ?: localProperties.getProperty("LICENSE_CONSOLE_URL")
+            ?: ""
+        buildConfigField("String", "LICENSE_CONSOLE_URL", "\"$consoleUrl\"")
+
+        // Token de dispositivo para publicar/sincronizar con la consola.
+        val consoleToken = System.getenv("LICENSE_CONSOLE_TOKEN")
+            ?: localProperties.getProperty("LICENSE_CONSOLE_TOKEN")
+            ?: ""
+        buildConfigField("String", "LICENSE_CONSOLE_TOKEN", "\"$consoleToken\"")
     }
 
-    val localProperties = Properties()
-    val localPropertiesFile = rootProject.file("local.properties")
-    if (localPropertiesFile.exists()) {
-        localProperties.load(localPropertiesFile.inputStream())
-    }
 
     signingConfigs {
         create("release") {

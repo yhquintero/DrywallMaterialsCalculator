@@ -105,6 +105,51 @@ El repositorio también conserva la aplicación nativa de Android desarrollada e
 
 ---
 
+## 🔐 Consola Web de Licencias (Keygen Centralizado)
+
+Plataforma profesional, **HTTPS por diseño**, para controlar el keygen de las dos apps
+(`:app` DrywallPro Master y `:keygen` Android) desde un solo lugar.
+
+```bash
+npm run install:all     # instala web/ y server/
+cp server/.env.example server/.env   # completa JWT_SECRET y MASTER_KEY
+
+npm run dev:https       # API https://localhost:8443 + consola https://localhost:3000/admin
+# o sin TLS local: npm run dev  (web) + npm run dev:api (API)
+```
+
+Accede a **`/admin`** en la web. Al primer arranque el servidor crea el usuario administrador
+(`BOOTSTRAP_ADMIN_*` del `.env`, o una contraseña aleatoria que imprime **una sola vez**) y
+genera un par **RSA-4096 por app**.
+
+| Capacidad | Detalle |
+| :-- | :-- |
+| **Inicio de sesión con roles** | JWT 30 min en memoria + refresh `httpOnly`/`Secure`/`SameSite=Strict`, bcrypt-12, bloqueo tras 5 intentos |
+| **RBAC** | 5 roles (ADMIN, MANAGER, OPERATOR, AUDITOR, CLIENT) y **27 permisos** granulares + overrides `allow`/`deny` por usuario |
+| **Firma en el servidor** | Emite el mismo `LicenseInfo` que el keygen Android (`SHA256withRSA`), con llave privada cifrada AES-256-GCM |
+| **Ciclo de vida** | Emitir, renovar (encadenado), cobrar, revocar, lista negra y bloqueo de dispositivos |
+| **Estadísticas** | Ingresos por app/plan/moneda, licencias activas y vencidas, dispositivos únicos |
+| **Tasas de cambio** | Publicación manual + histórico; mismo contrato que consume el scraper de las apps |
+| **Auditoría** | Cada acción sensible con actor, IP, User-Agent, severidad y exportación CSV |
+| **Endpoints públicos** | `/.well-known/*` (claves PEM/JSON y apps) y `/api/public/*` (salud, tasas, revocación, validación) |
+
+La compatibilidad con las apps es total: `RemoteKeyProvider` descarga la clave pública desde
+tu consola en lugar de un dominio ajeno, y el keygen puede subir sus licencias emitidas con
+`ConsoleSync`. Si `LICENSE_CONSOLE_URL` queda vacío, las apps siguen funcionando offline.
+
+**Documentación**
+
+* [`server/README.md`](server/README.md) — API, RBAC, contrato de firma, tests.
+* [`docs/HTTPS_Y_DESPLIEGUE.md`](docs/HTTPS_Y_DESPLIEGUE.md) — TLS en desarrollo, Docker + Caddy, nginx, Vercel/Netlify, integración Android y lista de verificación.
+* [`deploy/`](deploy) — `docker-compose.yml`, `Caddyfile`, Dockerfiles y plantillas nginx.
+
+```bash
+npm run test            # 40 pruebas de la API + 30 de la web
+cd deploy && cp .env.example .env && docker compose up -d --build
+```
+
+---
+
 ## 📐 Fórmulas y Consumos Estandarizados
 
 Los consumos base por m² incorporan un coeficiente de desperdicio técnico estándar del 8% al 10% (configurable):
