@@ -2,7 +2,6 @@
  * DrywallPro XSS & DOM Injection Defense Engine
  * Prevents Stored, Reflected and DOM-based Cross-Site Scripting.
  */
-import DOMPurify from 'dompurify';
 
 export interface XssCheckResult {
   hasThreat: boolean;
@@ -62,36 +61,16 @@ export function detectXss(input: string | undefined | null): XssCheckResult {
 }
 
 /**
- * Sanitiza HTML usando DOMPurify con fallback robusto universal
+ * Sanitiza HTML con un filtro estricto basado en expresiones regulares.
+ *
+ * Es intencionadamente libre de dependencias (no arrastra DOMPurify al bundle
+ * inicial). Cuando se necesita un saneado real sobre el DOM, la consola de
+ * seguridad usa `sanitizeHtmlWithDomPurify` de `./htmlSanitizer`, que se carga
+ * en diferido.
  */
 export function sanitizeHtmlStrict(dirty: string): string {
   if (!dirty || typeof dirty !== 'string') return '';
 
-  try {
-    // Si DOMPurify.sanitize está disponible directamente (Navegador)
-    if (typeof (DOMPurify as any).sanitize === 'function') {
-      return (DOMPurify as any).sanitize(dirty, {
-        ALLOWED_TAGS: [],
-        ALLOWED_ATTR: [],
-        KEEP_CONTENT: true
-      }).trim();
-    }
-    // Si DOMPurify es una función factory (Node / JSDOM)
-    if (typeof DOMPurify === 'function' && typeof window !== 'undefined') {
-      const purifier = (DOMPurify as any)(window);
-      if (typeof purifier.sanitize === 'function') {
-        return purifier.sanitize(dirty, {
-          ALLOWED_TAGS: [],
-          ALLOWED_ATTR: [],
-          KEEP_CONTENT: true
-        }).trim();
-      }
-    }
-  } catch (e) {
-    // Continuar al filtro estricto por expresiones regulares
-  }
-
-  // Fallback estricto universal en caso de entorno headless sin DOM
   return dirty
     .replace(/<\s*script\b[^>]*>[\s\S]*?<\s*\/\s*script\s*>/gi, '')
     .replace(/<\s*[^>]*>/gi, '') // Elimina todos los tags HTML <...>

@@ -10,6 +10,23 @@ import {
   CURRENCY_SYMBOLS
 } from '../data/materials';
 
+/**
+ * Precio de catálogo de un material expresado **por embalaje comercial**.
+ *
+ * En `CONSTRUCTION_TYPES` el valor `defaultPriceUSD` se publica por unidad base
+ * (m lineal, kg, pieza, m²…), mientras que el cómputo comercial y la interfaz
+ * trabajan siempre con embalajes completos (tira de 3 m, caja de 1.000 u.,
+ * balde de 28 kg, rollo de 150 m…). Es exactamente la misma conversión que
+ * aplica el módulo de precios de distribuidores en `convertToPackage()`.
+ */
+export function packagePriceFromBase(
+  defaultPricePerBaseUnitUSD: number,
+  packageSize: number
+): number {
+  const size = Number.isFinite(packageSize) && packageSize > 0 ? packageSize : 1;
+  return defaultPricePerBaseUnitUSD * size;
+}
+
 export function calculateProjectMaterials(
   rooms: Room[],
   config: ProjectConfig,
@@ -142,15 +159,18 @@ export function calculateProjectMaterials(
     // Commercial units (e.g. integer sheets, strips, boxes, buckets)
     const commercialUnits = Math.ceil(finalQty / item.unitSize);
 
-    // Price determination
-    // 1. Custom price if specified
-    // 2. Default price in USD scaled to current currency
-    const basePrice = customPrices[item.name] !== undefined
+    // Determinación del precio:
+    //   1. Precio personalizado / de distribuidor (ya expresado por embalaje).
+    //   2. Precio de catálogo: se pasa de unidad base a embalaje comercial
+    //      (tira de 3 m, caja de 1.000 u., balde de 28 kg…) y se convierte a
+    //      la divisa del proyecto.
+    const catalogPackagePriceUSD = packagePriceFromBase(item.defaultPriceUSD, item.unitSize);
+    const unitPrice = customPrices[item.name] !== undefined
       ? customPrices[item.name]
-      : item.defaultPriceUSD * currencyRate;
+      : catalogPackagePriceUSD * currencyRate;
 
-    // Unit price is per commercial unit
-    const unitPrice = basePrice;
+    // `unitPrice` es SIEMPRE el precio de un embalaje comercial completo, que
+    // es lo que se multiplica por el número de embalajes a comprar.
     const totalPrice = commercialUnits * unitPrice;
 
     // Stock check

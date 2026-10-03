@@ -15,9 +15,11 @@ import {
   Globe
 } from 'lucide-react';
 import { detectSqlInjection, sanitizeSqlInput } from '../security/sqlSanitizer';
-import { detectXss, sanitizeHtmlStrict } from '../security/xssDefense';
+import { detectXss } from '../security/xssDefense';
+import { sanitizeHtmlWithDomPurify } from '../security/htmlSanitizer';
 import { isFormulaInjectionAttempt, sanitizeCsvCell } from '../security/csvSanitizer';
 import { calculateSha256 } from '../security/cryptoStorage';
+import { Dialog } from './ui/Dialog';
 
 interface SecurityCenterModalProps {
   isOpen: boolean;
@@ -43,7 +45,7 @@ export const SecurityCenterModal: React.FC<SecurityCenterModalProps> = ({ isOpen
 
     // Salida neutralizada aplicando todos los escudos
     let sanitized = sanitizeSqlInput(payload);
-    sanitized = sanitizeHtmlStrict(sanitized);
+    sanitized = sanitizeHtmlWithDomPurify(sanitized);
 
     const hash = await calculateSha256(payload);
 
@@ -67,8 +69,13 @@ export const SecurityCenterModal: React.FC<SecurityCenterModalProps> = ({ isOpen
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+    <Dialog
+      isOpen={isOpen}
+      onClose={onClose}
+      label="Centro de seguridad y blindaje de la plataforma"
+      backdropClassName="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-in fade-in duration-200"
+      panelClassName="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden"
+    >
         {/* Header */}
         <div className="bg-slate-850 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -331,7 +338,6 @@ export const SecurityCenterModal: React.FC<SecurityCenterModalProps> = ({ isOpen
             Cerrar
           </button>
         </div>
-      </div>
-    </div>
+    </Dialog>
   );
 };

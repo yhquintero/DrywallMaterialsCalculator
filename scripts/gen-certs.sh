@@ -15,6 +15,11 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+if command -v node >/dev/null 2>&1; then
+  exec node "$ROOT/scripts/gen-certs.mjs" "$@"
+fi
+
 SERVER_CERTS="$ROOT/server/certs"
 WEB_CERTS="$ROOT/web/certs"
 DAYS="${DAYS:-825}"

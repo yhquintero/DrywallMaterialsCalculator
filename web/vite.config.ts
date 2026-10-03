@@ -84,8 +84,16 @@ function securityHeadersPlugin(enableHsts: boolean) {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const wantHttps =
-    env.VITE_HTTPS === 'true' || env.VITE_HTTPS === '1' || process.argv.includes('--https');
+    process.env.VITE_HTTPS === 'true' ||
+    process.env.VITE_HTTPS === '1' ||
+    env.VITE_HTTPS === 'true' ||
+    env.VITE_HTTPS === '1' ||
+    process.argv.includes('--https');
   const httpsOptions = wantHttps ? localHttpsOptions() : undefined;
+  const apiTarget =
+    process.env.API_TARGET ||
+    env.API_TARGET ||
+    (wantHttps ? 'https://127.0.0.1:8443' : API_TARGET);
 
   return {
     plugins: [
@@ -102,13 +110,13 @@ export default defineConfig(({ mode }) => {
       ...(httpsOptions ? { https: httpsOptions } : {}),
       proxy: {
         '/api': {
-          target: API_TARGET,
+          target: apiTarget,
           changeOrigin: true,
           secure: false,
           // El backend puede ir en HTTPS con certificado autofirmado en dev.
         },
         '/.well-known': {
-          target: API_TARGET,
+          target: apiTarget,
           changeOrigin: true,
           secure: false,
         },
@@ -120,8 +128,8 @@ export default defineConfig(({ mode }) => {
       allowedHosts: true,
       ...(httpsOptions ? { https: httpsOptions } : {}),
       proxy: {
-        '/api': { target: API_TARGET, changeOrigin: true, secure: false },
-        '/.well-known': { target: API_TARGET, changeOrigin: true, secure: false },
+        '/api': { target: apiTarget, changeOrigin: true, secure: false },
+        '/.well-known': { target: apiTarget, changeOrigin: true, secure: false },
       },
     },
     build: {
@@ -129,16 +137,22 @@ export default defineConfig(({ mode }) => {
       sourcemap: mode !== 'production',
       rollupOptions: {
         output: {
+          /**
+           * `react` se separa para aprovechar la caché del navegador entre
+           * despliegues. El generador de PDF (jsPDF + autotable ≈ 135 kB gzip)
+           * NO se declara aquí a propósito: Rollup lo agrupa con el módulo que
+           * lo importa en diferido (`BudgetEstimator`), de modo que no se
+           * descarga ni se precarga en el arranque.
+           */
           manualChunks: {
             react: ['react', 'react-dom', 'react-router-dom'],
-            pdf: ['jspdf', 'jspdf-autotable'],
           },
         },
       },
     },
     test: {
       environment: 'node',
-      include: ['src/**/*.test.ts'],
+      include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
     },
   };
 });

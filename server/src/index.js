@@ -33,7 +33,7 @@ if (config.server.https && !tls) {
   console.error(
     `[server] ENABLE_HTTPS=true pero no se encuentran los certificados:\n` +
       `  cert: ${config.server.certFile}\n  key : ${config.server.keyFile}\n` +
-      `Genera unos locales con:  npm run certs   (script scripts/gen-certs.sh)`
+      `Genera unos locales con:  npm run certs   (script scripts/gen-certs.mjs)`
   );
   process.exit(1);
 }

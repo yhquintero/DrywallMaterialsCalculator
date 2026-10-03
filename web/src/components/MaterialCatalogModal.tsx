@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Search, Package, Layers, ShieldCheck, Tag } from 'lucide-react';
 import { CONSTRUCTION_TYPES } from '../data/materials';
+import { Dialog } from './ui/Dialog';
 
 interface MaterialCatalogModalProps {
   isOpen: boolean;
@@ -163,8 +164,13 @@ export const MaterialCatalogModal: React.FC<MaterialCatalogModalProps> = ({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-4xl max-h-[88vh] flex flex-col shadow-2xl overflow-hidden">
+    <Dialog
+      isOpen={isOpen}
+      onClose={onClose}
+      label="Catálogo de materiales y medidas comerciales"
+      backdropClassName="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200"
+      panelClassName="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-4xl max-h-[88vh] flex flex-col shadow-2xl overflow-hidden"
+    >
         {/* Header */}
         <div className="bg-slate-850 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
           <div className="flex items-center space-x-2.5">
@@ -250,7 +256,6 @@ export const MaterialCatalogModal: React.FC<MaterialCatalogModalProps> = ({
             </div>
           ))}
         </div>
-      </div>
-    </div>
+    </Dialog>
   );
 };

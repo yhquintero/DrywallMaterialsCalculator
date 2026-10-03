@@ -28,17 +28,19 @@ clientes: nunca debe viajar en claro.
 ## 2. Desarrollo local con HTTPS
 
 ```bash
-npm run certs        # crea CA + certificados para localhost y 127.0.0.1 (openssl)
+npm run certs        # crea CA + certificados X.509 v3 para localhost y 127.0.0.1 (node:crypto, multiplataforma)
 npm run dev:https    # API https://localhost:8443 + web https://localhost:3000
 ```
 
-`scripts/dev-https.mjs` genera los certificados si no existen, arranca la API con TLS y la
-web con el plugin HTTPS de Vite (proxy de `/api` y `/.well-known` hacia la API).
+`scripts/dev-https.mjs` es 100 % compatible con **Windows (PowerShell / CMD), macOS y Linux**:
+genera los certificados con `scripts/gen-certs.mjs` (usando únicamente `node:crypto`, sin
+depender de `bash` ni de `openssl`), instala automáticamente las dependencias si faltan y
+arranca tanto la API como Vite con TLS real (`proxy` de `/api` y `/.well-known` hacia la API).
 
 **Confiar en el certificado en el navegador**: instala la CA raíz
-(`web/certs/dev-rootCA.pem`) en el almacén de autoridades de tu sistema. En Chrome/Edge:
-*Configuración → Privacidad y seguridad → Seguridad → Gestionar certificados → Autoridades →
-Importar → marcar "Confiar en esta CA para identificar sitios"*.
+(`server/certs/ca.crt` o `web/certs/dev-rootCA.pem`) en el almacén de autoridades de tu sistema:
+* **Windows (PowerShell)**: `certutil -user -addstore -f ROOT server\certs\ca.crt`
+* **Chrome/Edge**: *Configuración → Privacidad y seguridad → Seguridad → Gestionar certificados → Autoridades → Importar → marcar "Confiar en esta CA para identificar sitios"*.
 
 Si prefieres [mkcert](https://github.com/FiloSottile/mkcert):
 

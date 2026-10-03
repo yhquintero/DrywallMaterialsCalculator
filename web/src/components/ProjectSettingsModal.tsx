@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Settings, Building2, User, Wrench, Shield, Check } from 'lucide-react';
 import { Currency, ProjectConfig, UnitSystem } from '../types';
 import { CURRENCY_SYMBOLS } from '../data/materials';
+import { Dialog } from './ui/Dialog';
 
 interface ProjectSettingsModalProps {
   isOpen: boolean;
@@ -35,8 +36,13 @@ export const ProjectSettingsModal: React.FC<ProjectSettingsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+    <Dialog
+      isOpen={isOpen}
+      onClose={onClose}
+      label="Configuración del proyecto y parámetros técnicos"
+      backdropClassName="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200"
+      panelClassName="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden"
+    >
         {/* Header */}
         <div className="bg-slate-850 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
           <div className="flex items-center space-x-2.5">
@@ -319,7 +325,6 @@ export const ProjectSettingsModal: React.FC<ProjectSettingsModalProps> = ({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+    </Dialog>
   );
 };

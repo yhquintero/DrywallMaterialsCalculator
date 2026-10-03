@@ -15,7 +15,6 @@ import {
 import { CalculationSummary, ProjectConfig, Room } from '../types';
 import { CURRENCY_SYMBOLS } from '../data/materials';
 import { formatCurrency } from '../lib/calculator';
-import { generatePurchaseOrderPDF, generateQuotePDF } from '../lib/pdfGenerator';
 import { exportMaterialsToCSV } from '../lib/storage';
 
 interface BudgetEstimatorProps {
@@ -60,13 +59,36 @@ export const BudgetEstimator: React.FC<BudgetEstimatorProps> = ({
     accessories: 'Accesorios & Sellos'
   };
 
-  const handleExportQuote = () => {
-    generateQuotePDF(summary, config, rooms);
+  /**
+   * Los generadores PDF (jsPDF + autotable ≈ 135 kB gzip) se importan de forma
+   * dinámica al pulsar el botón: no forman parte de la primera carga.
+   */
+  const [pdfBusy, setPdfBusy] = React.useState<'quote' | 'order' | null>(null);
+  const [pdfError, setPdfError] = React.useState<string | null>(null);
+
+  const withPdfModule = async (
+    kind: 'quote' | 'order',
+    action: (mod: typeof import('../lib/pdfGenerator')) => void
+  ) => {
+    setPdfBusy(kind);
+    setPdfError(null);
+    try {
+      const mod = await import('../lib/pdfGenerator');
+      action(mod);
+    } catch {
+      setPdfError('No se pudo generar el PDF. Revisa la conexión y vuelve a intentarlo.');
+    } finally {
+      setPdfBusy(null);
+    }
   };
 
-  const handleExportPurchaseOrder = () => {
-    generatePurchaseOrderPDF(summary, config);
-  };
+  const handleExportQuote = () =>
+    withPdfModule('quote', ({ generateQuotePDF }) => generateQuotePDF(summary, config, rooms));
+
+  const handleExportPurchaseOrder = () =>
+    withPdfModule('order', ({ generatePurchaseOrderPDF }) =>
+      generatePurchaseOrderPDF(summary, config)
+    );
 
   const handleExportCSV = () => {
     exportMaterialsToCSV(summary.requirements, config.currency);
@@ -163,18 +185,22 @@ export const BudgetEstimator: React.FC<BudgetEstimatorProps> = ({
         <div className="flex items-center space-x-2">
           <button
             onClick={handleExportQuote}
-            className="px-3.5 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-brand-600/20 transition-all flex items-center gap-2"
+            disabled={pdfBusy !== null}
+            aria-busy={pdfBusy === 'quote'}
+            className="px-3.5 py-2 bg-brand-600 hover:bg-brand-500 disabled:opacity-60 disabled:cursor-wait text-white rounded-xl text-xs font-semibold shadow-lg shadow-brand-600/20 transition-all flex items-center gap-2"
           >
-            <FileText className="w-4 h-4" />
-            <span>Exportar Cotización PDF</span>
+            <FileText className="w-4 h-4" aria-hidden="true" />
+            <span>{pdfBusy === 'quote' ? 'Generando PDF…' : 'Exportar Cotización PDF'}</span>
           </button>
           <button
             onClick={handleExportPurchaseOrder}
-            className="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold shadow-md transition-all flex items-center gap-1.5"
+            disabled={pdfBusy !== null}
+            aria-busy={pdfBusy === 'order'}
+            className="px-3 py-2 bg-blue-600 hover:bg-blue-500 disabled:opacity-60 disabled:cursor-wait text-white rounded-xl text-xs font-semibold shadow-md transition-all flex items-center gap-1.5"
             title="Generar PDF para proveedor"
           >
-            <ShoppingCart className="w-4 h-4" />
-            <span>Orden Compra PDF</span>
+            <ShoppingCart className="w-4 h-4" aria-hidden="true" />
+            <span>{pdfBusy === 'order' ? 'Generando…' : 'Orden Compra PDF'}</span>
           </button>
           <button
             onClick={handleExportCSV}
@@ -188,11 +214,21 @@ export const BudgetEstimator: React.FC<BudgetEstimatorProps> = ({
             onClick={() => window.print()}
             className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-700 rounded-xl transition-all"
             title="Imprimir pantalla"
+            aria-label="Imprimir el presupuesto"
           >
-            <Printer className="w-4 h-4" />
+            <Printer className="w-4 h-4" aria-hidden="true" />
           </button>
         </div>
       </div>
+
+      {pdfError && (
+        <p
+          role="alert"
+          className="rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-2.5 text-xs text-rose-300"
+        >
+          {pdfError}
+        </p>
+      )}
 
       {/* Financial & Material Items Table */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">

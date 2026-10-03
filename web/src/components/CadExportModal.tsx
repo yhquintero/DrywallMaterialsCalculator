@@ -36,6 +36,7 @@ import {
   ConverterStatus
 } from '../lib/cad';
 import { formatBytes, downloadDxfOnServer } from '../lib/cad/download';
+import { Dialog } from './ui/Dialog';
 
 interface CadExportModalProps {
   isOpen: boolean;
@@ -178,8 +179,13 @@ export const CadExportModal: React.FC<CadExportModalProps> = ({ isOpen, onClose,
   const currentSheet = scene?.sheets[Math.min(activeSheet, Math.max(0, totalSheets - 1))];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-3 sm:p-6">
-      <div className="w-full max-w-6xl max-h-[92vh] overflow-hidden bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl flex flex-col">
+    <Dialog
+      isOpen={isOpen}
+      onClose={onClose}
+      label="Exportación de planos vectoriales DXF y DWG"
+      backdropClassName="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-3 sm:p-6"
+      panelClassName="w-full max-w-6xl max-h-[92vh] overflow-hidden bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl flex flex-col"
+    >
         {/* Cabecera */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800 bg-slate-900/95">
           <div className="flex items-center gap-3">
@@ -508,7 +514,6 @@ export const CadExportModal: React.FC<CadExportModalProps> = ({ isOpen, onClose,
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </Dialog>
   );
 };

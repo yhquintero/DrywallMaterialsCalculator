@@ -88,7 +88,9 @@ Permite calcular de forma milimétrica los materiales necesarios según normas i
 | Documento | Contenido |
 | --- | --- |
 | [`docs/MODULOS_PROFESIONALES.md`](docs/MODULOS_PROFESIONALES.md) | Arquitectura, formatos y configuración de los módulos CAD, AR y precios. |
-| [`docs/MEJORAS_ROADMAP.md`](docs/MEJORAS_ROADMAP.md) | Hoja de ruta con 55 mejoras priorizadas para implementar una a una. |
+| [`docs/MEJORAS_ROADMAP.md`](docs/MEJORAS_ROADMAP.md) | 🗺️ **Hoja de ruta v4.0**: 74 mejoras priorizadas con estado verificado, esfuerzo, criterio de aceptación, tablero de indicadores y definición de terminado. |
+| [`docs/REVISION_TECNICA_2026-10.md`](docs/REVISION_TECNICA_2026-10.md) | Revisión técnica completa: 10 hallazgos con evidencia, correcciones aplicadas y riesgos residuales. |
+| [`CHANGELOG.md`](CHANGELOG.md) | Historial de versiones del producto. |
 | [`docs/HTTPS_Y_DESPLIEGUE.md`](docs/HTTPS_Y_DESPLIEGUE.md) | TLS, reverse proxy y despliegue de la consola. |
 | [`docs/INFORME_SEGURIDAD.md`](docs/INFORME_SEGURIDAD.md) | Análisis de seguridad y contramedidas. |
 | [`AUDITORIA_SEGURIDAD_ANDROID.md`](AUDITORIA_SEGURIDAD_ANDROID.md) | Auditoría de la app Android. |
@@ -121,7 +123,10 @@ La aplicación se abrirá en `http://localhost:3000` (o el puerto configurado).
 | `npm run dev` | Inicia el servidor de desarrollo Vite con HMR y acceso en red local |
 | `npm run build` | Compila TypeScript y genera el bundle de producción en `web/dist` |
 | `npm run preview` | Previsualiza localmente el build de producción |
-| `npm run test:web` | Ejecuta la suite de pruebas unitarias con **Vitest** |
+| `npm run test:web` | Ejecuta la suite de pruebas unitarias con **Vitest** (125 pruebas) |
+| `npm run typecheck` | Verifica los tipos con `tsc --noEmit` (modo estricto) |
+| `npm run check:size` | Comprueba el peso de arranque del bundle contra el presupuesto (260 kB gzip) |
+| `npm run verify` | Tipos + pruebas + build + presupuesto de rendimiento, todo de una vez |
 
 ---
 
@@ -178,7 +183,7 @@ tu consola en lugar de un dominio ajeno, y el keygen puede subir sus licencias e
 * [`deploy/`](deploy) — `docker-compose.yml`, `Caddyfile`, Dockerfiles y plantillas nginx.
 
 ```bash
-npm run test            # 40 pruebas de la API + 30 de la web
+npm run test            # 125 pruebas de la web + 59 de la API de licencias
 cd deploy && cp .env.example .env && docker compose up -d --build
 ```
 
@@ -200,6 +205,19 @@ $$\text{Masilla de Juntas (kg)} = \text{Área Neta} \times 0.90 \text{ kg/m}^2$$
 
 ---
 
+## ⚡ Rendimiento, accesibilidad y calidad
+
+| Área | Estado actual |
+| :--- | :--- |
+| **Arranque web** | **150,9 kB gzip** (react + aplicación + estilos). jsPDF (135 kB), DOMPurify, el escáner AR, el módulo de precios y los planos CAD se cargan **sólo al abrirlos**. |
+| **Presupuesto de rendimiento** | Bloqueante en CI (`npm run check:size`): el build falla si la primera carga supera 260 kB gzip. |
+| **Accesibilidad** | Diálogos con `role="dialog"`, `aria-modal`, cierre con `Escape`, trampa de foco y devolución del foco; enlace «saltar al contenido»; pestañas ARIA; todos los botones de icono con nombre accesible. |
+| **Tipado** | TypeScript estricto verificado en CI (`tsc --noEmit`). |
+| **Pruebas** | 125 pruebas web (motor de cálculo, CAD, AR, precios, seguridad, almacenamiento, interfaz) + 59 de la API. |
+| **Integridad de datos** | Cada obra guardada lleva un checksum SHA-256 que **se verifica al leerla**: el gestor marca las obras íntegras y las modificadas. |
+
+---
+
 ## 🗺️ Hoja de Ruta (Roadmap para la Perfección Continua)
 
 - [x] Motor de cálculo paramétrico con merma y embalajes comerciales.
@@ -207,12 +225,20 @@ $$\text{Masilla de Juntas (kg)} = \text{Área Neta} \times 0.90 \text{ kg/m}^2$$
 - [x] Gestor multi-estancias con deducción de puertas y ventanas.
 - [x] Cotizador financiero con mano de obra, margen y multimoneda.
 - [x] Generador de Presupuesto PDF y Orden de Compra PDF en cliente.
-- [x] Exportación a CSV/Excel y persistencia en LocalStorage.
-- [x] Suite de pruebas automatizadas con Vitest (100% aprobado).
-- [x] Pipeline de Integración Continua (GitHub Actions).
-- [ ] Exportación de planos vectoriales en formato DXF/DWG para AutoCAD.
-- [ ] Integración con cámara móvil / WebRTC para escaneo de habitaciones con Realidad Aumentada (WebXR).
-- [ ] Conexión opcional con catálogo de precios en tiempo real mediante API de distribuidores locales.
+- [x] Exportación a CSV y persistencia en LocalStorage con integridad SHA-256.
+- [x] Suite de pruebas automatizadas con Vitest (125 pruebas, 100 % aprobadas).
+- [x] Pipeline de Integración Continua (GitHub Actions) con tipos, pruebas, build y presupuesto de rendimiento.
+- [x] Exportación de planos vectoriales en formato DXF/DWG para AutoCAD (con cola de impresión).
+- [x] Escaneo de habitaciones con cámara, Realidad Aumentada (WebXR) y asistencia remota WebRTC.
+- [x] Conexión con catálogos de precios de distribuidores mediante proxy seguro del backend.
+- [x] Consola profesional de licencias (RBAC, keygen, auditoría) con HTTPS por diseño.
+- [x] Accesibilidad de diálogos, navegación por teclado y arranque optimizado con presupuesto en CI.
+- [x] Revisión técnica completa y corrección del precio de catálogo por embalaje comercial.
+- [ ] Modo offline-first con Service Worker y cola de sincronización *(siguiente iteración)*.
+- [ ] Órdenes de compra repartidas por proveedor y exportación XLSX nativa.
+- [ ] Firma digital de planos, histórico de precios con alertas y nesting de placas.
+
+➡️ **Detalle completo, estados verificados y criterios de aceptación de las 74 mejoras: [`docs/MEJORAS_ROADMAP.md`](docs/MEJORAS_ROADMAP.md) · Hallazgos de la última revisión: [`docs/REVISION_TECNICA_2026-10.md`](docs/REVISION_TECNICA_2026-10.md)**
 
 ---
 

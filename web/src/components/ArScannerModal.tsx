@@ -41,6 +41,7 @@ import {
   scanToRooms,
   stopCamera
 } from '../lib/ar';
+import { Dialog } from './ui/Dialog';
 
 interface ArScannerModalProps {
   isOpen: boolean;
@@ -290,8 +291,13 @@ export const ArScannerModal: React.FC<ArScannerModalProps> = ({ isOpen, onClose,
       : [];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-sm p-2 sm:p-6">
-      <div className="w-full max-w-6xl max-h-[94vh] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+    <Dialog
+      isOpen={isOpen}
+      onClose={onClose}
+      label="Escaneo de estancias con cámara y realidad aumentada"
+      backdropClassName="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-sm p-2 sm:p-6"
+      panelClassName="w-full max-w-6xl max-h-[94vh] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+    >
         {/* Cabecera */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800">
           <div className="flex items-center gap-3">
@@ -871,7 +877,6 @@ export const ArScannerModal: React.FC<ArScannerModalProps> = ({ isOpen, onClose,
             </button>
           </div>
         </div>
-      </div>
-    </div>
+    </Dialog>
   );
 };

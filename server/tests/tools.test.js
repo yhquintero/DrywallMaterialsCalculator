@@ -5,7 +5,12 @@
 import './setup.js';
 import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
+import fs from 'node:fs';
 import http from 'node:http';
+import os from 'node:os';
+import path from 'node:path';
+import { ensureCerts, verifyCertBundle } from '../../scripts/gen-certs.mjs';
 
 process.env.SUPPLIER_TEST_KEY = 'secreto-de-prueba-1234';
 
@@ -225,4 +230,36 @@ test('los endpoints AR validan el origen en escrituras', async () => {
     body: { ttlSeconds: 120 },
   });
   assert.equal(res.status, 403);
+});
+
+// ── Generador multiplataforma de certificados TLS (scripts/gen-certs.mjs) ───
+
+test('ensureCerts genera CA + certificados X.509 v3 válidos sin bash ni openssl', () => {
+  const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'drywall-certs-'));
+  try {
+    const first = ensureCerts({
+      rootDir: tmpRoot,
+      hosts: 'localhost,127.0.0.1,::1,consola.local',
+      caRsaBits: 2048,
+      quiet: true,
+    });
+    assert.equal(first.created, true);
+    assert.equal(verifyCertBundle(first), true);
+
+    const ca = new crypto.X509Certificate(fs.readFileSync(first.caCertFile));
+    const leaf = new crypto.X509Certificate(fs.readFileSync(first.serverCertFile));
+    assert.equal(ca.ca, true);
+    assert.equal(leaf.ca, false);
+    assert.equal(leaf.verify(ca.publicKey), true);
+    assert.equal(leaf.checkHost('localhost'), 'localhost');
+    assert.equal(leaf.checkHost('consola.local'), 'consola.local');
+    assert.equal(leaf.checkIP('127.0.0.1'), '127.0.0.1');
+    assert.ok(leaf.checkIP('::1'));
+
+    // Segunda llamada reutiliza el lote existente sin regenerar
+    const second = ensureCerts({ rootDir: tmpRoot, quiet: true });
+    assert.equal(second.created, false);
+  } finally {
+    fs.rmSync(tmpRoot, { recursive: true, force: true });
+  }
 });
