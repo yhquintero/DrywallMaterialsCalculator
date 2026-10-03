@@ -129,16 +129,22 @@ export default defineConfig(({ mode }) => {
       sourcemap: mode !== 'production',
       rollupOptions: {
         output: {
+          /**
+           * `react` se separa para aprovechar la caché del navegador entre
+           * despliegues. El generador de PDF (jsPDF + autotable ≈ 135 kB gzip)
+           * NO se declara aquí a propósito: Rollup lo agrupa con el módulo que
+           * lo importa en diferido (`BudgetEstimator`), de modo que no se
+           * descarga ni se precarga en el arranque.
+           */
           manualChunks: {
             react: ['react', 'react-dom', 'react-router-dom'],
-            pdf: ['jspdf', 'jspdf-autotable'],
           },
         },
       },
     },
     test: {
       environment: 'node',
-      include: ['src/**/*.test.ts'],
+      include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
     },
   };
 });

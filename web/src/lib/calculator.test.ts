@@ -121,8 +121,7 @@ describe('DrywallPro Materials Calculation Engine', () => {
     expect(boards?.toBuyQuantity).toBe(3); // 8 - 5 = 3
   });
 
-  it('supports imperial units (sq ft and feet)', () => {
-    const imperialConfig: ProjectConfig = {
+  it('supports imperial units (sq ft and feet)', () => {    const imperialConfig: ProjectConfig = {
       ...baseConfig,
       unitSystem: 'imperial'
     };
@@ -145,5 +144,71 @@ describe('DrywallPro Materials Calculation Engine', () => {
 
     const summary = calculateProjectMaterials([room], imperialConfig);
     expect(summary.totalNetArea).toBeCloseTo(100, 0);
+  });
+
+  /**
+   * Regresión del defecto crítico detectado en la revisión técnica (2026-10):
+   * `defaultPriceUSD` se publica por unidad base (m, kg, pieza…) pero se
+   * aplicaba directamente al número de embalajes comerciales, dejando el
+   * presupuesto infravalorado (≈ -60 % en materiales).
+   */
+  describe('precio de catálogo por embalaje comercial', () => {
+    const room: Room = {
+      id: 'rp',
+      name: 'Techo 20 m²',
+      type: 'techo_st',
+      segments: [{ id: 'sp', name: 'Paño', length: 5, width: 4, repetitions: 1, openings: [] }]
+    };
+
+    it('multiplica el precio unitario por el contenido del embalaje', () => {
+      const summary = calculateProjectMaterials([room], baseConfig);
+
+      // Perfil primario: 17 m → 18.7 m con merma → 7 tiras de 3 m a 1.35 USD/m
+      const primary = summary.requirements.find((r) => r.name.includes('Perfil Primario'))!;
+      expect(primary.commercialUnits).toBe(7);
+      expect(primary.unitPrice).toBeCloseTo(4.05, 2); // 1.35 × 3 m
+      expect(primary.totalPrice).toBeCloseTo(28.35, 2);
+
+      // Tornillo T2: caja de 1.000 u. a 0.018 USD/pieza ⇒ 18 USD la caja
+      const screws = summary.requirements.find((r) => r.name.includes('Tornillo T2 Placa'))!;
+      expect(screws.unitPrice).toBeCloseTo(18, 2);
+      expect(screws.totalPrice).toBeCloseTo(screws.commercialUnits * 18, 2);
+
+      // Cinta: rollo de 150 m a 0.08 USD/m ⇒ 12 USD el rollo
+      const tape = summary.requirements.find((r) => r.name.includes('Cinta de Papel Micro'))!;
+      expect(tape.unitPrice).toBeCloseTo(12, 2);
+
+      // Masilla: balde de 28 kg a 0.85 USD/kg ⇒ 23.80 USD el balde
+      const compound = summary.requirements.find((r) => r.name.includes('Masilla'))!;
+      expect(compound.unitPrice).toBeCloseTo(23.8, 2);
+    });
+
+    it('mantiene el total de materiales coherente con la suma de sus líneas', () => {
+      const summary = calculateProjectMaterials([room], baseConfig);
+      const lineSum = summary.requirements.reduce((sum, r) => sum + r.totalPrice, 0);
+      expect(summary.materialsCost).toBeCloseTo(lineSum, 2);
+      // Antes del arreglo estas mismas 8 líneas sumaban ~120 USD (sólo la
+      // partida de placas estaba bien cotizada porque su embalaje es 1).
+      expect(summary.materialsCost).toBeCloseTo(253.2, 1);
+      expect(summary.materialsCost).toBeGreaterThan(240);
+    });
+
+    it('respeta el precio personalizado por embalaje por encima del catálogo', () => {
+      const summary = calculateProjectMaterials([room], baseConfig, {
+        'Placa Drywall ST 12.5mm': 30
+      });
+      const boards = summary.requirements.find((r) => r.name === 'Placa Drywall ST 12.5mm')!;
+      expect(boards.unitPrice).toBe(30);
+      expect(boards.totalPrice).toBeCloseTo(boards.commercialUnits * 30, 2);
+    });
+
+    it('convierte el precio de catálogo a la divisa del proyecto', () => {
+      const eurConfig: ProjectConfig = { ...baseConfig, currency: 'EUR' };
+      const usd = calculateProjectMaterials([room], baseConfig);
+      const eur = calculateProjectMaterials([room], eurConfig);
+      const usdBoards = usd.requirements.find((r) => r.name === 'Placa Drywall ST 12.5mm')!;
+      const eurBoards = eur.requirements.find((r) => r.name === 'Placa Drywall ST 12.5mm')!;
+      expect(eurBoards.unitPrice).toBeCloseTo(usdBoards.unitPrice * 0.92, 2);
+    });
   });
 });

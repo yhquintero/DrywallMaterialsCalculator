@@ -33,6 +33,7 @@ import {
 } from '../lib/pricing';
 import { sanitizeCsvCell } from '../security/csvSanitizer';
 import { formatCurrency } from '../lib/calculator';
+import { Dialog } from './ui/Dialog';
 
 interface PricingModalProps {
   isOpen: boolean;
@@ -194,8 +195,13 @@ export const PricingModal: React.FC<PricingModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-sm p-2 sm:p-6">
-      <div className="w-full max-w-6xl max-h-[94vh] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+    <Dialog
+      isOpen={isOpen}
+      onClose={onClose}
+      label="Precios en tiempo real de distribuidores"
+      backdropClassName="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-sm p-2 sm:p-6"
+      panelClassName="w-full max-w-6xl max-h-[94vh] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+    >
         {/* Cabecera */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800">
           <div className="flex items-center gap-3">
@@ -612,8 +618,7 @@ export const PricingModal: React.FC<PricingModalProps> = ({
             onSave={saveSupplier}
           />
         )}
-      </div>
-    </div>
+    </Dialog>
   );
 };
 

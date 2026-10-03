@@ -1,29 +1,33 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   Layers,
   Calculator,
   FileText,
-  DollarSign,
   Settings,
   FolderKanban,
   BookOpen,
   Package,
-  Sparkles,
-  Printer,
   Globe,
-  Maximize2,
+  ShieldCheck,
+  KeyRound,
+  Lock,
+  Unlock,
+  DraftingCompass,
+  ScanLine,
+  Store,
+  Users,
   CheckCircle2,
-  TrendingUp,
-  Download,
-  Plus
+  TriangleAlert
 } from 'lucide-react';
 import { ProjectConfig, Room, UnitSystem } from './types';
 import {
   DEFAULT_CONFIG,
   DEFAULT_ROOMS,
   SavedProject,
+  SaveResult,
   getActiveProjectId,
   getSavedProjects,
+  deleteProjectFromStorage,
   saveProjectToStorage,
   exportProjectToJson
 } from './lib/storage';
@@ -34,8 +38,6 @@ import { BudgetEstimator } from './components/BudgetEstimator';
 import { AdvisoryPanel } from './components/AdvisoryPanel';
 import { ProjectSettingsModal } from './components/ProjectSettingsModal';
 import { SavedProjectsModal } from './components/SavedProjectsModal';
-import { MaterialCatalogModal } from './components/MaterialCatalogModal';
-import { SecurityCenterModal } from './components/SecurityCenterModal';
 /**
  * Los tres módulos profesionales se cargan en diferido: sólo se descarga su
  * código cuando el usuario abre la herramienta, de modo que el arranque de la
@@ -51,16 +53,29 @@ const ArScannerModal = React.lazy(() =>
 const PricingModal = React.lazy(() =>
   import('./components/PricingModal').then((m) => ({ default: m.PricingModal }))
 );
+const SecurityCenterModal = React.lazy(() =>
+  import('./components/SecurityCenterModal').then((m) => ({ default: m.SecurityCenterModal }))
+);
+const MaterialCatalogModal = React.lazy(() =>
+  import('./components/MaterialCatalogModal').then((m) => ({ default: m.MaterialCatalogModal }))
+);
 
 const ModuleFallback: React.FC<{ label: string }> = ({ label }) => (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-sm">
+  <div
+    role="status"
+    aria-live="polite"
+    className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-sm"
+  >
     <div className="flex items-center gap-3 rounded-2xl border border-slate-700 bg-slate-900 px-5 py-4">
       <span className="w-4 h-4 rounded-full border-2 border-brand-500 border-t-transparent animate-spin" />
       <span className="text-xs text-slate-300">Cargando {label}…</span>
     </div>
   </div>
 );
-import { ShieldCheck, KeyRound, Lock, Unlock, DraftingCompass, ScanLine, Store, Users } from 'lucide-react';
+
+/** Identificador único legible para zonas, tramos y aberturas. */
+const uid = (prefix: string): string =>
+  `${prefix}_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 7)}`;
 
 export function App() {
   // La plataforma se sirve SIEMPRE sobre HTTPS en producción; en local el
@@ -109,17 +124,44 @@ export function App() {
   const [isArOpen, setIsArOpen] = useState(false);
   const [isPricingOpen, setIsPricingOpen] = useState(false);
 
-  // Auto-save effect
+  // Estado del guardado automático (visible para el usuario).
+  const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const isFirstRender = useRef(true);
+
+  /**
+   * Guardado automático con retardo (debounce).
+   *
+   * Antes se guardaba en cada pulsación de tecla, lo que recalculaba el
+   * checksum SHA-256 del proyecto completo decenas de veces por segundo. Ahora
+   * se espera 800 ms de inactividad y se informa del resultado.
+   */
   useEffect(() => {
-    const projectToSave: SavedProject = {
-      id: projectId,
-      updatedAt: new Date().toISOString(),
-      config,
-      rooms,
-      customPrices,
-      customStock
-    };
-    saveProjectToStorage(projectToSave);
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    setSaveState('saving');
+    const timer = window.setTimeout(async () => {
+      const projectToSave: SavedProject = {
+        id: projectId,
+        updatedAt: new Date().toISOString(),
+        config,
+        rooms,
+        customPrices,
+        customStock
+      };
+      const result: SaveResult = await saveProjectToStorage(projectToSave);
+      if (result.ok) {
+        setSaveState('saved');
+        setSaveError(null);
+      } else {
+        setSaveState('error');
+        setSaveError(result.error);
+      }
+    }, 800);
+
+    return () => window.clearTimeout(timer);
   }, [projectId, config, rooms, customPrices, customStock]);
 
   // Real-time calculation summary
@@ -161,24 +203,25 @@ export function App() {
 
   // Create new project
   const handleNewProject = () => {
-    const newId = `proj_${Date.now()}`;
+    const newId = uid('proj');
     const newConf: ProjectConfig = {
       ...DEFAULT_CONFIG,
       projectName: `Nueva Obra Drywall ${new Date().toLocaleDateString()}`
     };
+    // La zona se crea una sola vez y se reutiliza su id: antes se generaban dos
+    // marcas de tiempo distintas y la zona nueva podía no quedar seleccionada.
+    const newRoom: Room = {
+      id: uid('room'),
+      name: 'Zona 1 - Techo Continuo ST',
+      type: 'techo_st',
+      segments: [{ id: uid('seg'), name: 'Área 1', length: 5, width: 3, repetitions: 1, openings: [] }]
+    };
     setProjectId(newId);
     setConfig(newConf);
-    setRooms([
-      {
-        id: `room_${Date.now()}`,
-        name: 'Zona 1 - Techo Continuo ST',
-        type: 'techo_st',
-        segments: [{ id: `seg_${Date.now()}`, name: 'Área 1', length: 5, width: 3, repetitions: 1, openings: [] }]
-      }
-    ]);
+    setRooms([newRoom]);
     setCustomPrices({});
     setCustomStock({});
-    setSelectedRoomId(`room_${Date.now()}`);
+    setSelectedRoomId(newRoom.id);
   };
 
   /**
@@ -189,7 +232,6 @@ export function App() {
     if (!newRooms.length) return;
     setRooms((prev) => [...prev, ...newRooms]);
     setSelectedRoomId(newRooms[0].id);
-    if (newRooms.length > 1) setSelectedRoomId(newRooms[0].id);
   };
 
   /** Aplica los precios obtenidos de los catálogos de distribuidores. */
@@ -197,9 +239,13 @@ export function App() {
     setCustomPrices((prev) => ({ ...prev, ...prices }));
   };
 
+  /**
+   * Elimina una obra delegando en la capa de almacenamiento, que además repara
+   * el puntero de proyecto activo (antes se escribía la clave de LocalStorage a
+   * mano y podía quedar apuntando a un proyecto inexistente).
+   */
   const handleDeleteProject = (id: string) => {
-    const projects = getSavedProjects().filter((p) => p.id !== id);
-    localStorage.setItem('drywall_calculator_projects_v2', JSON.stringify(projects));
+    deleteProjectFromStorage(id);
   };
 
   const handleUnitSystemToggle = () => {
@@ -215,13 +261,26 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+      {/* Acceso rápido por teclado al contenido principal (WCAG 2.4.1) */}
+      <a
+        href="#contenido"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-brand-600 focus:text-white focus:text-sm focus:font-semibold"
+      >
+        Saltar al contenido principal
+      </a>
+
       {/* Top Professional Header Bar */}
       <header className="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           {/* Logo & Brand */}
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setIsSettingsOpen(true)}>
+          <button
+            type="button"
+            onClick={() => setIsSettingsOpen(true)}
+            aria-label="Abrir la configuración del proyecto"
+            className="flex items-center space-x-3 text-left rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+          >
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center text-white shadow-lg shadow-brand-500/20">
-              <Layers className="w-5 h-5" />
+              <Layers className="w-5 h-5" aria-hidden="true" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
@@ -236,7 +295,7 @@ export function App() {
                 {config.projectName}
               </p>
             </div>
-          </div>
+          </button>
 
           {/* Center Metric KPI Badges */}
           <div className="hidden md:flex items-center space-x-4 bg-slate-950/70 border border-slate-800/80 px-4 py-1.5 rounded-xl text-xs font-mono">
@@ -262,8 +321,9 @@ export function App() {
               onClick={handleUnitSystemToggle}
               className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-mono font-semibold transition-all flex items-center gap-1.5"
               title="Alternar Sistema Métrico / Imperial"
+              aria-label={`Cambiar a sistema ${config.unitSystem === 'metric' ? 'imperial (pies)' : 'métrico (metros)'}`}
             >
-              <Globe className="w-3.5 h-3.5 text-brand-400" />
+              <Globe className="w-3.5 h-3.5 text-brand-400" aria-hidden="true" />
               <span>{config.unitSystem === 'metric' ? 'Métrico (m²)' : 'Imperial (sq ft)'}</span>
             </button>
 
@@ -272,8 +332,9 @@ export function App() {
               href="/admin"
               className="px-2.5 py-1.5 bg-brand-500/10 hover:bg-brand-500/20 text-brand-300 border border-brand-500/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shadow-sm"
               title="Consola profesional de licencias: Roles, Usuarios, Permisos y control del Keygen de ambas apps"
+              aria-label="Abrir la consola profesional de licencias"
             >
-              <KeyRound className="w-3.5 h-3.5" />
+              <KeyRound className="w-3.5 h-3.5" aria-hidden="true" />
               <span className="hidden lg:inline">Consola</span>
             </a>
 
@@ -290,7 +351,7 @@ export function App() {
                   : 'Conexión HTTP sin cifrar — activa TLS con `npm run dev:https`'
               }
             >
-              {isSecureContext ? <Lock className="w-3 h-3" /> : <Unlock className="w-3 h-3" />}
+              {isSecureContext ? <Lock className="w-3 h-3" aria-hidden="true" /> : <Unlock className="w-3 h-3" aria-hidden="true" />}
               {isSecureContext ? 'HTTPS' : 'HTTP'}
             </span>
 
@@ -300,9 +361,9 @@ export function App() {
               className="px-2.5 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shadow-sm"
               title="Centro de Seguridad & Blindaje Anti-SQLi / XSS"
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
               <span className="hidden sm:inline">Seguridad</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
             </button>
 
             {/* Saved Projects Button */}
@@ -310,8 +371,9 @@ export function App() {
               onClick={() => setIsProjectsOpen(true)}
               className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 rounded-lg text-xs transition-all relative"
               title="Mis Obras y Proyectos Guardados"
+              aria-label="Mis obras y proyectos guardados"
             >
-              <FolderKanban className="w-4 h-4 text-blue-400" />
+              <FolderKanban className="w-4 h-4 text-blue-400" aria-hidden="true" />
             </button>
 
             {/* Material Catalog Button */}
@@ -319,8 +381,9 @@ export function App() {
               onClick={() => setIsCatalogOpen(true)}
               className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 rounded-lg text-xs transition-all"
               title="Catálogo de Materiales y Medidas"
+              aria-label="Catálogo de materiales y medidas comerciales"
             >
-              <Package className="w-4 h-4 text-amber-400" />
+              <Package className="w-4 h-4 text-amber-400" aria-hidden="true" />
             </button>
 
             {/* Planos CAD (DXF / DWG) */}
@@ -328,8 +391,9 @@ export function App() {
               onClick={() => setIsCadOpen(true)}
               className="px-2.5 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5"
               title="Exportar planos vectoriales DXF / DWG para AutoCAD"
+              aria-label="Planos CAD: exportar DXF o DWG"
             >
-              <DraftingCompass className="w-3.5 h-3.5" />
+              <DraftingCompass className="w-3.5 h-3.5" aria-hidden="true" />
               <span className="hidden xl:inline">Planos CAD</span>
             </button>
 
@@ -338,8 +402,9 @@ export function App() {
               onClick={() => setIsArOpen(true)}
               className="px-2.5 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5"
               title="Escanear la estancia con Realidad Aumentada (WebXR) o con la cámara"
+              aria-label="Escanear la estancia con la cámara o realidad aumentada"
             >
-              <ScanLine className="w-3.5 h-3.5" />
+              <ScanLine className="w-3.5 h-3.5" aria-hidden="true" />
               <span className="hidden xl:inline">Escanear AR</span>
             </button>
 
@@ -348,8 +413,9 @@ export function App() {
               onClick={() => setIsPricingOpen(true)}
               className="px-2.5 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5"
               title="Conectar catálogos de distribuidores y actualizar precios en tiempo real"
+              aria-label="Precios de distribuidores en tiempo real"
             >
-              <Store className="w-3.5 h-3.5" />
+              <Store className="w-3.5 h-3.5" aria-hidden="true" />
               <span className="hidden xl:inline">Precios</span>
             </button>
 
@@ -358,8 +424,9 @@ export function App() {
               href="/asistencia"
               className="px-2.5 py-1.5 bg-violet-500/10 hover:bg-violet-500/20 text-violet-300 border border-violet-500/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5"
               title="Comparte la cámara con la oficina técnica por WebRTC"
+              aria-label="Asistencia remota en obra por WebRTC"
             >
-              <Users className="w-3.5 h-3.5" />
+              <Users className="w-3.5 h-3.5" aria-hidden="true" />
               <span className="hidden xl:inline">Asistencia</span>
             </a>
 
@@ -368,16 +435,25 @@ export function App() {
               onClick={() => setIsSettingsOpen(true)}
               className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 rounded-lg text-xs transition-all"
               title="Configuración de Proyecto"
+              aria-label="Configuración del proyecto"
             >
-              <Settings className="w-4 h-4 text-slate-400" />
+              <Settings className="w-4 h-4 text-slate-400" aria-hidden="true" />
             </button>
           </div>
         </div>
 
         {/* Navigation Tabs Bar */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800 flex items-center justify-between text-xs">
-          <nav className="flex space-x-1 sm:space-x-3 py-2">
+          <nav
+            className="flex space-x-1 sm:space-x-3 py-2"
+            role="tablist"
+            aria-label="Secciones de la aplicación"
+          >
             <button
+              role="tab"
+              id="tab-calculator"
+              aria-selected={activeTab === 'calculator'}
+              aria-controls="panel-calculator"
               onClick={() => setActiveTab('calculator')}
               className={`px-3.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-2 ${
                 activeTab === 'calculator'
@@ -385,11 +461,15 @@ export function App() {
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Calculator className="w-3.5 h-3.5" />
+              <Calculator className="w-3.5 h-3.5" aria-hidden="true" />
               <span>Calculadora & Planos 2D/3D</span>
             </button>
 
             <button
+              role="tab"
+              id="tab-budget"
+              aria-selected={activeTab === 'budget'}
+              aria-controls="panel-budget"
               onClick={() => setActiveTab('budget')}
               className={`px-3.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-2 ${
                 activeTab === 'budget'
@@ -397,7 +477,7 @@ export function App() {
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <FileText className="w-3.5 h-3.5" />
+              <FileText className="w-3.5 h-3.5" aria-hidden="true" />
               <span>Presupuesto & Orden de Compra</span>
               <span className="bg-brand-500/20 text-brand-300 text-[10px] px-1.5 py-0.2 rounded font-mono">
                 {summary.requirements.length}
@@ -405,6 +485,10 @@ export function App() {
             </button>
 
             <button
+              role="tab"
+              id="tab-advisory"
+              aria-selected={activeTab === 'advisory'}
+              aria-controls="panel-advisory"
               onClick={() => setActiveTab('advisory')}
               className={`px-3.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-2 ${
                 activeTab === 'advisory'
@@ -412,12 +496,37 @@ export function App() {
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <BookOpen className="w-3.5 h-3.5" />
+              <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />
               <span>Manual Técnico & Normas</span>
             </button>
           </nav>
 
           <div className="hidden sm:flex items-center space-x-3 text-[11px] text-slate-400 font-mono">
+            <span
+              role="status"
+              aria-live="polite"
+              className={
+                saveState === 'error'
+                  ? 'flex items-center gap-1 text-rose-400'
+                  : 'flex items-center gap-1 text-slate-400'
+              }
+              title={saveError || 'La obra se guarda automáticamente en este dispositivo'}
+            >
+              {saveState === 'error' ? (
+                <>
+                  <TriangleAlert className="w-3 h-3" aria-hidden="true" /> Sin guardar
+                </>
+              ) : (
+                <>
+                  <CheckCircle2
+                    className={`w-3 h-3 ${saveState === 'saved' ? 'text-emerald-400' : 'text-slate-500'}`}
+                    aria-hidden="true"
+                  />
+                  {saveState === 'saving' ? 'Guardando…' : 'Guardado automático'}
+                </>
+              )}
+            </span>
+            <span aria-hidden="true">•</span>
             <span>Factor Merma: {config.wastePercentage}%</span>
             <span>•</span>
             <span>Modulación: @ {(config.studSpacing * 100).toFixed(0)}cm</span>
@@ -426,9 +535,14 @@ export function App() {
       </header>
 
       {/* Main Container Content */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+      <main id="contenido" className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         {activeTab === 'calculator' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div
+            id="panel-calculator"
+            role="tabpanel"
+            aria-labelledby="tab-calculator"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start"
+          >
             {/* Left Column: Room & Dimension Takeoff Manager (7 Cols) */}
             <div className="lg:col-span-7 space-y-4">
               <div className="flex items-center justify-between">
@@ -524,6 +638,7 @@ export function App() {
         )}
 
         {activeTab === 'budget' && (
+          <div id="panel-budget" role="tabpanel" aria-labelledby="tab-budget">
           <BudgetEstimator
             summary={summary}
             config={config}
@@ -534,13 +649,16 @@ export function App() {
             onUpdatePrice={handleUpdatePrice}
             onUpdateStock={handleUpdateStock}
           />
+          </div>
         )}
 
         {activeTab === 'advisory' && (
-          <AdvisoryPanel
-            unitSystem={config.unitSystem}
-            tips={summary.advisoryTips}
-          />
+          <div id="panel-advisory" role="tabpanel" aria-labelledby="tab-advisory">
+            <AdvisoryPanel
+              unitSystem={config.unitSystem}
+              tips={summary.advisoryTips}
+            />
+          </div>
         )}
       </main>
 
@@ -585,15 +703,17 @@ export function App() {
         onImportProjectJson={handleLoadProject}
       />
 
-      <MaterialCatalogModal
-        isOpen={isCatalogOpen}
-        onClose={() => setIsCatalogOpen(false)}
-      />
+      {isCatalogOpen && (
+        <React.Suspense fallback={<ModuleFallback label="catálogo de materiales" />}>
+          <MaterialCatalogModal isOpen={isCatalogOpen} onClose={() => setIsCatalogOpen(false)} />
+        </React.Suspense>
+      )}
 
-      <SecurityCenterModal
-        isOpen={isSecurityOpen}
-        onClose={() => setIsSecurityOpen(false)}
-      />
+      {isSecurityOpen && (
+        <React.Suspense fallback={<ModuleFallback label="centro de seguridad" />}>
+          <SecurityCenterModal isOpen={isSecurityOpen} onClose={() => setIsSecurityOpen(false)} />
+        </React.Suspense>
+      )}
 
       {isCadOpen && (
         <React.Suspense fallback={<ModuleFallback label="módulo de planos CAD" />}>

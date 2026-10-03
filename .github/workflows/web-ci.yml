@@ -16,18 +16,26 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          # Vitest 5 requiere Node ^22.12 || ^24 || >=26 (el runner de Node 20
+          # provocaba avisos EBADENGINE y era incompatible con la suite).
+          node-version: '22'
           cache: 'npm'
           cache-dependency-path: 'web/package-lock.json'
 
       - name: Install dependencies
         run: npm --prefix web ci || npm --prefix web install
 
+      - name: Typecheck (TypeScript estricto)
+        run: npm --prefix web run typecheck
+
       - name: Run Unit Tests
         run: npm --prefix web run test
 
       - name: Build Web Application
         run: npm --prefix web run build
+
+      - name: Performance budget (peso de arranque en gzip)
+        run: npm --prefix web run check:size
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4

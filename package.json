@@ -1,6 +1,6 @@
 {
   "name": "drywall-materials-calculator",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "The Ultimate Top 1 Drywall & Gypsum Materials Calculator Web & Mobile Platform + Professional License/Keygen Console",
   "private": true,
   "scripts": {
@@ -16,7 +16,10 @@
     "bootstrap": "npm --prefix server run bootstrap",
     "test": "npm run test:web && npm run test:server",
     "test:web": "npm --prefix web run test",
-    "test:server": "npm --prefix server run test"
+    "test:server": "npm --prefix server run test",
+    "typecheck": "npm --prefix web run typecheck",
+    "check:size": "npm --prefix web run check:size",
+    "verify": "npm --prefix web run verify && npm --prefix server test"
   },
   "keywords": [
     "drywall",
