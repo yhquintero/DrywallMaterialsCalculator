@@ -19,20 +19,18 @@ import java.util.concurrent.TimeUnit
  * Sincroniza el keygen Android con la **Consola de Licencias** web.
  *
  * Dos operaciones, ambas por HTTPS y con token:
- *  1. [publishPublicKey] — registra en la consola la llave pública vigente del
- *     móvil, para que las licencias emitidas desde la web usen la MISMA clave
- *     (así una licencia emitida en el navegador se verifica en los móviles).
+ *  1. [comparePublicKey] — compara la llave pública vigente del móvil con la
+ *     activa en la consola, para saber si ambas emiten con la MISMA identidad
+ *     criptográfica (y por tanto una licencia web se activa en los móviles).
  *  2. [pushLicenses] — sube las licencias emitidas localmente (`issued_licenses`)
- *     al endpoint `/api/licenses/import`, que verifica cada firma antes de
- *     aceptarla. La consola las marca con `source = "import"`.
+ *     a `/api/licenses/import`, que verifica cada firma antes de aceptarla.
  *
  * Configuración (BuildConfig, ver `keygen/build.gradle.kts`):
  *   LICENSE_CONSOLE_URL    p. ej. https://licencias.tudominio.com
- *   LICENSE_CONSOLE_TOKEN  token de acceso de un usuario con permisos
- *                          `licenses.import` / `keys.rotate`
+ *   LICENSE_CONSOLE_TOKEN  token de un usuario con permisos licenses.import
  *
- * Si no están configurados, todas las funciones devuelven [Result.disabled] y
- * el keygen sigue funcionando 100% offline como hasta ahora.
+ * Si no están configurados, todas las funciones devuelven [SyncResult.Disabled]
+ * y el keygen sigue funcionando 100 % offline como hasta ahora.
  */
 object ConsoleSync {
 
@@ -41,7 +39,7 @@ object ConsoleSync {
     private const val WRITE_TIMEOUT_S = 30L
     private const val READ_TIMEOUT_S = 30L
 
-    private val JSON = "application/json; charset=utf-8".toMediaType()
+    private val jsonMediaType = "application/json; charset=utf-8".toMediaType()
 
     private val client: OkHttpClient by lazy {
         OkHttpClient.Builder()
@@ -53,136 +51,187 @@ object ConsoleSync {
             .build()
     }
 
-    sealed class Result {
-        data class Success(val message: String, val detail: JSONObject? = null) : Result()
-        data class Failure(val message: String) : Result()
-        data object Disabled : Result()
-
-        val isSuccess: Boolean get() = this is Success
+    /** Resultado de una operación contra la consola. */
+    sealed class SyncResult {
+        class Success(val message: String, val detail: JSONObject?) : SyncResult()
+        class Failure(val message: String) : SyncResult()
+        class Disabled : SyncResult()
     }
 
-    fun isConfigured(): Boolean =
-        ConsoleEndpoints.isConfigured(BuildConfig.LICENSE_CONSOLE_URL) &&
+    fun isConfigured(): Boolean {
+        return ConsoleEndpoints.isConfigured(BuildConfig.LICENSE_CONSOLE_URL) &&
             BuildConfig.LICENSE_CONSOLE_TOKEN.isNotBlank()
-
-    /** Comprueba que la consola responde (GET /api/public/health). */
-    suspend fun checkHealth(): Result = withContext(Dispatchers.IO) {
-        val url = ConsoleEndpoints.health(BuildConfig.LICENSE_CONSOLE_URL) ?: return@withContext Result.Disabled
-        runCatching {
-            val request = Request.Builder().url(url).get().build()
-            client.newCall(request).execute().use { response ->
-                val body = response.body?.string().orEmpty()
-                if (response.isSuccessful) {
-                    Result.Success("Consola operativa", runCatching { JSONObject(body) }.getOrNull())
-                } else {
-                    Result.Failure("La consola respondió ${response.code}")
-                }
-            }
-        }.getOrElse { Result.Failure("Sin conexión con la consola: ${it.javaClass.simpleName}") }
     }
 
-    /**
-     * Sube las licencias emitidas en el móvil a la consola.
-     * @param licenses registro local de Room (`issued_licenses`).
-     */
-    suspend fun pushLicenses(licenses: List<IssuedLicense>, appId: String = ConsoleEndpoints.APP_DRYWALL): Result =
-        withContext(Dispatchers.IO) {
-            if (!isConfigured()) return@withContext Result.Disabled
-            val url = ConsoleEndpoints.importLicenses(BuildConfig.LICENSE_CONSOLE_URL)
-                ?: return@withContext Result.Disabled
-            if (licenses.isEmpty()) return@withContext Result.Success("No hay licencias que sincronizar")
-
-            val payload = JSONObject().apply {
-                put(
-                    "licenses",
-                    JSONArray().apply {
-                        licenses.forEach { license ->
-                            put(
-                                JSONObject().apply {
-                                    put("appId", appId)
-                                    put("usuario", license.userName)
-                                    put("dispositivo", license.deviceId)
-                                    put("plan", license.planType)
-                                    put("precio", license.price)
-                                    put("isPaid", license.isPaid)
-                                    put("dateIssued", license.dateIssued)
-                                    put("notes", license.notes)
-                                    // La consola verifica la firma con la clave activa.
-                                    license.licenseJson.takeIf { it.isNotBlank() }?.let { json ->
-                                        runCatching { put("codigoLicencia", JSONObject(json)) }
-                                    }
-                                }
-                            )
-                        }
-                    }
-                )
-            }
-
-            postJson(url, payload) { responseJson ->
-                val imported = responseJson.optInt("imported")
-                val updated = responseJson.optInt("updated")
-                val invalid = responseJson.optInt("invalidSignature")
-                Result.Success(
-                    "Sincronizado: $imported nuevas, $updated actualizadas" +
-                        if (invalid > 0) ", $invalid rechazadas por firma inválida" else "",
-                    responseJson
-                )
+    /** Comprueba que la consola responde (`GET /api/public/health`). */
+    suspend fun checkHealth(): SyncResult = withContext(Dispatchers.IO) {
+        val url = ConsoleEndpoints.health(BuildConfig.LICENSE_CONSOLE_URL)
+        if (url == null) {
+            SyncResult.Disabled()
+        } else {
+            get(url) { response, body ->
+                if (response.isSuccessful) {
+                    SyncResult.Success("Consola operativa", parseOrNull(body))
+                } else {
+                    SyncResult.Failure("La consola respondió ${response.code}")
+                }
             }
         }
-
-    /**
-     * Publica la llave pública del móvil en la consola para que ambas emitan con
-     * la misma identidad criptográfica.
-     *
-     * La consola expone la clave activa en `/.well-known/licensing-public-key.json`;
-     * este método solo la compara y avisa si difiere (la importación de la llave
-     * privada es una operación de administrador que se hace en la web).
-     */
-    suspend fun comparePublicKey(appId: String = ConsoleEndpoints.APP_DRYWALL): Result = withContext(Dispatchers.IO) {
-        val url = ConsoleEndpoints.publicKeyJson(BuildConfig.LICENSE_CONSOLE_URL, appId)
-            ?: return@withContext Result.Disabled
-        val local = KeyGenSecurity.publicKeyString
-        if (local.isBlank()) return@withContext Result.Failure("El móvil aún no ha generado su llave maestra")
-
-        runCatching {
-            val request = Request.Builder().url(url).get().build()
-            client.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) return@withContext Result.Failure("La consola respondió ${response.code}")
-                val json = JSONObject(response.body?.string().orEmpty())
-                val remote = json.optString("publicKeyBase64")
-                if (remote == local) {
-                    Result.Success("Clave pública sincronizada (${json.optString("kid")})", json)
-                } else {
-                    Result.Failure(
-                        "La consola usa otra clave (${json.optString("kid")}). " +
-                            "Importa la llave privada del móvil en Claves de firma para unificar."
-                    )
-                }
-            }
-        }.getOrElse { Result.Failure("No se pudo comparar la clave: ${it.javaClass.simpleName}") }
     }
 
-    private inline fun postJson(url: String, payload: JSONObject, onSuccess: (JSONObject) -> Result): Result {
-        return runCatching {
+    /**
+     * Sube a la consola las licencias emitidas en el móvil.
+     * La consola verifica cada firma con la clave activa antes de aceptarla.
+     */
+    suspend fun pushLicenses(
+        licenses: List<IssuedLicense>,
+        appId: String = ConsoleEndpoints.APP_DRYWALL
+    ): SyncResult = withContext(Dispatchers.IO) {
+        val url = ConsoleEndpoints.importLicenses(BuildConfig.LICENSE_CONSOLE_URL)
+        if (url == null || !isConfigured()) {
+            SyncResult.Disabled()
+        } else if (licenses.isEmpty()) {
+            SyncResult.Success("No hay licencias que sincronizar", null)
+        } else {
+            val payload = JSONObject()
+            payload.put("licenses", buildLicensesArray(licenses, appId))
+            post(url, payload) { response, body ->
+                val json = parseOrNull(body)
+                if (response.isSuccessful && json != null) {
+                    val imported = json.optInt("imported")
+                    val updated = json.optInt("updated")
+                    val invalid = json.optInt("invalidSignature")
+                    val suffix = if (invalid > 0) ", $invalid rechazadas por firma inválida" else ""
+                    SyncResult.Success("Sincronizado: $imported nuevas, $updated actualizadas$suffix", json)
+                } else {
+                    SyncResult.Failure(json?.optString("error") ?: "Error ${response.code} de la consola")
+                }
+            }
+        }
+    }
+
+    /**
+     * Compara la llave pública del móvil con la activa en la consola.
+     *
+     * La importación de la llave privada es una operación de administrador que
+     * se hace en la web (*Claves de firma → Importar llave del keygen Android*);
+     * aquí solo se informa de si ambas identidades ya coinciden.
+     */
+    suspend fun comparePublicKey(
+        appId: String = ConsoleEndpoints.APP_DRYWALL
+    ): SyncResult = withContext(Dispatchers.IO) {
+        val url = ConsoleEndpoints.publicKeyJson(BuildConfig.LICENSE_CONSOLE_URL, appId)
+        val local = KeyGenSecurity.publicKeyString
+        if (url == null) {
+            SyncResult.Disabled()
+        } else if (local.isBlank()) {
+            SyncResult.Failure("El móvil aún no ha generado su llave maestra")
+        } else {
+            get(url) { response, body ->
+                val json = parseOrNull(body)
+                if (!response.isSuccessful || json == null) {
+                    SyncResult.Failure("La consola respondió ${response.code}")
+                } else {
+                    val remote = json.optString("publicKeyBase64")
+                    val kid = json.optString("kid")
+                    if (remote == local) {
+                        SyncResult.Success("Clave pública sincronizada ($kid)", json)
+                    } else {
+                        SyncResult.Failure(
+                            "La consola usa otra clave ($kid). Importa la llave privada del " +
+                                "móvil en Claves de firma para unificar ambas identidades."
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun buildLicensesArray(licenses: List<IssuedLicense>, appId: String): JSONArray {
+        val array = JSONArray()
+        for (license in licenses) {
+            val item = JSONObject()
+            item.put("appId", appId)
+            item.put("usuario", license.userName)
+            item.put("dispositivo", license.deviceId)
+            item.put("plan", license.planType)
+            item.put("precio", license.price)
+            item.put("isPaid", license.isPaid)
+            item.put("dateIssued", license.dateIssued)
+            item.put("notes", license.notes)
+            // La consola verifica la firma con la clave activa antes de aceptar.
+            if (license.licenseJson.isNotBlank()) {
+                val licenseJson = parseOrNull(license.licenseJson)
+                if (licenseJson != null) item.put("codigoLicencia", licenseJson)
+            }
+            array.put(item)
+        }
+        return array
+    }
+
+    private fun parseOrNull(body: String): JSONObject? {
+        return try {
+            JSONObject(body)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun get(
+        url: String,
+        handler: (okhttp3.Response, String) -> SyncResult
+    ): SyncResult {
+        return try {
+            val request = Request.Builder()
+                .url(url)
+                .addHeader("Accept", "application/json")
+                .addHeader("User-Agent", userAgent())
+                .get()
+                .build()
+            client.newCall(request).execute().use { response ->
+                handler(response, readBody(response))
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Fallo de red contra la consola", e)
+            SyncResult.Failure("Sin conexión con la consola: ${e.javaClass.simpleName}")
+        }
+    }
+
+    private fun post(
+        url: String,
+        payload: JSONObject,
+        handler: (okhttp3.Response, String) -> SyncResult
+    ): SyncResult {
+        return try {
             val request = Request.Builder()
                 .url(url)
                 .addHeader("Authorization", "Bearer ${BuildConfig.LICENSE_CONSOLE_TOKEN}")
                 .addHeader("Content-Type", "application/json")
-                .addHeader("User-Agent", "KeygenPro/${BuildConfig.VERSION_NAME} (Android)")
-                .post(payload.toString().toRequestBody(JSON))
+                .addHeader("User-Agent", userAgent())
+                .post(payload.toString().toRequestBody(jsonMediaType))
                 .build()
             client.newCall(request).execute().use { response ->
-                val body = response.body?.string().orEmpty()
-                val json = runCatching { JSONObject(body) }.getOrNull()
-                if (response.isSuccessful) {
-                    onSuccess(json ?: JSONObject())
-                } else {
-                    Result.Failure(json?.optString("error") ?: "Error ${response.code} de la consola")
-                }
+                handler(response, readBody(response))
             }
-        }.getOrElse {
-            Log.w(TAG, "Fallo de red contra la consola", it)
-            Result.Failure("Sin conexión con la consola: ${it.javaClass.simpleName}")
+        } catch (e: Exception) {
+            Log.w(TAG, "Fallo de red contra la consola", e)
+            SyncResult.Failure("Sin conexión con la consola: ${e.javaClass.simpleName}")
         }
+    }
+
+    /**
+     * En OkHttp 5.x `Response.body` ya no es nulo, así que se llama `string()`
+     * directamente (mismo patrón que `NetworkTimeProvider` y `CurrencyScraper`).
+     */
+    private fun readBody(response: okhttp3.Response): String {
+        return try {
+            response.body.string()
+        } catch (e: Exception) {
+            ""
+        }
+    }
+
+    private fun userAgent(): String {
+        return "KeygenPro/" + BuildConfig.VERSION_NAME + " (Android)"
     }
 }
