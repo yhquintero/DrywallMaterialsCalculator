@@ -174,6 +174,9 @@ Leyenda de esfuerzo: 🟢 ≤ 1 sesión · 🟡 2–3 sesiones · 🔴 proyecto 
 
 48. 🟢 **CI/CD completo.** Matriz de tests (web, servidor, Android) + despliegue
     automático a staging con verificación de humo.
+    *Nota:* la matriz Android (`Compile`, `Static Analysis`, `Unit Tests`) ya
+    fallaba en `main` antes de estos módulos; conviene arreglarla primero, ya
+    que la web y el servidor sí pasan limpios.
 49. 🟢 **Pruebas end-to-end (Playwright).** Flujos críticos: crear obra, medir,
     presupuestar, exportar PDF/DXF.
 50. 🟢 **Cobertura y calidad de código.** Umbral mínimo de cobertura, reglas
