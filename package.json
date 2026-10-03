@@ -1,0 +1,24 @@
+{
+  "name": "drywall-materials-calculator",
+  "version": "2.0.0",
+  "description": "The Ultimate Top 1 Drywall & Gypsum Materials Calculator Web & Mobile Platform",
+  "scripts": {
+    "dev": "npm --prefix web run dev",
+    "build": "npm --prefix web run build",
+    "preview": "npm --prefix web run preview",
+    "test:web": "npm --prefix web run test",
+    "install:web": "npm --prefix web install"
+  },
+  "keywords": [
+    "drywall",
+    "pladur",
+    "gypsum",
+    "construction-calculator",
+    "materials-estimation",
+    "budgeting",
+    "contractor-tools",
+    "takeoff"
+  ],
+  "author": "yhquintero & Community",
+  "license": "MIT"
+}
