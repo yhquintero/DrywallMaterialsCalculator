@@ -104,7 +104,7 @@ androidx-security-crypto = { group = "androidx.security", name = "security-crypt
 google-play-integrity = { group = "com.google.android.play", name = "integrity", version.ref = "playIntegrity" }
 
 # SQLCipher — cifrado de bases de datos Room
-sqlcipher = { group = "net.zetetic", name = "sqlcipher-android", version = "4.17.0" }
+sqlcipher = { group = "net.zetetic", name = "sqlcipher-android", version = "4.19.1" }
 androidx-sqlite-ktx = { group = "androidx.sqlite", name = "sqlite-ktx", version = "2.7.0" }
 
 # Scraping
