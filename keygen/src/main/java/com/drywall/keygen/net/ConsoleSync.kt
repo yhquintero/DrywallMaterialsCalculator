@@ -73,7 +73,7 @@ object ConsoleSync {
             client.newCall(request).execute().use { response ->
                 val body = response.body?.string().orEmpty()
                 if (response.isSuccessful) {
-                    Result.Success("Consola operativa", JSONObject(body).takeIf { true })
+                    Result.Success("Consola operativa", runCatching { JSONObject(body) }.getOrNull())
                 } else {
                     Result.Failure("La consola respondió ${response.code}")
                 }

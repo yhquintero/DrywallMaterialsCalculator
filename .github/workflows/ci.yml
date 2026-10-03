@@ -5,6 +5,9 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
+  # Permite verificar la compilación Android desde cualquier rama sin esperar
+  # a un push a main (útil cuando los logs/runs no están disponibles).
+  workflow_dispatch:
 
 jobs:
   lint:

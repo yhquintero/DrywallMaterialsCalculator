@@ -78,7 +78,7 @@ export function ensureSigningKeys({ quiet = false } = {}) {
     const before = getDb().prepare('SELECT id FROM signing_keys WHERE app_id = ? AND is_active = 1').get(appId);
     if (before) continue;
     const started = Date.now();
-    const key = ensureActiveKey(appId, null, 'Generación inicial automática (bootstrap)');
+    const key = ensureActiveKey(appId, null);
     created.push({ appId, kid: key.kid, ms: Date.now() - started });
     log(`[bootstrap] 🔑 Clave RSA-${key.modulusBits} generada para ${appId}: ${key.kid} (${((Date.now() - started) / 1000).toFixed(1)} s)`);
   }
