@@ -9,6 +9,9 @@ import keyRoutes from './keys.js';
 import auditRoutes from './audit.js';
 import rateRoutes from './rates.js';
 import planRoutes from './plans.js';
+import cadRoutes from './cad.js';
+import pricingRoutes from './pricing.js';
+import arRoutes from './ar.js';
 import { publicApiRouter } from './public.js';
 import wellKnownRouter from './wellKnown.js';
 import { getDb } from '../db/index.js';
@@ -44,6 +47,19 @@ const publicLimiter = rateLimit({
   message: { error: 'Demasiadas solicitudes al endpoint público.' },
 });
 
+/**
+ * Límite propio de los módulos profesionales (planos CAD, precios y AR).
+ * Son endpoints que usa la calculadora pública, por lo que no exigen login,
+ * pero sí llevan guardia de origen, límite de tasa y validación estricta.
+ */
+const toolsLimiter = rateLimit({
+  windowMs: 60_000,
+  limit: 120,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { error: 'Demasiadas solicitudes a los módulos profesionales.' },
+});
+
 router.use(apiLimiter);
 
 // Públicos (apps Android)
@@ -61,6 +77,13 @@ router.use('/keys', keyRoutes);
 router.use('/audit', auditRoutes);
 router.use('/rates', rateRoutes);
 router.use('/plans', planRoutes);
+
+// ── Módulos profesionales (usan la calculadora pública) ────────────────────
+// Planos vectoriales DXF/DWG, catálogos de precios de distribuidores y
+// señalización de la asistencia remota por WebRTC.
+router.use('/cad', toolsLimiter, cadRoutes);
+router.use('/pricing', toolsLimiter, pricingRoutes);
+router.use('/ar', toolsLimiter, arRoutes);
 
 /** GET /api/system — estado interno (solo Admin/Auditor). */
 router.get('/system', (req, res) => {

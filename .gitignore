@@ -61,6 +61,7 @@ allure-results/
 # ── Consola de Licencias (server/) ───────────────────────────────────────────
 # Base de datos SQLite y sus backups (datos reales de clientes y licencias).
 server/data/
+server/src/data/
 server/**/*.db
 server/**/*.db-*
 server/backups/

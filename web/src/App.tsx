@@ -36,7 +36,31 @@ import { ProjectSettingsModal } from './components/ProjectSettingsModal';
 import { SavedProjectsModal } from './components/SavedProjectsModal';
 import { MaterialCatalogModal } from './components/MaterialCatalogModal';
 import { SecurityCenterModal } from './components/SecurityCenterModal';
-import { ShieldCheck, KeyRound, Lock, Unlock } from 'lucide-react';
+/**
+ * Los tres módulos profesionales se cargan en diferido: sólo se descarga su
+ * código cuando el usuario abre la herramienta, de modo que el arranque de la
+ * calculadora no se penaliza (los planos CAD y el motor de AR suman bastante
+ * código).
+ */
+const CadExportModal = React.lazy(() =>
+  import('./components/CadExportModal').then((m) => ({ default: m.CadExportModal }))
+);
+const ArScannerModal = React.lazy(() =>
+  import('./components/ArScannerModal').then((m) => ({ default: m.ArScannerModal }))
+);
+const PricingModal = React.lazy(() =>
+  import('./components/PricingModal').then((m) => ({ default: m.PricingModal }))
+);
+
+const ModuleFallback: React.FC<{ label: string }> = ({ label }) => (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-sm">
+    <div className="flex items-center gap-3 rounded-2xl border border-slate-700 bg-slate-900 px-5 py-4">
+      <span className="w-4 h-4 rounded-full border-2 border-brand-500 border-t-transparent animate-spin" />
+      <span className="text-xs text-slate-300">Cargando {label}…</span>
+    </div>
+  </div>
+);
+import { ShieldCheck, KeyRound, Lock, Unlock, DraftingCompass, ScanLine, Store, Users } from 'lucide-react';
 
 export function App() {
   // La plataforma se sirve SIEMPRE sobre HTTPS en producción; en local el
@@ -81,6 +105,9 @@ export function App() {
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
   const [isSecurityOpen, setIsSecurityOpen] = useState(false);
+  const [isCadOpen, setIsCadOpen] = useState(false);
+  const [isArOpen, setIsArOpen] = useState(false);
+  const [isPricingOpen, setIsPricingOpen] = useState(false);
 
   // Auto-save effect
   useEffect(() => {
@@ -152,6 +179,22 @@ export function App() {
     setCustomPrices({});
     setCustomStock({});
     setSelectedRoomId(`room_${Date.now()}`);
+  };
+
+  /**
+   * Incorpora al proyecto las estancias creadas por el escáner AR/cámara.
+   * Se comporta igual que una captura manual: el cómputo se recalcula solo.
+   */
+  const handleAddScannedRooms = (newRooms: Room[]) => {
+    if (!newRooms.length) return;
+    setRooms((prev) => [...prev, ...newRooms]);
+    setSelectedRoomId(newRooms[0].id);
+    if (newRooms.length > 1) setSelectedRoomId(newRooms[0].id);
+  };
+
+  /** Aplica los precios obtenidos de los catálogos de distribuidores. */
+  const handleApplyMarketPrices = (prices: Record<string, number>) => {
+    setCustomPrices((prev) => ({ ...prev, ...prices }));
   };
 
   const handleDeleteProject = (id: string) => {
@@ -279,6 +322,46 @@ export function App() {
             >
               <Package className="w-4 h-4 text-amber-400" />
             </button>
+
+            {/* Planos CAD (DXF / DWG) */}
+            <button
+              onClick={() => setIsCadOpen(true)}
+              className="px-2.5 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5"
+              title="Exportar planos vectoriales DXF / DWG para AutoCAD"
+            >
+              <DraftingCompass className="w-3.5 h-3.5" />
+              <span className="hidden xl:inline">Planos CAD</span>
+            </button>
+
+            {/* Escáner AR / cámara */}
+            <button
+              onClick={() => setIsArOpen(true)}
+              className="px-2.5 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5"
+              title="Escanear la estancia con Realidad Aumentada (WebXR) o con la cámara"
+            >
+              <ScanLine className="w-3.5 h-3.5" />
+              <span className="hidden xl:inline">Escanear AR</span>
+            </button>
+
+            {/* Precios de distribuidores */}
+            <button
+              onClick={() => setIsPricingOpen(true)}
+              className="px-2.5 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5"
+              title="Conectar catálogos de distribuidores y actualizar precios en tiempo real"
+            >
+              <Store className="w-3.5 h-3.5" />
+              <span className="hidden xl:inline">Precios</span>
+            </button>
+
+            {/* Asistencia remota en obra */}
+            <a
+              href="/asistencia"
+              className="px-2.5 py-1.5 bg-violet-500/10 hover:bg-violet-500/20 text-violet-300 border border-violet-500/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5"
+              title="Comparte la cámara con la oficina técnica por WebRTC"
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span className="hidden xl:inline">Asistencia</span>
+            </a>
 
             {/* Settings Button */}
             <button
@@ -511,6 +594,41 @@ export function App() {
         isOpen={isSecurityOpen}
         onClose={() => setIsSecurityOpen(false)}
       />
+
+      {isCadOpen && (
+        <React.Suspense fallback={<ModuleFallback label="módulo de planos CAD" />}>
+          <CadExportModal
+            isOpen={isCadOpen}
+            onClose={() => setIsCadOpen(false)}
+            rooms={rooms}
+            config={config}
+            summary={summary}
+          />
+        </React.Suspense>
+      )}
+
+      {isArOpen && (
+        <React.Suspense fallback={<ModuleFallback label="escáner AR" />}>
+          <ArScannerModal
+            isOpen={isArOpen}
+            onClose={() => setIsArOpen(false)}
+            config={config}
+            onAddRooms={handleAddScannedRooms}
+          />
+        </React.Suspense>
+      )}
+
+      {isPricingOpen && (
+        <React.Suspense fallback={<ModuleFallback label="módulo de precios" />}>
+          <PricingModal
+            isOpen={isPricingOpen}
+            onClose={() => setIsPricingOpen(false)}
+            config={config}
+            summary={summary}
+            onApplyPrices={handleApplyMarketPrices}
+          />
+        </React.Suspense>
+      )}
     </div>
   );
 }

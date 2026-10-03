@@ -26,6 +26,14 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 
 const API_TARGET = process.env.API_TARGET || 'http://127.0.0.1:8443';
 
+/**
+ * El escáner de estancias necesita la cámara y el micrófono del propio origen
+ * (WebXR + getUserMedia), por eso se permite `self` en esas directivas. El
+ * resto de capacidades sensibles siguen bloqueadas.
+ */
+const PERMISSIONS_POLICY =
+  'camera=(self), microphone=(self), xr-spatial-tracking=(self), fullscreen=(self), geolocation=(), payment=()';
+
 /** Certificado local firmado por la CA del repo (scripts/gen-certs.sh). */
 function localHttpsOptions() {
   const certDir = path.resolve(HERE, 'certs');
@@ -53,7 +61,7 @@ function securityHeadersPlugin(enableHsts: boolean) {
         res.setHeader('X-Frame-Options', 'DENY');
         res.setHeader('X-XSS-Protection', '0');
         res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-        res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
+        res.setHeader('Permissions-Policy', PERMISSIONS_POLICY);
         res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
         next();
       });
@@ -66,7 +74,7 @@ function securityHeadersPlugin(enableHsts: boolean) {
         res.setHeader('X-Content-Type-Options', 'nosniff');
         res.setHeader('X-Frame-Options', 'DENY');
         res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-        res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
+        res.setHeader('Permissions-Policy', PERMISSIONS_POLICY);
         next();
       });
     },
