@@ -16,7 +16,7 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
-      - uses: gradle/actions/setup-gradle@v3
+      - uses: gradle/actions/setup-gradle@v6
       - name: Check Kotlin formatting
         run: ./gradlew spotlessCheck --no-daemon || echo "Spotless not configured — skipping"
       - name: Lint Debug
@@ -31,7 +31,7 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
-      - uses: gradle/actions/setup-gradle@v3
+      - uses: gradle/actions/setup-gradle@v6
       - name: Compile app
         run: ./gradlew :app:compileDebugKotlin --no-daemon
       - name: Compile keygen
@@ -48,7 +48,7 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
-      - uses: gradle/actions/setup-gradle@v3
+      - uses: gradle/actions/setup-gradle@v6
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest --no-daemon
       - name: Upload test reports
@@ -68,7 +68,7 @@ jobs:
   #       with:
   #         java-version: 17
   #         distribution: temurin
-  #     - uses: gradle/actions/setup-gradle@v3
+  #     - uses: gradle/actions/setup-gradle@v6
   #     - uses: reactivecircus/android-emulator-runner@v2
   #       with:
   #         api-level: 29
@@ -84,7 +84,7 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
-      - uses: gradle/actions/setup-gradle@v3
+      - uses: gradle/actions/setup-gradle@v6
       - name: Build App Debug
         run: ./gradlew :app:assembleDebug --no-daemon
       - name: Build Keygen Debug
