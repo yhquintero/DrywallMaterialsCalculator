@@ -27,7 +27,7 @@ mlkitBarcodeScanning = "17.3.0"
 securityCrypto = "1.1.0"
 jsoup = "1.22.2"
 biometric = "1.1.0"
-fragmentKtx = "1.8.9"
+fragmentKtx = "1.9.1"
 okhttp = "5.4.0"
 appcompat = "1.7.1"
 
