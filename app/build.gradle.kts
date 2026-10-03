@@ -12,6 +12,12 @@ android {
     namespace = "com.drywall.calculator"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localProperties.load(localPropertiesFile.inputStream())
+    }
+
     defaultConfig {
         applicationId = "com.drywall.calculator"
         minSdk = libs.versions.minSdk.get().toInt()
@@ -24,12 +30,22 @@ android {
             useSupportLibrary = true
         }
         buildConfigField("long", "PLAY_INTEGRITY_CLOUD_PROJECT_NUMBER", "0L")
-    }
 
-    val localProperties = Properties()
-    val localPropertiesFile = rootProject.file("local.properties")
-    if (localPropertiesFile.exists()) {
-        localProperties.load(localPropertiesFile.inputStream())
+        // URL HTTPS de la Consola de Licencias (server/). Se configura con
+        //   LICENSE_CONSOLE_URL=https://licencias.tudominio.com ./gradlew :app:assembleRelease
+        // o en local.properties (LICENSE_CONSOLE_URL=...). Sin valor ⇒ la app
+        // usa únicamente la clave pública empaquetada.
+        val consoleUrl = System.getenv("LICENSE_CONSOLE_URL")
+            ?: localProperties.getProperty("LICENSE_CONSOLE_URL")
+            ?: ""
+        buildConfigField("String", "LICENSE_CONSOLE_URL", "\"$consoleUrl\"")
+
+        // Pinning opcional: SHA-256 (hex) de la clave pública esperada.
+        // Se lee en la consola → Claves de firma. Vacío ⇒ se acepta la vigente.
+        val consoleKeySha = System.getenv("LICENSE_CONSOLE_KEY_SHA256")
+            ?: localProperties.getProperty("LICENSE_CONSOLE_KEY_SHA256")
+            ?: ""
+        buildConfigField("String", "LICENSE_CONSOLE_KEY_SHA256", "\"$consoleKeySha\"")
     }
 
     signingConfigs {

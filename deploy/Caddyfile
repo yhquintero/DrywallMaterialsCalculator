@@ -1,0 +1,78 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  Caddy: TLS automático con Let's Encrypt para la Consola de Licencias.
+#  Caddy redirige TODO el tráfico HTTP a HTTPS y añade HSTS + cabeceras.
+#
+#  Cambia {DOMAIN} por tu dominio real, o pásalo como variable de entorno:
+#    DOMAIN=licencias.midominio.com docker compose up -d
+# ─────────────────────────────────────────────────────────────────────────────
+
+{
+	email {$ACME_EMAIL:admin@drywallpro.local}
+	# Descomenta para probar con certificados de Let's Encrypt staging:
+	# acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+	servers {
+		protocols h1 h2 h3
+	}
+}
+
+# Redirección global HTTP → HTTPS (Caddy ya la hace por defecto; se explicita).
+http://{$DOMAIN:localhost} {
+	redir https://{host}{uri} permanent
+}
+
+https://{$DOMAIN:localhost} {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+		Cross-Origin-Opener-Policy "same-origin"
+		Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self' https: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
+		-Server
+	}
+
+	# Fuerza bruta: límite estricto en credenciales.
+	@auth path /api/auth/login /api/auth/refresh /api/auth/logout
+	handle @auth {
+		rate_limit {
+			zone auth_zone {
+				match @auth
+				key {remote_host}
+				events 20
+				window 15m
+			}
+		}
+		reverse_proxy console-api:8443
+	}
+
+	# Endpoints públicos consumidos por las apps Android.
+	@public path /api/public/* /.well-known/*
+	handle @public {
+		reverse_proxy console-api:8443 {
+			header_up X-Forwarded-Proto https
+		}
+	}
+
+	# Resto de la API.
+	handle /api/* {
+		reverse_proxy console-api:8443 {
+			header_up X-Forwarded-Proto https
+		}
+	}
+
+	# Web estática (SPA) servida por nginx.
+	handle {
+		reverse_proxy console-web:80
+	}
+
+	log {
+		output file /data/access.log {
+			roll_size 10mb
+			roll_keep 5
+		}
+		format json
+	}
+}
