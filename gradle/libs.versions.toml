@@ -8,7 +8,7 @@ minSdk = "26"
 targetSdk = "37"
 
 composeBom = "2026.06.01"
-room = "2.8.4"
+room = "2.8.5"
 coreKtx = "1.19.0"
 splashscreen = "1.2.0"
 lifecycleRuntimeKtx = "2.11.0"
