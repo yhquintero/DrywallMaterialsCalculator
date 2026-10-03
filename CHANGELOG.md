@@ -31,6 +31,13 @@ actualización total de la hoja de ruta a la
 - **Identificadores únicos.** Al crear una obra se usaban dos marcas de tiempo
   distintas para la zona y su selección, lo que podía dejar el visor en otra
   zona. Nuevo helper `uid()`.
+- **Entorno `npm run dev:https` multiplataforma (Windows PowerShell / CMD, macOS y Linux).**
+  `scripts/dev-https.mjs` invocaba `spawn('bash', ['scripts/gen-certs.sh'])` (fallando en
+  Windows con `Error: spawn bash ENOENT`) y pasaba `--https` al CLI de Vite 6 (opción
+  eliminada en Vite 6 que lanzaba `CACError: Unknown option '--https'`). Se reemplaza por
+  `scripts/gen-certs.mjs` — generador X.509 v3 nativo con `node:crypto` (CA local + hojas
+  con SAN DNS/IPv4/IPv6 sin `bash` ni `openssl`) — y lanzamiento directo con `process.execPath`
+  (`shell: false`) compatible con rutas con espacios en Windows y Node 22/24.
 
 ### Rendimiento
 
