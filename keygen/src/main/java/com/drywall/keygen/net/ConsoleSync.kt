@@ -71,9 +71,9 @@ object ConsoleSync {
         runCatching {
             val request = Request.Builder().url(url).get().build()
             client.newCall(request).execute().use { response ->
-                val body = response.body?.string().orEmpty()
+                val body = response.body.string()
                 if (response.isSuccessful) {
-                    Result.Success("Consola operativa", JSONObject(body).takeIf { true })
+                    Result.Success("Consola operativa", runCatching { JSONObject(body) }.getOrNull())
                 } else {
                     Result.Failure("La consola respondió ${response.code}")
                 }
@@ -147,16 +147,19 @@ object ConsoleSync {
         runCatching {
             val request = Request.Builder().url(url).get().build()
             client.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) return@withContext Result.Failure("La consola respondió ${response.code}")
-                val json = JSONObject(response.body?.string().orEmpty())
-                val remote = json.optString("publicKeyBase64")
-                if (remote == local) {
-                    Result.Success("Clave pública sincronizada (${json.optString("kid")})", json)
+                if (!response.isSuccessful) {
+                    Result.Failure("La consola respondió ${response.code}")
                 } else {
-                    Result.Failure(
-                        "La consola usa otra clave (${json.optString("kid")}). " +
-                            "Importa la llave privada del móvil en Claves de firma para unificar."
-                    )
+                    val json = JSONObject(response.body.string())
+                    val remote = json.optString("publicKeyBase64")
+                    if (remote == local) {
+                        Result.Success("Clave pública sincronizada (${json.optString("kid")})", json)
+                    } else {
+                        Result.Failure(
+                            "La consola usa otra clave (${json.optString("kid")}). " +
+                                "Importa la llave privada del móvil en Claves de firma para unificar."
+                        )
+                    }
                 }
             }
         }.getOrElse { Result.Failure("No se pudo comparar la clave: ${it.javaClass.simpleName}") }
@@ -172,7 +175,7 @@ object ConsoleSync {
                 .post(payload.toString().toRequestBody(JSON))
                 .build()
             client.newCall(request).execute().use { response ->
-                val body = response.body?.string().orEmpty()
+                val body = response.body.string()
                 val json = runCatching { JSONObject(body) }.getOrNull()
                 if (response.isSuccessful) {
                     onSuccess(json ?: JSONObject())

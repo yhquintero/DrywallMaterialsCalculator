@@ -1,8 +1,11 @@
 import React from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { AlertTriangle, ArrowRight, KeyRound, Lock, ShieldCheck, Eye, EyeOff } from 'lucide-react';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { AlertTriangle, ArrowLeft, ArrowRight, KeyRound, Lock, ShieldCheck, Eye, EyeOff, Wand2 } from 'lucide-react';
 import { useAuth } from '../AuthContext';
 import { Button, Field, Input, cn } from '../components/ui';
+
+const DEV_DEFAULT_USER = 'admin';
+const DEV_DEFAULT_PASS = 'Admin.Drywall2026!';
 
 export function LoginPage() {
   const { user, loading, login, error, clearError, secureConnection, session } = useAuth();
@@ -56,6 +59,11 @@ export function LoginPage() {
   };
 
   const message = localError || error;
+  const isDevHost =
+    typeof window !== 'undefined' &&
+    (['localhost', '127.0.0.1'].includes(window.location.hostname) ||
+      window.location.hostname.endsWith('.e2b.app') ||
+      /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(window.location.hostname));
 
   return (
     <div className="relative grid min-h-screen place-items-center overflow-hidden bg-slate-950 px-4 py-10">
@@ -63,13 +71,24 @@ export function LoginPage() {
       <div className="pointer-events-none absolute -top-32 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-brand-600/20 blur-3xl" />
 
       <div className="relative w-full max-w-md">
+        <div className="mb-4 flex justify-between items-center text-xs">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 text-slate-400 hover:text-brand-300 transition"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            <span>Volver a la Calculadora</span>
+          </Link>
+          <span className="font-mono text-[11px] text-slate-500">/admin/licenses · Keygen RSA-4096</span>
+        </div>
+
         <div className="mb-6 flex flex-col items-center text-center">
           <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-600/15 text-brand-400 ring-1 ring-inset ring-brand-500/40">
             <KeyRound className="h-7 w-7" />
           </span>
-          <h1 className="mt-4 text-2xl font-bold tracking-tight text-white">Consola de Licencias</h1>
+          <h1 className="mt-4 text-2xl font-bold tracking-tight text-white">Consola de Licencias & Keygen</h1>
           <p className="mt-1 text-sm text-slate-400">
-            Control profesional del Keygen de <strong className="text-slate-200">DrywallPro Master</strong> y{' '}
+            Emisión y firma de licencias para <strong className="text-slate-200">DrywallPro Master</strong> y{' '}
             <strong className="text-slate-200">Keygen Pro</strong>
           </p>
         </div>
@@ -125,6 +144,31 @@ export function LoginPage() {
             Iniciar sesión
             {!submitting ? <ArrowRight className="h-4 w-4" /> : null}
           </Button>
+
+          {isDevHost ? (
+            <div className="mt-4 rounded-xl border border-brand-500/30 bg-brand-950/30 p-3 text-xs text-slate-300">
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-semibold text-brand-300 flex items-center gap-1.5">
+                  <Wand2 className="h-3.5 w-3.5" /> Acceso inicial de desarrollo
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUsername(DEV_DEFAULT_USER);
+                    setPassword(DEV_DEFAULT_PASS);
+                    setLocalError(null);
+                  }}
+                  className="rounded-md bg-brand-600/30 px-2 py-1 text-[11px] font-semibold text-brand-200 ring-1 ring-inset ring-brand-500/40 transition hover:bg-brand-600/50 hover:text-white"
+                >
+                  Autocompletar
+                </button>
+              </div>
+              <p className="mt-1.5 font-mono text-[11px] text-slate-400">
+                usuario: <strong className="text-slate-200">{DEV_DEFAULT_USER}</strong> · contraseña:{' '}
+                <strong className="text-slate-200">{DEV_DEFAULT_PASS}</strong>
+              </p>
+            </div>
+          ) : null}
 
           <div className="mt-5 space-y-1.5 border-t border-slate-800 pt-4 text-[11px] text-slate-500">
             <p className="flex items-center gap-1.5">

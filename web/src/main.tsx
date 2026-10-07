@@ -12,7 +12,7 @@ import './styles/index.css';
  *   /asistencia   → Sala de asistencia remota por WebRTC (técnico en obra)
  *   /admin/*      → Consola profesional de licencias (Roles, Usuarios, Permisos, Keygen)
  */
-function Root() {
+export function Root() {
   return (
     <Routes>
       <Route path="/admin/*" element={<AdminConsole />} />
@@ -22,10 +22,13 @@ function Root() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Root />
-    </BrowserRouter>
-  </React.StrictMode>
-);
+const rootElement = typeof document !== 'undefined' ? document.getElementById('root') : null;
+if (rootElement) {
+  ReactDOM.createRoot(rootElement).render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <Root />
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+}

@@ -24,8 +24,24 @@ export function ensureBootstrapAdmin({ quiet = false } = {}) {
     .get().c;
   if (existingAdmins > 0) {
     const first = db
-      .prepare("SELECT u.username FROM users u JOIN roles r ON r.id = u.role_id WHERE r.code = 'ADMIN' ORDER BY u.id LIMIT 1")
+      .prepare(
+        "SELECT u.id, u.username, u.last_login_at FROM users u JOIN roles r ON r.id = u.role_id WHERE r.code = 'ADMIN' ORDER BY u.id LIMIT 1"
+      )
       .get();
+    // Si el admin de bootstrap aún no ha iniciado sesión nunca (p. ej. la BD se
+    // creó en un arranque previo con clave aleatoria efímera) y ahora se define
+    // BOOTSTRAP_ADMIN_PASSWORD, se sincroniza la contraseña para no dejar al
+    // administrador bloqueado fuera de la consola.
+    if (first && first.last_login_at == null && config.bootstrap.adminPassword) {
+      assertStrongPassword(config.bootstrap.adminPassword);
+      const ts = Date.now();
+      db.prepare(
+        `UPDATE users
+            SET password_hash = ?, must_change_password = 0, failed_attempts = 0,
+                locked_until = NULL, password_changed_at = ?, updated_at = ?
+          WHERE id = ?`
+      ).run(hashPassword(config.bootstrap.adminPassword), ts, ts, first.id);
+    }
     return { created: false, exists: true, username: first.username };
   }
 
@@ -78,7 +94,7 @@ export function ensureSigningKeys({ quiet = false } = {}) {
     const before = getDb().prepare('SELECT id FROM signing_keys WHERE app_id = ? AND is_active = 1').get(appId);
     if (before) continue;
     const started = Date.now();
-    const key = ensureActiveKey(appId, null, 'Generación inicial automática (bootstrap)');
+    const key = ensureActiveKey(appId, null);
     created.push({ appId, kid: key.kid, ms: Date.now() - started });
     log(`[bootstrap] 🔑 Clave RSA-${key.modulusBits} generada para ${appId}: ${key.kid} (${((Date.now() - started) / 1000).toFixed(1)} s)`);
   }

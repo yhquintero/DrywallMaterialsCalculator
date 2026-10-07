@@ -12,11 +12,14 @@ import {
   ScrollText,
   Smartphone,
   TrendingUp,
+  Wand2,
 } from 'lucide-react';
 import { api, qs } from '../api';
 import { useAuth } from '../AuthContext';
 import { Badge, Button, Card, CardBody, CardHeader, EmptyState, Spinner, Stat, cn } from '../components/ui';
 import { PageHeader } from '../components/AdminLayout';
+import { Can } from '../components/Guard';
+import { LicenseModal } from '../components/LicenseModal';
 import { APPS } from '../permissions';
 import type { AppId, AuditEntry, License, LicenseStats } from '../types';
 
@@ -34,6 +37,10 @@ export function DashboardPage() {
   const [pending, setPending] = React.useState<License[]>([]);
   const [audit, setAudit] = React.useState<AuditEntry[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const [issueModal, setIssueModal] = React.useState<{ open: boolean; app: AppId }>({
+    open: false,
+    app: 'drywall_calculator',
+  });
 
   const load = React.useCallback(async () => {
     setLoading(true);
@@ -89,6 +96,21 @@ export function DashboardPage() {
             <Button size="sm" variant="secondary" icon={<RefreshCw className={cn('h-3.5 w-3.5', loading && 'animate-spin')} />} onClick={() => void load()}>
               Actualizar
             </Button>
+            <Can permission="licenses.issue">
+              <Button
+                size="sm"
+                variant="primary"
+                icon={<Wand2 className="h-3.5 w-3.5" />}
+                onClick={() =>
+                  setIssueModal({
+                    open: true,
+                    app: appId === 'all' ? 'drywall_calculator' : appId,
+                  })
+                }
+              >
+                Emitir licencia (Keygen)
+              </Button>
+            </Can>
           </>
         }
       />
@@ -135,6 +157,18 @@ export function DashboardPage() {
                       <Metric label="Cobradas" value={String(app.paid)} />
                       <Metric label="Ingresos" value={formatMoney(app.revenue)} />
                     </dl>
+                    <Can permission="licenses.issue">
+                      <div className="mt-2.5 flex justify-end border-t border-slate-800/70 pt-2">
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          icon={<Wand2 className="h-3 w-3 text-brand-400" />}
+                          onClick={() => setIssueModal({ open: true, app: app.appId })}
+                        >
+                          Emitir licencia
+                        </Button>
+                      </div>
+                    </Can>
                   </div>
                 ))}
                 <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2 text-xs text-slate-400">
@@ -242,6 +276,14 @@ export function DashboardPage() {
           ) : null}
         </>
       )}
+
+      <LicenseModal
+        open={issueModal.open}
+        mode="issue"
+        defaultApp={issueModal.app}
+        onClose={() => setIssueModal((prev) => ({ ...prev, open: false }))}
+        onSaved={() => void load()}
+      />
     </>
   );
 }

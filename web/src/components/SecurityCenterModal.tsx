@@ -165,6 +165,40 @@ export const SecurityCenterModal: React.FC<SecurityCenterModalProps> = ({ isOpen
             </div>
           </div>
 
+          {/* Consola de Licencias y Keygen Centralizado RSA-4096 */}
+          <div className="bg-gradient-to-r from-brand-950/60 via-slate-950 to-emerald-950/40 border border-brand-500/30 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <KeyRound className="w-4 h-4 text-brand-400" />
+                <h3 className="font-bold text-sm text-slate-100">
+                  Creación de Licencias con Keygen Centralizado (RSA-4096)
+                </h3>
+                <span className="text-[10px] bg-brand-500/20 text-brand-300 border border-brand-500/40 px-2 py-0.5 rounded font-mono">
+                  SHA256withRSA
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-300 leading-relaxed">
+                Emite, renueva, cobra y revoca licencias firmadas compatibles con <strong>DrywallPro Master</strong> y{' '}
+                <strong>Keygen Pro</strong> desde la consola web (<code className="font-mono text-brand-300">/admin/licenses</code>).
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
+              <a
+                href="/admin/licenses?emitir=1"
+                className="px-3.5 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-semibold shadow-md transition-all flex items-center gap-1.5"
+              >
+                <KeyRound className="w-3.5 h-3.5" />
+                <span>Crear Licencia (Keygen)</span>
+              </a>
+              <a
+                href="/admin"
+                className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold transition-all"
+              >
+                Panel de Control
+              </a>
+            </div>
+          </div>
+
           {/* Interactive Sandbox Firewall Tester */}
           <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-4">
             <div className="flex items-center justify-between">

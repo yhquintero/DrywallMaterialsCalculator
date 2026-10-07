@@ -327,15 +327,16 @@ export function App() {
               <span>{config.unitSystem === 'metric' ? 'Métrico (m²)' : 'Imperial (sq ft)'}</span>
             </button>
 
-            {/* Acceso a la Consola de Licencias (Roles, Usuarios, Permisos, Keygen) */}
+            {/* Acceso directo al Keygen / Consola de Licencias */}
             <a
-              href="/admin"
-              className="px-2.5 py-1.5 bg-brand-500/10 hover:bg-brand-500/20 text-brand-300 border border-brand-500/30 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shadow-sm"
-              title="Consola profesional de licencias: Roles, Usuarios, Permisos y control del Keygen de ambas apps"
-              aria-label="Abrir la consola profesional de licencias"
+              href="/admin/licenses?emitir=1"
+              className="px-2.5 py-1.5 bg-brand-500/15 hover:bg-brand-500/25 text-brand-300 border border-brand-500/40 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shadow-sm"
+              title="Crear licencia con Keygen (DrywallPro Master / Keygen Pro) y abrir la Consola de Licencias"
+              aria-label="Abrir la consola profesional de licencias y Keygen"
             >
-              <KeyRound className="w-3.5 h-3.5" aria-hidden="true" />
-              <span className="hidden lg:inline">Consola</span>
+              <KeyRound className="w-3.5 h-3.5 text-brand-400" aria-hidden="true" />
+              <span className="inline sm:hidden">Keygen</span>
+              <span className="hidden sm:inline">Keygen / Licencias</span>
             </a>
 
             {/* Indicador de conexión cifrada */}
@@ -673,6 +674,14 @@ export function App() {
 
           <div className="flex items-center space-x-4">
             <span>Conforme a normas ASTM C840 / EN 520 / USG</span>
+            <span>•</span>
+            <a
+              href="/admin/licenses?emitir=1"
+              className="text-brand-400 hover:text-brand-300 font-semibold transition-colors flex items-center gap-1"
+            >
+              <KeyRound className="w-3 h-3" aria-hidden="true" />
+              <span>Crear Licencia (Keygen)</span>
+            </a>
             <span>•</span>
             <button
               onClick={() => setIsSettingsOpen(true)}
