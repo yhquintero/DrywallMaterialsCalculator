@@ -253,11 +253,11 @@ try {
   process.exit(1);
 }
 
-ensureDependenciesInstalled();
-start();
-
 const DEV_ADMIN_USER = process.env.BOOTSTRAP_ADMIN_USERNAME || 'admin';
 const DEV_ADMIN_PASS = process.env.BOOTSTRAP_ADMIN_PASSWORD || 'Admin.Drywall2026!';
+
+ensureDependenciesInstalled();
+start();
 
 function start() {
   const api = runNode(
