@@ -20,11 +20,12 @@ import {
   UserCog,
   Users,
   Wallet,
+  Wand2,
   X,
 } from 'lucide-react';
 import { useAuth } from '../AuthContext';
 import { cn } from './ui';
-import { InsecureConnectionBanner } from './Guard';
+import { Can, InsecureConnectionBanner } from './Guard';
 import { APPS } from '../permissions';
 
 interface NavItem {
@@ -119,6 +120,17 @@ export function AdminLayout() {
               {secureConnection ? 'HTTPS' : 'HTTP'}
             </span>
 
+            <Can permission="licenses.issue">
+              <NavLink
+                to="/admin/licenses?emitir=1"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-brand-500"
+                title="Crear y firmar una nueva licencia con Keygen"
+              >
+                <Wand2 className="h-3.5 w-3.5" />
+                <span>Emitir licencia</span>
+              </NavLink>
+            </Can>
+
             <NavLink
               to="/"
               className="hidden items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-slate-300 transition hover:bg-slate-800 hover:text-white md:inline-flex"
@@ -201,6 +213,16 @@ export function AdminLayout() {
                   {APPS.keygen_pro.name}
                 </li>
               </ul>
+              <Can permission="licenses.issue">
+                <NavLink
+                  to="/admin/licenses?emitir=1"
+                  onClick={() => setSidebarOpen(false)}
+                  className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-lg bg-brand-600/20 px-2.5 py-1.5 text-xs font-semibold text-brand-300 ring-1 ring-inset ring-brand-500/40 transition hover:bg-brand-600/30 hover:text-white"
+                >
+                  <Wand2 className="h-3.5 w-3.5" />
+                  Crear licencia (Keygen)
+                </NavLink>
+              </Can>
             </div>
 
             {sections.map((section) => (

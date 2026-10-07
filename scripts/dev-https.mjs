@@ -256,6 +256,9 @@ try {
 ensureDependenciesInstalled();
 start();
 
+const DEV_ADMIN_USER = process.env.BOOTSTRAP_ADMIN_USERNAME || 'admin';
+const DEV_ADMIN_PASS = process.env.BOOTSTRAP_ADMIN_PASSWORD || 'Admin.Drywall2026!';
+
 function start() {
   const api = runNode(
     ['--no-warnings', 'src/index.js'],
@@ -267,6 +270,8 @@ function start() {
       HOST: '0.0.0.0',
       JWT_SECRET: process.env.JWT_SECRET || 'dev-jwt-secret-cambiar-en-produccion-0123456789',
       MASTER_KEY: process.env.MASTER_KEY || 'dev-master-key-cambiar-en-produccion-0123456789',
+      BOOTSTRAP_ADMIN_USERNAME: DEV_ADMIN_USER,
+      BOOTSTRAP_ADMIN_PASSWORD: DEV_ADMIN_PASS,
       SECURE_COOKIES: 'true',
       RSA_KEY_SIZE: process.env.RSA_KEY_SIZE || '4096',
     },
@@ -278,9 +283,14 @@ function start() {
 
   const caCertRel = path.join('server', 'certs', 'ca.crt');
   console.log('');
-  console.log(`  Consola (web)  →  https://localhost:${WEB_PORT}/admin`);
-  console.log(`  Calculadora    →  https://localhost:${WEB_PORT}/`);
-  console.log(`  API            →  https://localhost:${API_PORT}/api/public/health`);
+  console.log(`  Calculadora       →  https://localhost:${WEB_PORT}/`);
+  console.log(`  Consola (Panel)   →  https://localhost:${WEB_PORT}/admin`);
+  console.log(`  Keygen Licencias  →  https://localhost:${WEB_PORT}/admin/licenses?emitir=1`);
+  console.log(`  API               →  https://localhost:${API_PORT}/api/public/health`);
+  console.log('');
+  console.log(`  Credenciales iniciales (desarrollo):`);
+  console.log(`    usuario    : ${DEV_ADMIN_USER}`);
+  console.log(`    contraseña : ${DEV_ADMIN_PASS}`);
   console.log('');
   console.log(`  Si el navegador avisa del certificado, importa ${caCertRel}`);
   console.log('  como autoridad de confianza (ejecuta `npm run certs` para ver los comandos).');

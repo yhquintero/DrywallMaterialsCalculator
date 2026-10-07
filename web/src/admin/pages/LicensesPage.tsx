@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Ban,
   Download,
@@ -57,6 +58,7 @@ const PAGE_SIZE = 25;
 export function LicensesPage() {
   const { hasPermission } = useAuth();
   const { toast, viewport } = useToast();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [items, setItems] = React.useState<License[]>([]);
   const [total, setTotal] = React.useState(0);
@@ -73,6 +75,22 @@ export function LicensesPage() {
     open: false,
     mode: 'issue',
   });
+
+  // Abre automáticamente el Keygen cuando se entra por `/admin/licenses?emitir=1`.
+  React.useEffect(() => {
+    const shouldIssue = searchParams.get('emitir') === '1' || searchParams.get('new') === '1';
+    const requestedApp = searchParams.get('app');
+    if (requestedApp === 'drywall_calculator' || requestedApp === 'keygen_pro') {
+      setAppId(requestedApp);
+    }
+    if (shouldIssue && hasPermission('licenses.issue')) {
+      setModal({ open: true, mode: 'issue' });
+      const next = new URLSearchParams(searchParams);
+      next.delete('emitir');
+      next.delete('new');
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, setSearchParams, hasPermission]);
   const [revoking, setRevoking] = React.useState<License | null>(null);
   const [revokeReason, setRevokeReason] = React.useState('');
   const [detail, setDetail] = React.useState<License | null>(null);

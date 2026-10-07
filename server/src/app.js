@@ -47,7 +47,13 @@ export function createApp() {
       ...config.server.corsOrigins,
       ...(config.isProd ? [] : ['http://localhost:3000', 'https://localhost:3000', 'http://localhost:5173', 'https://localhost:5173']),
     ]);
-    if (origin && (allowed.has(origin) || origin.endsWith('.e2b.app') || (!config.isProd && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)))) {
+    if (
+      origin &&
+      (allowed.has(origin) ||
+        origin.endsWith('.e2b.app') ||
+        (!config.isProd &&
+          /^https?:\/\/(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+)(:\d+)?$/.test(origin)))
+    ) {
       res.setHeader('Access-Control-Allow-Origin', origin);
       res.setHeader('Vary', 'Origin');
       res.setHeader('Access-Control-Allow-Credentials', 'true');

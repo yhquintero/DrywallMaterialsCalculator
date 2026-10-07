@@ -80,7 +80,16 @@ object RemoteKeyProvider {
                     Log.e(TAG, "La consola respondió ${connection.responseCode} al pedir la clave pública")
                     return@withContext null
                 }
-                val pemString = connection.inputStream.readBytes(MAX_PEM_BYTES).toString(Charsets.UTF_8).trim()
+                if (connection.contentLength > MAX_PEM_BYTES) {
+                    Log.e(TAG, "La clave pública supera el tamaño máximo permitido (${connection.contentLength} bytes)")
+                    return@withContext null
+                }
+                val rawBytes = connection.inputStream.use { it.readBytes() }
+                if (rawBytes.size > MAX_PEM_BYTES) {
+                    Log.e(TAG, "La clave pública supera el tamaño máximo permitido (${rawBytes.size} bytes)")
+                    return@withContext null
+                }
+                val pemString = rawBytes.toString(Charsets.UTF_8).trim()
                 if (!looksLikePublicKeyPem(pemString)) {
                     Log.e(TAG, "La respuesta no es una clave pública PEM válida")
                     return@withContext null

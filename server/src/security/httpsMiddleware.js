@@ -6,8 +6,13 @@
  */
 import config from '../config/index.js';
 
-const isLoopback = (host = '') =>
-  ['localhost', '127.0.0.1', '::1', '[::1]', '0.0.0.0'].includes(host.split(':')[0]);
+const isLoopback = (host = '') => {
+  const h = host.split(':')[0];
+  return (
+    ['localhost', '127.0.0.1', '::1', '[::1]', '0.0.0.0'].includes(h) ||
+    /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(h)
+  );
+};
 
 export function isSecureRequest(req) {
   if (req.secure) return true;

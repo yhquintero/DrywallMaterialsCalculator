@@ -74,17 +74,26 @@ async function buildHeaders(extra?: HeadersInit, withAuth = true): Promise<Heade
 async function parse<T>(res: Response): Promise<T> {
   const text = await res.text();
   let body: unknown = null;
+  let isJson = false;
   if (text) {
     try {
       body = JSON.parse(text);
+      isJson = true;
     } catch {
       body = text;
     }
   }
   if (!res.ok) {
+    const serverDown =
+      res.status === 502 ||
+      res.status === 503 ||
+      res.status === 504 ||
+      (res.status === 500 && !isJson);
     const message =
       (body && typeof body === 'object' && 'error' in body ? String((body as { error: unknown }).error) : null) ||
-      `Error ${res.status}`;
+      (serverDown
+        ? 'No hay conexión con el servidor de licencias (:8443). Levanta la plataforma con «npm run dev:https» (o inicia la API con «npm run dev:api»).'
+        : `Error ${res.status}`);
     const details = body && typeof body === 'object' && 'details' in body ? (body as { details: unknown }).details : undefined;
     throw new ApiError(res.status, message, details);
   }
@@ -92,13 +101,21 @@ async function parse<T>(res: Response): Promise<T> {
 }
 
 async function request<T>(method: string, path: string, body?: unknown, opts: { raw?: boolean } = {}): Promise<T> {
-  const doFetch = async (withAuth: boolean) =>
-    fetch(path, {
-      method,
-      credentials: 'same-origin',
-      headers: await buildHeaders(undefined, withAuth),
-      body: body === undefined ? undefined : JSON.stringify(body),
-    });
+  const doFetch = async (withAuth: boolean) => {
+    try {
+      return await fetch(path, {
+        method,
+        credentials: 'same-origin',
+        headers: await buildHeaders(undefined, withAuth),
+        body: body === undefined ? undefined : JSON.stringify(body),
+      });
+    } catch {
+      throw new ApiError(
+        0,
+        'No se pudo conectar con el servidor de licencias (:8443). Ejecuta «npm run dev:https» (o «npm run dev:api») para iniciar el backend.'
+      );
+    }
+  };
 
   let res = await doFetch(Boolean(accessToken));
 
