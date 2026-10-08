@@ -25,6 +25,13 @@ const VITE_BIN = path.join(WEB, 'node_modules', 'vite', 'bin', 'vite.js');
 const API_PORT = Number(process.env.PORT || 8443);
 const WEB_PORT = Number(process.env.VITE_PORT || 3000);
 
+// Credenciales iniciales del usuario administrador (solo desarrollo).
+// Se declaran aquí, en la cabecera de constantes, porque `start()` se invoca más
+// abajo al cargar el módulo: un `const` evaluado después de su uso falla con
+// ReferenceError (Temporal Dead Zone).
+const DEV_ADMIN_USER = process.env.BOOTSTRAP_ADMIN_USERNAME || 'admin';
+const DEV_ADMIN_PASS = process.env.BOOTSTRAP_ADMIN_PASSWORD || 'Admin.Drywall2026!';
+
 const children = [];
 let shuttingDown = false;
 
@@ -255,9 +262,6 @@ try {
 
 ensureDependenciesInstalled();
 start();
-
-const DEV_ADMIN_USER = process.env.BOOTSTRAP_ADMIN_USERNAME || 'admin';
-const DEV_ADMIN_PASS = process.env.BOOTSTRAP_ADMIN_PASSWORD || 'Admin.Drywall2026!';
 
 function start() {
   const api = runNode(
