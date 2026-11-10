@@ -7,7 +7,7 @@ compileSdk = "37"
 minSdk = "26"
 targetSdk = "37"
 
-composeBom = "2026.06.01"
+composeBom = "2026.09.00"
 room = "2.8.4"
 coreKtx = "1.19.0"
 splashscreen = "1.2.0"
